@@ -9,7 +9,9 @@
     "g:c:users": "nx generate @nx/nest:controller --project=users",
     "g:s:users": "nx generate @nx/nest:service --project=users",
     "g:r:users": "nx generate @nx/nest:resource --project=users",
-    "serve:users": "nx run users:serve"
+    "serve:users": "nx run users:serve",
+    "g:r:posts": "nx generate @nx/nest:resource --project=posts",
+    "serve:posts": "nx run posts:serve"
   },
   "private": true,
   "dependencies": {
