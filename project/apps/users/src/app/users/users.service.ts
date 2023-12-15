@@ -1,5 +1,7 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { getPasswordHash } from '@project/libs/shared/helpers';
+import { dbUsersConfig } from '@project/config/users';
 import { CreateUserDto } from './users.dto/create-user.dto';
 import { UpdateUserDto } from './users.dto/update-user.dto';
 import { UsersRepository } from './users.repository';
@@ -8,7 +10,9 @@ import { User } from './user.entity';
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly usersRepository: UsersRepository
+    private readonly usersRepository: UsersRepository,
+    @Inject(dbUsersConfig.KEY)
+    private readonly dbConfig: ConfigType<typeof dbUsersConfig>,
   ) {}
 
   public async create(dto: CreateUserDto) {

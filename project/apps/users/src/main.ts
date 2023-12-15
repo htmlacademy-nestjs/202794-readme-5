@@ -1,23 +1,24 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = process.env.PORT || 3004;
+  const config = app.get(ConfigService);
+  const port = config.get('app.port');
   const globalPrefix = 'api';
 
   app.setGlobalPrefix(globalPrefix);
 
-  const config = new DocumentBuilder()
-    .setTitle('The «Users» service')
-    .setDescription('Users service API')
-    .setVersion('1.0')
-    .build();
-
-  const document = SwaggerModule
-    .createDocument(app, config);
+  const document = SwaggerModule.createDocument(
+    app, new DocumentBuilder()
+      .setTitle('The «Users» service')
+      .setDescription('Users service API')
+      .setVersion('1.0')
+      .build()
+  );
 
   SwaggerModule.setup(`${globalPrefix}/spec`, app, document);
 
