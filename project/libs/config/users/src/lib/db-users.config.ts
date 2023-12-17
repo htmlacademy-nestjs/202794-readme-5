@@ -3,6 +3,8 @@ import { registerAs } from '@nestjs/config';
 
 export const DEFAULT_MONGO_PORT = 27017;
 
+export const DB_TOKEN = 'db' as const;
+
 export interface DBUsersConfig {
   host: string;
   name: string;
@@ -12,7 +14,11 @@ export interface DBUsersConfig {
   authBase: string;
 }
 
-export const dbUsersConfig = registerAs<DBUsersConfig>('db', () => {
+export interface DBUsersConfigPart {
+  [DB_TOKEN]: DBUsersConfig;
+}
+
+export const dbUsersConfig = registerAs<DBUsersConfig>(DB_TOKEN, () => {
   const result = Joi.object<DBUsersConfig>({
     host: Joi.string().hostname().required(),
     name: Joi.string().required(),

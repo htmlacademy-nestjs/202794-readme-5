@@ -5,6 +5,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './users.dto/create-user.dto';
 import { UpdateUserDto } from './users.dto/update-user.dto';
 import { UserRdo } from './users.rdo/user.rdo';
+import { UsersApiDesc } from './users.const';
 
 @ApiTags('Users')
 @Controller('users')
@@ -16,7 +17,7 @@ export class UsersController {
   @ApiResponse({
     type: CreateUserDto,
     status: HttpStatus.OK,
-    description: 'Создать пользователя',
+    description: UsersApiDesc.Create,
   })
   @Post()
   public async create(@Body() dto: CreateUserDto) {
@@ -26,17 +27,17 @@ export class UsersController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Вернуть список пользователей',
+    description: UsersApiDesc.GetAll,
   })
   @Get()
   public async findAll() {
     const users = await this.usersService.findAll();
-    return { users: transform(UserRdo, users) };
+    return { items: transform(UserRdo, users) };
   }
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Вернуть пользователя',
+    description: UsersApiDesc.GetOne,
   })
   @Get(':id')
   public async findOne(@Param('id') id: string) {
@@ -47,7 +48,7 @@ export class UsersController {
   @ApiResponse({
     type: UpdateUserDto,
     status: HttpStatus.OK,
-    description: 'Обновить данные пользователей',
+    description: UsersApiDesc.Update,
   })
   @Patch(':id')
   public async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
@@ -57,7 +58,7 @@ export class UsersController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Удалить пользователя',
+    description: UsersApiDesc.Remove,
   })
   @Delete(':id')
   public async remove(@Param('id') id: string) {

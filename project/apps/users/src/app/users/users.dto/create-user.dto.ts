@@ -1,29 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
 import type { IUser } from '@project/libs/shared/types'
+import { UsersPropDesc } from '../users.const';
 
 export class CreateUserDto implements Partial<IUser> {
   @ApiProperty({
-    description: 'Уникальный email пользователя',
+    description: UsersPropDesc.Email,
     example: 'user@mail.ru',
     required: true,
   })
   public email: string;
 
   @ApiProperty({
-    description: 'Имя пользователя',
+    description: UsersPropDesc.FirstName,
     example: 'Bob',
   })
   public firstname: string;
 
   @ApiProperty({
-    description: 'Пароль пользователя',
+    description: UsersPropDesc.Password,
     example: 'password',
     required: true,
   })
   public password: string;
 
   @ApiProperty({
-    description: 'Аватар пользователя',
+    description: UsersPropDesc.Avatar,
   })
   public avatar?: string;
 }

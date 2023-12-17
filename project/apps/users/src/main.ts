@@ -5,12 +5,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
+  const GLOBAL_PREFIX = 'api';
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
   const port = config.get('app.port');
-  const globalPrefix = 'api';
 
-  app.setGlobalPrefix(globalPrefix);
+  app.setGlobalPrefix(GLOBAL_PREFIX);
 
   const document = SwaggerModule.createDocument(
     app, new DocumentBuilder()
@@ -20,11 +20,11 @@ async function bootstrap() {
       .build()
   );
 
-  SwaggerModule.setup(`${globalPrefix}/spec`, app, document);
+  SwaggerModule.setup(`${GLOBAL_PREFIX}/spec`, app, document);
 
   await app.listen(port);
 
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Application is running on: http://localhost:${port}/${GLOBAL_PREFIX}`);
 }
 
 bootstrap();
