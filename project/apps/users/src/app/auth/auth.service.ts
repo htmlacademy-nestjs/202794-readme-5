@@ -7,7 +7,7 @@ import { LoginUserDto } from './auth.dto/login-user.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
   ) {}
 
   public async register(dto: CreateUserDto) {
