@@ -7,17 +7,32 @@ import type { IAuthUser } from '@project/libs/shared/types';
   timestamps: true,
 })
 export class UserModel extends Document implements IAuthUser {
+  @Prop({ unique: true })
+  public id: string;
+
   @Prop({ unique: true, required: true })
   public email: string;
 
-  @Prop({ required: true })
-  public firstname: string;
-
-  @Prop()
-  public avatar?: string;
+  @Prop({ unique: true, required: true })
+  public login: string;
 
   @Prop({ required: true })
   public passwordHash: string;
+
+  @Prop()
+  public createdAt: Date;
+
+  @Prop()
+  public updatedAt: Date;
+
+  @Prop()
+  public firstname: string;
+
+  @Prop()
+  public lastname: string;
+
+  @Prop()
+  public avatar: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);

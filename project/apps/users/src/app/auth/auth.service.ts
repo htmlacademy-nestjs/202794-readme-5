@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { matchPassword } from '@project/libs/shared/helpers';
-import { CreateUserDto } from '../users/users.dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { LoginUserDto } from './auth.dto/login-user.dto';
+import { RegisterUserDto } from './auth.dto/register-user.dto';
+import { AuthErrorMessage } from './auth.const';
 
 @Injectable()
 export class AuthService {
@@ -10,18 +11,15 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
-  public async register(dto: CreateUserDto) {
+  public async register(dto: RegisterUserDto) {
     return this.usersService.create(dto);
   }
 
   public async login(dto: LoginUserDto) {
     const user = await this.usersService.findByEmail(dto.email);
 
-    if (!user) {
-      throw new NotFoundException('User with email not found');
-    }
     if (!await matchPassword(dto.password, user.passwordHash)) {
-      throw new UnauthorizedException('The email address or password is incorrect');
+      throw new UnauthorizedException(AuthErrorMessage.UserIsUnauthorized);
     }
     return user;
   }

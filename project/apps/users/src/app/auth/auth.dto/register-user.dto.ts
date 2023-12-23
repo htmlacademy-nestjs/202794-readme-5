@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import type { IUser } from '@project/libs/shared/types'
-import { UsersPropDesc } from '../users.const';
+import { UsersPropDesc } from '../../users/users.const';
 
-export class CreateUserDto implements Partial<IUser> {
+export class RegisterUserDto implements Partial<IUser> {
   @ApiProperty({
     description: UsersPropDesc.Email,
     example: 'user@mail.ru',
@@ -16,18 +16,6 @@ export class CreateUserDto implements Partial<IUser> {
     required: true,
   })
   public login: string;
-
-  @ApiProperty({
-    description: UsersPropDesc.FirstName,
-    example: 'Alice',
-  })
-  public firstname?: string;
-
-  @ApiProperty({
-    description: UsersPropDesc.LastName,
-    example: 'Cooper',
-  })
-  public lastname?: string;
 
   @ApiProperty({
     description: UsersPropDesc.Password,

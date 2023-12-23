@@ -5,14 +5,19 @@ import { UsersPropDesc } from '../users.const';
 export class UpdateUserDto implements Partial<IUser> {
   @ApiProperty({
     description: UsersPropDesc.FirstName,
-    example: 'Bob',
+    example: 'Alice',
   })
   public firstname: string;
 
   @ApiProperty({
+    description: UsersPropDesc.LastName,
+    example: 'Cooper',
+  })
+  public lastname: string;
+
+  @ApiProperty({
     description: UsersPropDesc.Password,
     example: 'password',
-    required: true,
   })
   public password: string;
 

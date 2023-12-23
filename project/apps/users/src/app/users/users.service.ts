@@ -12,12 +12,8 @@ export class UsersService {
     private readonly usersRepository: UsersRepository,
   ) {}
 
-  private throwIfUserIdNotFoud(user: User | null) {
-    if (!user) throw new NotFoundException(UsersErrorMessage.UserIdNotFound);
-  }
-
   public async create(dto: CreateUserDto) {
-    if (await this.usersRepository.findByEmail(dto.email)) {
+    if (await this.findByEmail(dto.email)) {
       throw new ConflictException(UsersErrorMessage.UserEmailAlreadyExists);
     }
     const { password, ...user } = dto;
@@ -31,30 +27,42 @@ export class UsersService {
   }
 
   public async findOne(id: string) {
-    const user = await this.usersRepository.findOne(id);
-    this.throwIfUserIdNotFoud(user);
+    return this.usersRepository.findOne(id);
+  }
+
+  public async findOneOrThrow(id: string) {
+    const user = await this.findOne(id);
+    if (!user) throw new NotFoundException(UsersErrorMessage.UserIdNotFound);
     return user;
   }
 
   public async findByEmail(email: string) {
-    const user = await this.usersRepository.findByEmail(email);
-    this.throwIfUserIdNotFoud(user);
+    return this.usersRepository.findByEmail(email);
+  }
+
+  public async findByEmailOrThrow(email: string) {
+    const user = await this.findByEmail(email);
+    if (!user) throw new NotFoundException(UsersErrorMessage.UserEmailNotFound);
     return user;
   }
 
   public async update(id: string, dto: UpdateUserDto) {
-    this.throwIfUserIdNotFoud(await this.usersRepository.findOne(id));
+    await this.findOneOrThrow(id);
     const { password, ...dtoProps } = dto;
-    const user: Partial<User> = dtoProps;
+    const data: Partial<User> = dtoProps;
 
     if (password) {
-      user.passwordHash = await getPasswordHash(password);
+      data.passwordHash = await getPasswordHash(password);
     }
-    return this.usersRepository.update(id, user);
+    return this.usersRepository.update(id, data);
+  }
+
+  public async removeAll() {
+    return this.usersRepository.removeAll();
   }
 
   public async remove(id: string) {
-    this.throwIfUserIdNotFoud(await this.usersRepository.findOne(id));
+    await this.findOneOrThrow(id);
     return this.usersRepository.remove(id);
   }
 }

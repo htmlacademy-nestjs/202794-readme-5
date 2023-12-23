@@ -1,13 +1,14 @@
 import { Controller, Post, Body, HttpStatus } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { transform } from "@project/libs/shared/helpers";
-import { CreateUserDto } from '../users/users.dto/create-user.dto';
 import { UserRdo } from '../users/users.rdo/user.rdo';
 import { LoginUserDto } from './auth.dto/login-user.dto';
+import { RegisterUserDto } from './auth.dto/register-user.dto';
 import { LoggedUserRdo } from './auth.rdo/logged-user.rdo';
 import { AuthService } from './auth.service';
+import { AuthApiDesc } from './auth.const';
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -16,10 +17,10 @@ export class AuthController {
 
   @ApiResponse({
     status: HttpStatus.CREATED,
-    description: 'Регистрация нового пользователя',
+    description: AuthApiDesc.Create,
   })
   @Post('register')
-  public async register(@Body() dto: CreateUserDto) {
+  public async register(@Body() dto: RegisterUserDto) {
     const user = await this.authService.register(dto);
     return transform(UserRdo, user);
   }
@@ -27,12 +28,12 @@ export class AuthController {
   @ApiResponse({
     type: LoginUserDto,
     status: HttpStatus.OK,
-    description: 'Вход пользователя',
+    description: AuthApiDesc.Login,
   })
   @ApiResponse({
     type: LoginUserDto,
     status: HttpStatus.UNAUTHORIZED,
-    description: 'Указан неверный пароль или email',
+    description: AuthApiDesc.Unauthorized,
   })
   @Post('login')
   public async login(@Body() dto: LoginUserDto) {
