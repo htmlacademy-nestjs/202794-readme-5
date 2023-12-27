@@ -5,6 +5,7 @@ import { PostsService } from './posts.service';
 import { CreatePostDto } from './posts.dto/create-post.dto';
 import { UpdatePostDto } from './posts.dto/update-post.dto';
 import { PostRdo } from './posts.rdo/post.rdo';
+import { PostsApiDesc } from './posts.const';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -16,7 +17,7 @@ export class PostsController {
   @ApiResponse({
     type: CreatePostDto,
     status: HttpStatus.OK,
-    description: 'Создать пост',
+    description: PostsApiDesc.Create,
   })
   @Post()
   public async create(@Body() dto: CreatePostDto) {
@@ -26,7 +27,7 @@ export class PostsController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Вернуть список постов',
+    description: PostsApiDesc.GetAll,
   })
   @Get()
   public async findAll() {
@@ -36,7 +37,7 @@ export class PostsController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Вернуть пост',
+    description: PostsApiDesc.GetOne,
   })
   @Get(':id')
   public async findOne(@Param('id') id: string) {
@@ -47,7 +48,7 @@ export class PostsController {
   @ApiResponse({
     type: UpdatePostDto,
     status: HttpStatus.OK,
-    description: 'Обновить данные поста',
+    description: PostsApiDesc.Update,
   })
   @Patch(':id')
   public async update(@Param('id') id: string, @Body() dto: UpdatePostDto) {
@@ -57,7 +58,7 @@ export class PostsController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Удалить пост',
+    description: PostsApiDesc.Remove,
   })
   @Delete(':id')
   public async remove(@Param('id') id: string) {

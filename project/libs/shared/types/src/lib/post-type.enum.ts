@@ -1,15 +1,15 @@
 /**
  * Тип поста
  */
-export enum PostType {
+export const enum PostType {
   /** Видео */
-  Video = 'video',
+  Video = 'VIDEO',
   /** Текст */
-  Text = 'text',
+  Text = 'TEXT',
   /** Цитата */
-  Quote = 'quote',
+  Quote = 'QUOTE',
   /** Фото */
-  Photo = 'photo',
+  Photo = 'PHOTO',
   /** Ссылка */
-  Link = 'link',
+  Link = 'LINK',
 }

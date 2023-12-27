@@ -51,6 +51,41 @@
       "options": {
         "jestConfig": "apps/posts/jest.config.ts"
       }
+    },
+    "db:lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma validate --schema ./schema.prisma",
+        "cwd": "libs/posts/prisma"
+      }
+    },
+    "db:migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma migrate dev --schema ./schema.prisma --skip-generate --skip-seed",
+        "cwd": "libs/posts/prisma"
+      }
+    },
+    "db:reset": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma migrate reset --schema ./schema.prisma --force --skip-generate --skip-seed",
+        "cwd": "libs/posts/prisma"
+      }
+    },
+    "db:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma generate --schema ./schema.prisma",
+        "cwd": "libs/posts/prisma"
+      }
+    },
+    "db:seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx ts-node seed.ts",
+        "cwd": "libs/posts/prisma/src/lib"
+      }
     }
   },
   "tags": []

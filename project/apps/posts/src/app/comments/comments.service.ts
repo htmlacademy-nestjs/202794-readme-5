@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { IPostComment } from '@project/libs/shared/types';
 import { CreateCommentDto } from './comments.dto/create-comment.dto';
 import { UpdateCommentDto } from './comments.dto/update-comment.dto';
 import { CommentsRepository } from './comments.repository';
-import { IPostComment } from '@project/libs/shared/types';
 
 @Injectable()
 export class CommentsService {
@@ -11,11 +11,10 @@ export class CommentsService {
   ) {}
 
   public async create(dto: CreateCommentDto) {
-    const comment: IPostComment = {
+    const comment: Partial<IPostComment> = {
       postId: dto.postId,
-      ownerId: '',
-      dateOfCreation: new Date(),
-      text: dto.text
+      ownerId: '657f1aaf5c958e259613d1df',
+      message: dto.message,
     };
     return this.commentsRepository.create(comment);
   }
@@ -34,14 +33,14 @@ export class CommentsService {
   }
 
   public async update(id: string, dto: UpdateCommentDto) {
-    if (!await this.commentsRepository.contains(id)) {
+    if (!await this.commentsRepository.findOne(id)) {
       throw new NotFoundException('Comment with id not found');
     }
     return this.commentsRepository.update(id, dto);
   }
 
   public async remove(id: string) {
-    if (!await this.commentsRepository.contains(id)) {
+    if (!await this.commentsRepository.findOne(id)) {
       throw new NotFoundException('Comment with id not found');
     }
     return this.commentsRepository.remove(id);

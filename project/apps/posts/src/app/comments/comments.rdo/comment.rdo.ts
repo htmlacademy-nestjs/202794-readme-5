@@ -7,19 +7,23 @@ export class CommentRdo implements IPostComment {
   @Expose()
   public id: string;
 
-  @ApiProperty({ description: 'Индентификатор поста' })
+  @ApiProperty({ description: 'Дата создания' })
   @Expose()
-  public postId: string;
+  public createdAt: Date;
+
+  @ApiProperty({ description: 'Дата изменения' })
+  @Expose()
+  public updatedAt: Date;
 
   @ApiProperty({ description: 'Индентификатор автора' })
   @Expose()
   public ownerId: string;
 
-  @ApiProperty({ description: 'Дата создания' })
+  @ApiProperty({ description: 'Индентификатор поста' })
   @Expose()
-  public dateOfCreation: Date;
+  public postId: string;
 
   @ApiProperty({ description: 'Текст комментария' })
   @Expose()
-  public text: string;
+  public message: string;
 }

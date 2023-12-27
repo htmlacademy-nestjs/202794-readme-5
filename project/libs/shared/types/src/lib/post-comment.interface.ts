@@ -3,12 +3,14 @@
  */
 export interface IPostComment {
   id?: string;
-  /** id поста комментария */
-  postId: string;
+  /** Дата создания комментария */
+  createdAt: Date;
+  /** Дата изменения комментария */
+  updatedAt: Date;
   /** id автора комментария */
   ownerId: string;
-  /** Дата создания комментария */
-  dateOfCreation: Date;
+  /** id поста комментария */
+  postId: string;
   /** Текст комментария */
-  text: string;
+  message: string;
 }

@@ -1,41 +1,46 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IPost, PostStatus, PostType } from '@project/libs/shared/types';
+import { PostsPropDesc } from '../posts.const';
 
 export class PostRdo implements IPost {
-  @ApiProperty({ description: 'Индентификатор поста' })
+  @ApiProperty({ description: PostsPropDesc.PostId })
   @Expose()
   public id: string;
 
-  @ApiProperty({ description: 'Тип поста' })
+  @ApiProperty({ description: PostsPropDesc.CreatedAt })
   @Expose()
-  public postType: PostType;
+  public createdAt: Date;
 
-  @ApiProperty({ description: 'Состояние поста' })
+  @ApiProperty({ description: PostsPropDesc.UpdatedAt })
   @Expose()
-  public postStatus: PostStatus;
+  public updatedAt: Date;
 
-  @ApiProperty({ description: 'Дата создания поста' })
+  @ApiProperty({ description: PostsPropDesc.PublishAt })
   @Expose()
-  public dateOfCreation: Date;
+  public publishAt: Date;
 
-  @ApiProperty({ description: 'Дата публикации поста' })
-  @Expose()
-  public dateOfPublish: Date;
-
-  @ApiProperty({ description: 'id автора поста' })
+  @ApiProperty({ description: PostsPropDesc.AuthorId })
   @Expose()
   public authorId: string;
 
-  @ApiProperty({ description: 'id автора поста с которого сделали репост' })
+  @ApiProperty({ description: PostsPropDesc.OwnerId })
   @Expose()
   public ownerId?: string;
 
-  @ApiProperty({ description: 'id поста с которого сделали репост' })
+  @ApiProperty({ description: PostsPropDesc.OwnerPostId })
   @Expose()
   public ownerPostId?: string;
 
-  @ApiProperty({ description: 'Пост является репостом' })
+  @ApiProperty({ description: PostsPropDesc.Title })
   @Expose()
-  public isRepost?: boolean;
+  public title?: string;
+
+  @ApiProperty({ description: PostsPropDesc.PostType })
+  @Expose()
+  public postType: `${PostType}`;
+
+  @ApiProperty({ description: PostsPropDesc.PostStatus })
+  @Expose()
+  public postStatus: `${PostStatus}`;
 }

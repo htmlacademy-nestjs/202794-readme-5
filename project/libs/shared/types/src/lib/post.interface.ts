@@ -1,24 +1,35 @@
-import { PostStatus } from "./post-status.enum";
-import { PostType } from "./post-type.enum";
+import { PostStatus } from './post-status.enum';
+import { PostType } from './post-type.enum';
+import { IPostComment } from './post-comment.interface';
+import { IPostTag } from './post-tag.interface';
+import { IPostLike } from './post-like.interface';
 
 export interface IPost {
   id?: string;
-  /** Тип поста */
-  postType: PostType;
-  /** Состояние поста */
-  postStatus: PostStatus;
-  /** Дата создания поста */
-  dateOfCreation: Date;
-  /** Дата публикации поста */
-  dateOfPublish?: Date;
-  /** id автора поста */
+  /** Дата создания публикации */
+  createdAt: Date;
+  /** Дата изменения публикации */
+  updatedAt: Date;
+  /** Дата публикации публикации */
+  publishAt?: Date;
+  /** id автора публикации */
   authorId: string;
-  /** id автора поста с которого сделали репост */
+  /** id автора публикации с которого сделали репост */
   ownerId?: string;
-  /** id поста с которого сделали репост */
+  /** id публикации с которого сделали репост */
   ownerPostId?: string;
-  /** Пост является репостом */
-  isRepost?: boolean;
+  /** Комментарии к посту */
+  comments?: IPostComment[];
+  /** Теги к посту */
+  tags?: IPostTag[];
+  /** Лайки к посту */
+  likes?: IPostLike[];
+  /** Заголовок публикации */
+  title?: string;
+  /** Тип публикации */
+  postType: `${PostType}`;
+  /** Состояние публикации */
+  postStatus: `${PostStatus}`;
 }
 
 export interface IVideoPost extends IPost {
