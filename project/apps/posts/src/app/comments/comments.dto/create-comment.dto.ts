@@ -12,5 +12,5 @@ export class CreateCommentDto implements Partial<IPostComment> {
     description: 'Текст комментария',
     required: true,
   })
-  public text: string;
+  public message: string;
 }

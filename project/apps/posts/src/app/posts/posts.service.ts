@@ -3,6 +3,7 @@ import { IPost, PostStatus } from '@project/libs/shared/types';
 import { CreatePostDto } from './posts.dto/create-post.dto';
 import { UpdatePostDto } from './posts.dto/update-post.dto';
 import { PostsRepository } from './posts.repository';
+import { PostsErrorMessage } from './posts.const';
 
 @Injectable()
 export class PostsService {
@@ -10,12 +11,18 @@ export class PostsService {
     private readonly postsRepository: PostsRepository
   ) {}
 
+  protected async findOneOrThrow(id: string) {
+    const post = await this.postsRepository.findOne(id);
+    if (!post) throw new NotFoundException(PostsErrorMessage.PostIdNotFound);
+    return post;
+  }
+
   public async create(dto: CreatePostDto) {
-    const post: IPost = {
+    const post: Partial<IPost> = {
       postType: dto.postType,
       postStatus: PostStatus.Draft,
-      dateOfCreation: new Date(),
       authorId: dto.authorId,
+      title: dto.title,
     };
     return this.postsRepository.create(post);
   }
@@ -25,25 +32,16 @@ export class PostsService {
   }
 
   public async findOne(id: string) {
-    const user = await this.postsRepository.findOne(id);
-
-    if (!user) {
-      throw new NotFoundException('Post with id not found');
-    }
-    return user;
+    return this.findOneOrThrow(id);
   }
 
   public async update(id: string, dto: UpdatePostDto) {
-    if (!await this.postsRepository.contains(id)) {
-      throw new NotFoundException('Post with id not found');
-    }
+    await this.findOneOrThrow(id);
     return this.postsRepository.update(id, dto);
   }
 
   public async remove(id: string) {
-    if (!await this.postsRepository.contains(id)) {
-      throw new NotFoundException('Post with id not found');
-    }
+    await this.findOneOrThrow(id);
     return this.postsRepository.remove(id);
   }
 }

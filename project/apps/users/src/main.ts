@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
+  const API_VERSION = '1.0';
   const GLOBAL_PREFIX = 'api';
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
@@ -16,7 +17,7 @@ async function bootstrap() {
     app, new DocumentBuilder()
       .setTitle('The «Users» service')
       .setDescription('Users service API')
-      .setVersion('1.0')
+      .setVersion(API_VERSION)
       .build()
   );
 

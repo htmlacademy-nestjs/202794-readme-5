@@ -11,10 +11,23 @@ export class CreateUserDto implements Partial<IUser> {
   public email: string;
 
   @ApiProperty({
-    description: UsersPropDesc.FirstName,
-    example: 'Bob',
+    description: UsersPropDesc.Login,
+    example: 'user123',
+    required: true,
   })
-  public firstname: string;
+  public login: string;
+
+  @ApiProperty({
+    description: UsersPropDesc.FirstName,
+    example: 'Alice',
+  })
+  public firstname?: string;
+
+  @ApiProperty({
+    description: UsersPropDesc.LastName,
+    example: 'Cooper',
+  })
+  public lastname?: string;
 
   @ApiProperty({
     description: UsersPropDesc.Password,

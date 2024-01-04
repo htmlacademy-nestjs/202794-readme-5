@@ -3,7 +3,7 @@
  */
 export enum PostStatus {
   /** Опубликован */
-  Published = 'published',
+  Published = 'PUBLISHED',
   /** Черновик */
-  Draft = 'draft',
+  Draft = 'DRAFT',
 }

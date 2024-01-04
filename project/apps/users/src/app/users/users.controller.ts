@@ -65,4 +65,14 @@ export class UsersController {
     const user = await this.usersService.remove(id);
     return transform(UserRdo, user);
   }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: UsersApiDesc.Remove,
+  })
+  @Delete()
+  public async removeAll() {
+    const count = await this.usersService.removeAll();
+    return { count };
+  }
 }

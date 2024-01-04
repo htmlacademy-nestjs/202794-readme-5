@@ -13,19 +13,24 @@ export abstract class MongoRepository<T extends IEntity> implements IRepository<
     return this.model.findOne({ _id: id });
   }
 
-  public async create(data: T): Promise<T> {
+  public async create(data: Partial<T>): Promise<T> {
     const entity = new this.model(data);
     return entity.save();
   }
 
   public async update(id: T['id'], data: Partial<T>): Promise<T> {
-    return this.model.findByIdAndUpdate(id, data, { new: true }).exec();
+    return this.model.findByIdAndUpdate(id, data, { new: true, runValidators: true }).exec();
   }
 
   public async remove(id: T['id']): Promise<T> {
     const entity = await this.findOne(id);
     if (entity) await this.model.deleteOne({ _id: id });
     return entity;
+  }
+
+  public async removeAll(): Promise<number> {
+    const { deletedCount } = await this.model.deleteMany();
+    return deletedCount;
   }
 
   public async contains(id: T['id']): Promise<boolean> {
