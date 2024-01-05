@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
+import { IsUserName, IsUserPassword } from '@project/libs/shared/helpers';
 import type { IUser } from '@project/libs/shared/types'
 import { UsersPropDesc } from '../users.const';
 
@@ -7,22 +9,30 @@ export class UpdateUserDto implements Partial<IUser> {
     description: UsersPropDesc.FirstName,
     example: 'Alice',
   })
-  public firstname: string;
+  @IsUserName()
+  @IsOptional()
+  public firstname?: string;
 
   @ApiProperty({
     description: UsersPropDesc.LastName,
     example: 'Cooper',
   })
-  public lastname: string;
+  @IsUserName()
+  @IsOptional()
+  public lastname?: string;
 
   @ApiProperty({
     description: UsersPropDesc.Password,
     example: 'password',
   })
-  public password: string;
+  @IsUserPassword()
+  @IsOptional()
+  public password?: string;
 
   @ApiProperty({
     description: UsersPropDesc.Avatar,
   })
+  @IsString()
+  @IsOptional()
   public avatar?: string;
 }
