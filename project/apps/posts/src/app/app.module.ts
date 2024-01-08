@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigPostsModule } from '@project/libs/config/posts';
 import { PrismaClientModule } from '@project/libs/shared/prisma';
 import { PostsModule } from './posts/posts.module';
 import { CommentsModule } from './comments/comments.module';
@@ -8,6 +9,7 @@ import { CommentsModule } from './comments/comments.module';
     PostsModule,
     CommentsModule,
     PrismaClientModule,
+    ConfigPostsModule,
   ],
   controllers: [],
   providers: [],

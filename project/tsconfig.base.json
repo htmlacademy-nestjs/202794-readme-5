@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@project/libs/config/posts": ["libs/config/posts/src/index.ts"],
       "@project/libs/config/users": ["libs/config/users/src/index.ts"],
       "@project/libs/posts/prisma": ["libs/posts/prisma/src/index.ts"],
       "@project/libs/shared/core": ["libs/shared/core/src/index.ts"],
