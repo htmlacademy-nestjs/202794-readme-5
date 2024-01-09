@@ -7,14 +7,11 @@ export enum UsersErrorMessage {
 export enum UsersPropDesc {
   Avatar = 'User avatar',
   CreatedAt = 'Date of creation',
-  UpdatedAt = 'Date of updation',
   Email = 'Unique user email',
-  Login = 'Unique user login',
   FirstName = 'User firstname',
   LastName = 'User lastname',
   Id = 'User ID',
   Password = 'User password',
-  Token = 'User auth token',
 }
 
 export enum UsersApiDesc {

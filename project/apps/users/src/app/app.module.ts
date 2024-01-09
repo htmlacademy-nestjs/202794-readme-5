@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigUsersModule, MongoUsersModule } from '@project/config/users'
+import { ConfigUsersModule, MongoUsersModule } from '@project/libs/config/users';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 

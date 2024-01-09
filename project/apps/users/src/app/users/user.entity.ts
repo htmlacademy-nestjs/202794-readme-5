@@ -6,7 +6,6 @@ export class User implements IAuthUser, IEntity {
   public createdAt: Date;
   public updatedAt: Date;
   public email: string;
-  public login: string;
   public firstname: string;
   public lastname: string;
   public avatar?: string;

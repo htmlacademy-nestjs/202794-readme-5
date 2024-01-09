@@ -7,14 +7,10 @@ import type { IAuthUser } from '@project/libs/shared/types';
   timestamps: true,
 })
 export class UserModel extends Document implements IAuthUser {
-  @Prop({ unique: true })
   public id: string;
 
   @Prop({ unique: true, required: true })
   public email: string;
-
-  @Prop({ unique: true, required: true })
-  public login: string;
 
   @Prop({ required: true })
   public passwordHash: string;

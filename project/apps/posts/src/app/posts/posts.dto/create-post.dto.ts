@@ -1,25 +1,22 @@
+import { ArrayMaxSize, IsArray, IsEnum, IsOptional, MaxLength, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IPost, PostType } from '@project/libs/shared/types'
+import { PostType } from '@project/libs/shared/types';
 import { PostsPropDesc } from '../posts.const';
 
-export class CreatePostDto implements Partial<IPost> {
-  @ApiProperty({
-    description: PostsPropDesc.PostType,
-    example: PostType.Text,
-    required: true,
-  })
-  public postType: PostType;
+export class CreatePostDto {
+  @ApiProperty({ description: PostsPropDesc.PostType })
+  @IsEnum(PostType)
+  @IsOptional()
+  public type: PostType;
 
   @ApiProperty({
-    description: PostsPropDesc.AuthorId,
-    example: '657da7a18fca7b1eb751eba0',
-    required: true,
+    description: PostsPropDesc.PostTags,
+    example: ['css', 'js', 'html'],
   })
-  public authorId: string;
-
-  @ApiProperty({
-    description: PostsPropDesc.Title,
-    example: 'Title of The Post'
-  })
-  public title: string;
+  @MaxLength(10, { each: true })
+  @MinLength(3, { each: true })
+  @ArrayMaxSize(8)
+  @IsArray()
+  @IsOptional()
+  public tags: string[];
 }

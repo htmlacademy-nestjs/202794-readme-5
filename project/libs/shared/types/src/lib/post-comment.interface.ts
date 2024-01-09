@@ -8,7 +8,7 @@ export interface IPostComment {
   /** Дата изменения комментария */
   updatedAt: Date;
   /** id автора комментария */
-  ownerId: string;
+  authorId: string;
   /** id поста комментария */
   postId: string;
   /** Текст комментария */

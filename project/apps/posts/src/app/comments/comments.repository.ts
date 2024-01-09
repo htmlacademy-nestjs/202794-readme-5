@@ -1,31 +1,47 @@
-import { Injectable } from '@nestjs/common';
-import { IRepository } from '@project/libs/shared/core'
-import { PrismaClientService } from '@project/libs/shared/prisma';
-import { Comment } from './comment.entity';
+import { PostgresRepository } from '@project/libs/shared/core';
+import { Comment, ICreateComment } from './comment.entity';
+import { ICommentsFilter } from './comments.types';
 
-@Injectable()
-export class CommentsRepository implements IRepository<Comment> {
-  constructor(
-    protected readonly client: PrismaClientService,
-  ) {}
-
-  public async findAll(): Promise<Comment[]> {
-    throw new Error('Method not implemented.');
+export class CommentsRepository extends PostgresRepository<Comment> {
+  public async findAll(filter?: ICommentsFilter): Promise<Comment[]> {
+    return this.client.comment.findMany({
+      include: { author: true },
+      where: { postId: filter.postId },
+    });
   }
 
   public async findOne(id: string): Promise<Comment> {
-    throw new Error('Method not implemented.');
+    return this.client.comment.findUnique({
+      include: { author: true },
+      where: { id }
+    });
   }
 
-  public async create(data: Partial<Comment>): Promise<Comment> {
-    throw new Error('Method not implemented.');
+  public async create(data: ICreateComment): Promise<Comment> {
+    const author = { id: data.authorId };
+
+    return this.client.comment.create({
+      include: { author: true },
+      data: {
+        author: { connectOrCreate: { where: author, create: author } },
+        post: { connect: { id: data.postId } },
+        message: data.message,
+      },
+    });
   }
 
   public async update(id: string, data: Partial<Comment>): Promise<Comment> {
-    throw new Error('Method not implemented.');
+    return this.client.comment.update({
+      include: { author: true },
+      where: { id },
+      data: { message: data.message },
+    });
   }
 
   public async remove(id: string): Promise<Comment> {
-    throw new Error('Method not implemented.');
+    return this.client.comment.delete({
+      include: { author: true },
+      where: { id },
+    });
   }
 }
