@@ -13,7 +13,7 @@ export class Post implements IPost {
   public comments?: IPostComment[];
   public tags?: IPostTag[];
   public likes?: IPostLike[];
-  public title?: string;
   public postType: `${PostType}`;
   public postStatus: `${PostStatus}`;
+  public payload?: unknown;
 }

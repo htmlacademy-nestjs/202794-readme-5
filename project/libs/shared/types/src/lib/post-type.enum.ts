@@ -1,7 +1,7 @@
 /**
  * Тип поста
  */
-export const enum PostType {
+export enum PostType {
   /** Видео */
   Video = 'VIDEO',
   /** Текст */

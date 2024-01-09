@@ -1,3 +1,5 @@
+export * from './lib/interceptors/not-found.interceptor';
+export * from './lib/interceptors/transform.interceptor';
 export * from './lib/pipes/mongo-id-validation.pipe';
 export * from './lib/validators/IsUserEmail';
 export * from './lib/validators/IsUserName';

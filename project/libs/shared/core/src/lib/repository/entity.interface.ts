@@ -1,4 +1,4 @@
-export type EntityId = string;
+export type EntityId = string | object;
 
 /**
  * Базовая сущность с уникальным идентификатором

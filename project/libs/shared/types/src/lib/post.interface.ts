@@ -4,7 +4,7 @@ import { IPostComment } from './post-comment.interface';
 import { IPostTag } from './post-tag.interface';
 import { IPostLike } from './post-like.interface';
 
-export interface IPost {
+export interface IPost<C extends {} = {}> {
   id?: string;
   /** Дата создания публикации */
   createdAt: Date;
@@ -18,56 +18,83 @@ export interface IPost {
   ownerId?: string;
   /** id публикации с которого сделали репост */
   ownerPostId?: string;
+  /** Публикация является репостом */
+  reposted?: boolean;
   /** Комментарии к посту */
   comments?: IPostComment[];
   /** Теги к посту */
   tags?: IPostTag[];
   /** Лайки к посту */
   likes?: IPostLike[];
-  /** Заголовок публикации */
-  title?: string;
   /** Тип публикации */
   postType: `${PostType}`;
   /** Состояние публикации */
   postStatus: `${PostStatus}`;
+  /** Контент публикации */
+  payload?: C;
 }
 
-export interface IVideoPost extends IPost {
-  postType: PostType.Video;
+export interface IVideoPayload {
+  /** Тип */
+  type: PostType.Video;
   /** Название публикации */
-  video_title: string;
+  title: string;
   /** Ссылка на видео */
-  video_url: string;
+  url: string;
 }
 
-export interface ITextPost extends IPost {
-  postType: PostType.Text;
+export interface IVideoPost extends IPost<IVideoPayload> {
+  postType: PostType.Video;
+}
+
+export interface ITextPayload {
+  /** Тип */
+  type: PostType.Text;
   /** Название публикации */
-  text_title: string;
+  title: string;
   /** Анонс публикации */
-  text_preview: string;
+  preview: string;
   /** Текст публикации */
-  text_content: string;
+  content: string;
 }
 
-export interface IQuotePost extends IPost {
-  postType: PostType.Quote;
+export interface ITextPost extends IPost<ITextPayload> {
+  postType: PostType.Text;
+}
+
+export interface IQuotePayload {
+  /** Тип */
+  type: PostType.Quote;
   /** Текст цитаты */
-  quote_content: string;
+  content: string;
   /** Автор цитаты */
-  quote_author: string;
+  author: string;
 }
 
-export interface IPhotoPost extends IPost {
-  postType: PostType.Photo;
+export interface IQuotePost extends IPost<IQuotePayload> {
+  postType: PostType.Quote;
+}
+
+export interface IPhotoPayload {
+  /** Тип */
+  type: PostType.Photo;
   /** Фотография */
-  photo_url: string;
+  url: string;
 }
 
-export interface ILinkPost extends IPost {
-  postType: PostType.Link;
+export interface IPhotoPost extends IPost<IPhotoPayload> {
+  postType: PostType.Photo;
+}
+
+export interface ILinkPayload {
+  /** Тип */
+  type: PostType.Link;
   /** Ссылка */
-  link_url: string;
+  url: string;
   /** Описание */
-  link_desc: string;
+  desc: string;
+}
+
+export interface ILinkPost extends IPost<ILinkPayload> {
+  postType: PostType.Link;
 }

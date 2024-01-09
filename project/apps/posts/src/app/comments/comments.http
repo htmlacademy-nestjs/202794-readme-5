@@ -1,0 +1,6 @@
+###
+# Вернуть список комментраев
+GET http://localhost:3001/api/comments HTTP/1.1
+
+###
+GET http://localhost:3001/api/posts/6d308040-96a2-4162-bea6-2338e9976540/comments/7f198295-9a78-4e8a-a15b-96fd0259cc93 HTTP/1.1
