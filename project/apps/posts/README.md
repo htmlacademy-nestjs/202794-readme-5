@@ -16,8 +16,8 @@
   - валидация prisma schema: ```npx nx run posts:db:lint```
   - cбросить prisma миграцию: ```npx nx run posts:db:reset```
   - применить prisma миграцию: ```npx nx run posts:db:migrate -- --name "Create Posts tables"```
-  - наполнить данными: ```npx nx run posts:db:seed```
   - сгенерировать prisma клиент: ```npx nx run posts:db:generate```
+  - наполнить данными: ```npx nx run posts:db:seed```
 
 4. Из директории `project` установить зависимости и запустить приложение:
 

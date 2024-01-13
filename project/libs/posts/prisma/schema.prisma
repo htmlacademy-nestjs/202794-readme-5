@@ -11,24 +11,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Author {
+  id              String    @id @unique @db.Char(24)
+  createdAt       DateTime  @default(now()) @map("created_at")
+  ownersPosts     Post[]    @relation("PostOwner")
+  authorsPosts    Post[]    @relation("PostAuthor")
+  authorsComments Comment[] @relation("CommentAuthor")
+  authorsLikes    Like[]    @relation("LikeAuthor")
+
+  @@map("authors")
+}
+
 model Post {
-  id          String     @id @default(uuid())
+  id          String     @id @default(uuid()) @db.Uuid
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
-  publishAt   DateTime?  @map("publish_at")
-  authorId    String     @map("author_id")
-  ownerId     String?    @map("owner_id")
-  ownerPostId String?
-  ownerPost   Post?      @relation("OwnerPost", fields: [ownerPostId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  publishAt   DateTime   @default(now()) @map("publish_at")
+  authorId    String     @map("author_id") @db.Char(24)
+  author      Author     @relation("PostAuthor", fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ownerId     String?    @map("owner_id") @db.Char(24)
+  owner       Author?    @relation("PostOwner", fields: [ownerId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  ownerPostId String?    @map("owner_post_id") @db.Uuid
+  ownerPost   Post?      @relation("OwnerPost", fields: [ownerPostId], references: [id], onDelete: SetNull, onUpdate: SetNull)
   ownerPosts  Post[]     @relation("OwnerPost")
+  reposted    Boolean?   @default(false)
   postType    PostType   @default(TEXT)
-  postStatus  PostStatus @default(DRAFT)
-  comments    Comment[]
-  tags        Tag[]
-  likes       Like[]
-  title       String?
+  postStatus  PostStatus @default(PUBLISHED)
+  payload     Json
+  comments    Comment[]  @relation("PostComments")
+  tags        Tag[]      @relation("PostTags")
+  likes       Like[]     @relation("PostLikes")
 
-  @@index([title])
   @@map("posts")
 }
 
@@ -46,36 +59,38 @@ enum PostStatus {
 }
 
 model Comment {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  ownerId   String   @map("owner_id")
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  postId    String   @map("post_id")
-  message   String
+  authorId  String   @map("author_id") @db.Char(24)
+  author    Author   @relation("CommentAuthor", fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId    String   @map("post_id") @db.Uuid
+  post      Post     @relation("PostComments", fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  message   String   @db.VarChar()
 
   @@index([message])
   @@map("comments")
 }
 
 model Tag {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  text      String
-  posts     Post[]
+  text      String   @unique @db.VarChar(100)
+  posts     Post[]   @relation("PostTags")
 
   @@index([text])
   @@map("tags")
 }
 
 model Like {
-  ownerId   String   @map("owner_id")
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id])
+  authorId  String   @map("author_id") @db.Char(24)
+  author    Author   @relation("LikeAuthor", fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId    String   @map("post_id") @db.Uuid
+  post      Post     @relation("PostLikes", fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@id([postId, ownerId])
+  @@id([authorId, postId])
   @@map("likes")
 }
