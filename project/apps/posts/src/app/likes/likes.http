@@ -1,0 +1,41 @@
+###
+# Вернуть список лайков к публикациям
+GET http://localhost:3001/api/likes HTTP/1.1
+
+###
+# Вернуть список лайков к публикациям по автору лайка
+GET http://localhost:3001/api/likes?authorId=6593d612e421b6051f1dd9c5 HTTP/1.1
+
+###
+# Вернуть список лайков к публикации
+GET http://localhost:3001/api/likes?postId=cecab48e-a952-11ee-817e-0242ac130002 HTTP/1.1
+
+###
+# Создать лайк к публикации
+POST http://localhost:3001/api/likes HTTP/1.1
+Content-Type: application/json
+
+{
+  "authorId": "6593d612e421b6051f1dd9c5",
+  "postId": "ab04593b-da99-4fe3-8b4b-e06d82e2efdd"
+}
+
+###
+# Создать лайк к публикации которая находится в черновике
+POST http://localhost:3001/api/likes HTTP/1.1
+Content-Type: application/json
+
+{
+  "authorId": "6593d612e421b6051f1dd9c5",
+  "postId": "dd569784-de58-41e4-a4ba-92f7d497c5ea"
+}
+
+###
+# Удалить лайк к публикации
+DELETE http://localhost:3001/api/likes HTTP/1.1
+Content-Type: application/json
+
+{
+  "authorId": "6593d612e421b6051f1dd9c5",
+  "postId": "ab04593b-da99-4fe3-8b4b-e06d82e2efdd"
+}

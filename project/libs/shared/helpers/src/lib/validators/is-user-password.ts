@@ -1,5 +1,5 @@
-import { applyDecorators } from "@nestjs/common";
 import { MaxLength, MinLength, IsNotEmpty } from 'class-validator';
+import { applyDecorators } from '@nestjs/common';
 
 export const MAX_PASSWORD_LENGTH = 12;
 export const MIN_PASSWORD_LENGTH = 6;

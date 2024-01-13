@@ -13,7 +13,6 @@ async function bootstrap() {
 
   app.setGlobalPrefix(GLOBAL_PREFIX);
   app.useGlobalPipes(new ValidationPipe({
-    transform: true,
     whitelist: true,
   }));
 

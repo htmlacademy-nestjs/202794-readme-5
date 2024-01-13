@@ -1,5 +1,5 @@
-import { applyDecorators } from "@nestjs/common";
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import { applyDecorators } from '@nestjs/common';
 
 export const EMAIL_IS_INVALID_MESSAGE = 'The email is not valid';
 

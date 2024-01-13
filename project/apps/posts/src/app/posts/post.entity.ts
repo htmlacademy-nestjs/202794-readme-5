@@ -1,4 +1,4 @@
-import type { IPost, IPostComment, PostStatus, PostType } from '@project/libs/shared/types'
+import type { IPost, IPostComment, PostPayload, PostTypes, PostStatuses } from '@project/libs/shared/types'
 import { IPostLike } from 'libs/shared/types/src/lib/post-like.interface';
 import { IPostTag } from 'libs/shared/types/src/lib/post-tag.interface';
 
@@ -13,7 +13,7 @@ export class Post implements IPost {
   public comments?: IPostComment[];
   public tags?: IPostTag[];
   public likes?: IPostLike[];
-  public title?: string;
-  public postType: `${PostType}`;
-  public postStatus: `${PostStatus}`;
+  public postType: PostTypes;
+  public postStatus: PostStatuses;
+  public payload: PostPayload;
 }
