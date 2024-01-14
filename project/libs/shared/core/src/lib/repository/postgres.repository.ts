@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientService } from '@project/libs/shared/prisma';
+import { IPagination } from '@project/libs/shared/types';
 import { IEntity, EntityId } from './entity.interface';
 import { IRepository } from './repository.interface';
 
@@ -12,7 +13,7 @@ export abstract class PostgresRepository<
     protected readonly client: PrismaClientService,
   ) {}
 
-  public async findAll(): Promise<TEntity[]> {
+  public async findAll(): Promise<IPagination<TEntity>> {
     throw new Error('Method not implemented.');
   }
 

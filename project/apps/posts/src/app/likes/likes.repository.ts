@@ -1,19 +1,20 @@
 import { PostgresRepository } from '@project/libs/shared/core';
-import { PostStatus } from '@project/libs/shared/types';
+import { IPagination, PostStatus } from '@project/libs/shared/types';
 import { CreateLikeDto } from './likes.dto/create-like.dto';
-import { ILikesFilters } from './likes.filters';
+import { ILikesFilters, getLikesFilters } from './likes.filters';
 import { Like, LikeId } from './like.entity';
 import { NotFoundException } from '@nestjs/common';
 import { LikesErrorMessage } from './likes.const';
 
 export class LikesRepository extends PostgresRepository<Like, LikeId> {
-  public async findAll(filters?: ILikesFilters): Promise<Like[]> {
-    return this.client.like.findMany({
-      where: {
-        authorId: filters?.authorId,
-        postId: filters?.postId,
-      },
-    });
+  public async findAll(filters?: ILikesFilters): Promise<IPagination<Like>> {
+    const { where } = getLikesFilters(filters);
+    const [items, count] = await this.client.$transaction([
+      this.client.like.findMany({ where }),
+      this.client.like.count({ where }),
+    ]);
+
+    return { count, items };
   }
 
   public async findOne(id: LikeId): Promise<Like> {

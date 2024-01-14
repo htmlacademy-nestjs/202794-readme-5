@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './comments.dto/create-comment.dto';
 import { UpdateCommentDto } from './comments.dto/update-comment.dto';
-import { CommentTransformInterceptor, CommentNotFoundInterceptor } from './comments.interceptors';
+import { CommentTransformInterceptor, CommentNotFoundInterceptor, CommentsTransformInterceptor } from './comments.interceptors';
 import { CommentsApiDesc } from './comments.const';
 import { LimitValidationPipe, MongoIdValidationPipe, OffsetValidationPipe, UUIDValidationPipe } from '@project/libs/shared/helpers';
 
@@ -19,15 +19,16 @@ export class CommentsController {
     description: CommentsApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(CommentTransformInterceptor)
+  @UseInterceptors(CommentsTransformInterceptor)
   public async findAll(
+    @Query('page', OffsetValidationPipe) page?: number,
     @Query('offset', OffsetValidationPipe) offset?: number,
     @Query('limit', LimitValidationPipe) limit?: number,
     @Query('postId', UUIDValidationPipe) postId?: string,
     @Query('authorId', MongoIdValidationPipe) authorId?: string,
   ) {
     return this.commentsService.findAll({
-      offset, limit, postId, authorId,
+      page, offset, limit, postId, authorId,
     });
   }
 

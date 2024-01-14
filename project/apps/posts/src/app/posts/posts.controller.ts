@@ -5,7 +5,7 @@ import { PostStatus, PostType, PostsOrder } from '@project/libs/shared/types';
 import { CreatePostDto } from './posts.dto/create-post.dto';
 import { UpdatePostDto } from './posts.dto/update-post.dto';
 import { RepostPostDto } from './posts.dto/repost-post.dto';
-import { PostTransformInterceptor, PostNotFoundInterceptor, DetailedPostTransformInterceptor } from './posts.interceptors';
+import { PostTransformInterceptor, PostNotFoundInterceptor, DetailedPostTransformInterceptor, PostsTransformInterceptor } from './posts.interceptors';
 import { PostsService } from './posts.service';
 import { PostsApiDesc } from './posts.const';
 
@@ -21,8 +21,9 @@ export class PostsController {
     description: PostsApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(PostTransformInterceptor)
+  @UseInterceptors(PostsTransformInterceptor)
   public async findAll(
+    @Query('page', OffsetValidationPipe) page?: number,
     @Query('offset', OffsetValidationPipe) offset?: number,
     @Query('limit', LimitValidationPipe) limit?: number,
     @Query('authorId', MongoIdValidationPipe) authorId?: string,
@@ -32,7 +33,7 @@ export class PostsController {
     @Query('order', PostsOrderValidationPipe) order?: PostsOrder,
   ) {
     return this.postsService.findAll({
-      offset, limit, authorId, type, tags, status, order,
+      page, offset, limit, authorId, type, tags, status, order,
     });
   }
 

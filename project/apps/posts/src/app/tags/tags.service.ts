@@ -20,7 +20,7 @@ export class TagsService {
 
   public async create(dto: CreateTagDto) {
     const text = dto.text.toLowerCase();
-    const [tag] = await this.findAll({ text });
+    const { items: [tag]} = await this.findAll({ text });
 
     if (tag) {
       return tag;

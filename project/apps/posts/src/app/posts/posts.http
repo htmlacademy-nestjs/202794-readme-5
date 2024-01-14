@@ -7,6 +7,10 @@ GET http://localhost:3001/api/posts HTTP/1.1
 GET http://localhost:3001/api/posts?offset=1&limit=2 HTTP/1.1
 
 ###
+# Вернуть список из 2 публикаций начиная с 1 страницы
+GET http://localhost:3001/api/posts?page=1&limit=2 HTTP/1.1
+
+###
 # Вернуть последнюю публикацию указанного пользователя
 GET http://localhost:3001/api/posts?authorId=6593d28de421b6051f1dd9c2&limit=1 HTTP/1.1
 

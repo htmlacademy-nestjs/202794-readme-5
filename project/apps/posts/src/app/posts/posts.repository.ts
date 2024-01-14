@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { IPagination } from '@project/libs/shared/types';
 import { PostgresRepository } from '@project/libs/shared/core';
 import { IPostsFilters, getPostsFilters } from './posts.filters';
 import { CreatePostDto } from './posts.dto/create-post.dto';
@@ -7,14 +8,28 @@ import { RepostPostDto } from './posts.dto/repost-post.dto';
 import { Post } from './post.entity';
 
 export class PostsRepository extends PostgresRepository<Post> {
-  public async findAll(filters?: IPostsFilters): Promise<Post[]> {
+  public async findAll(filters?: IPostsFilters): Promise<IPagination<Post>> {
     const { take, skip, where, orderBy } = getPostsFilters(filters);
     const _count = { select: { comments: true, likes: true } };
 
-    return this.client.post.findMany({
-      include: { _count, tags: true },
-      take, skip, where, orderBy,
-    });
+    const [items, count] = await this.client.$transaction([
+      this.client.post.findMany({
+        include: { _count, tags: true },
+        take, skip, where, orderBy,
+      }),
+      this.client.post.count({
+        where, orderBy,
+      }),
+    ]);
+
+    return {
+      count: count,
+      items: items,
+      limit: filters?.limit,
+      offset: filters?.offset,
+      page: filters?.page,
+      pages: Math.ceil(count / take),
+    };
   }
 
   public async findOne(id: string): Promise<Post> {

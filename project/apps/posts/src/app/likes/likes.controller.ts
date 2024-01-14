@@ -5,7 +5,7 @@ import { LikesService } from './likes.service';
 import { CreateLikeDto } from './likes.dto/create-like.dto';
 import { RemoveLikeDto } from './likes.dto/remove-like.dto';
 import { LikesApiDesc } from './likes.const';
-import { LikeNotFoundInterceptor, LikeTransformInterceptor } from './likes.interceptors';
+import { LikeNotFoundInterceptor, LikeTransformInterceptor, LikesTransformInterceptor } from './likes.interceptors';
 
 @ApiTags('Likes')
 @Controller('likes')
@@ -19,7 +19,7 @@ export class LikesController {
     description: LikesApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(LikeTransformInterceptor)
+  @UseInterceptors(LikesTransformInterceptor)
   public async findAll(
     @Query('postId', UUIDValidationPipe) postId: string,
     @Query('authorId', MongoIdValidationPipe) authorId: string,

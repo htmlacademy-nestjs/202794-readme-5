@@ -7,6 +7,10 @@ GET http://localhost:3001/api/comments HTTP/1.1
 GET http://localhost:3001/api/comments?offset=1&limit=5 HTTP/1.1
 
 ###
+# Вернуть 1 странцу комментариев по 3 комментария на страницу
+GET http://localhost:3001/api/comments?page=4&limit=3 HTTP/1.1
+
+###
 # Вернуть список комментариев для публикации
 GET http://localhost:3001/api/comments?postId=cecab48e-a952-11ee-817e-0242ac130002 HTTP/1.1
 

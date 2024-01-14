@@ -1,6 +1,7 @@
 export * from './lib/auth-user.interface';
 export * from './lib/author.interface';
 export * from './lib/json-object';
+export * from './lib/pagination.interface';
 export * from './lib/post-comment.interface';
 export * from './lib/post-like.interface';
 export * from './lib/post-status.enum';

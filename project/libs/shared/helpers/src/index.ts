@@ -1,4 +1,5 @@
 export * from './lib/interceptors/not-found.interceptor';
+export * from './lib/interceptors/transform-pagination.interceptor';
 export * from './lib/interceptors/transform.interceptor';
 export * from './lib/pipes/limit-validation.pipe';
 export * from './lib/pipes/mongo-id-validation.pipe';

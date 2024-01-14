@@ -1,4 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
+import { IPagination } from '@project/libs/shared/types';
 import { PostgresRepository } from '@project/libs/shared/core';
 import { ICommentsFilters, getCommentsFilters } from './comments.filters';
 import { CreateCommentDto } from './comments.dto/create-comment.dto';
@@ -7,12 +8,24 @@ import { CommentsErrorMessage } from './comments.const';
 import { Comment } from './comment.entity';
 
 export class CommentsRepository extends PostgresRepository<Comment> {
-  public async findAll(filters?: ICommentsFilters): Promise<Comment[]> {
+  public async findAll(filters?: ICommentsFilters): Promise<IPagination<Comment>> {
     const { take, skip, where, orderBy } = getCommentsFilters(filters);
 
-    return this.client.comment.findMany({
-      take, skip, where, orderBy,
-    });
+    const [items, count] = await this.client.$transaction([
+      this.client.comment.findMany({
+        take, skip, where, orderBy,
+      }),
+      this.client.comment.count({ where }),
+    ]);
+
+    return {
+      count: count,
+      items: items,
+      limit: filters?.limit,
+      offset: filters?.offset,
+      page: filters?.page,
+      pages: Math.ceil(count / take),
+    };
   }
 
   public async findOne(id: string): Promise<Comment> {

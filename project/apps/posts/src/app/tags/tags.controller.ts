@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './tags.dto/create-tag.dto';
 import { RemoveTagDto } from './tags.dto/remove-tag.dto';
-import { TagNotFoundInterceptor, TagTransformInterceptor } from './tags.interceptors';
+import { TagNotFoundInterceptor, TagTransformInterceptor, TagsTransformInterceptor } from './tags.interceptors';
 import { TagsApiDesc } from './tags.const';
 import { UUIDValidationPipe } from '@project/libs/shared/helpers';
 
@@ -19,7 +19,7 @@ export class TagsController {
     description: TagsApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(TagTransformInterceptor)
+  @UseInterceptors(TagsTransformInterceptor)
   public async findAll(@Query('text') text?: string) {
     return this.tagsService.findAll({ text });
   }

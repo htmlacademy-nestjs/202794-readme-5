@@ -2,7 +2,7 @@ import { Controller, Get, Param, Delete, HttpStatus, UseInterceptors } from '@ne
 import { ApiResponse } from '@nestjs/swagger';
 import { AuthorsService } from './authors.service';
 import { AuthorsApiDesc } from './authors.const';
-import { AuthorTransformInterceptor, AuthorNotFoundInterceptor } from './authors.interceptors';
+import { AuthorTransformInterceptor, AuthorNotFoundInterceptor, AuthorsTransformInterceptor } from './authors.interceptors';
 
 @Controller('authors')
 export class AuthorsController {
@@ -13,7 +13,7 @@ export class AuthorsController {
     description: AuthorsApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(AuthorTransformInterceptor)
+  @UseInterceptors(AuthorsTransformInterceptor)
   public async findAll() {
     return this.authorsService.findAll();
   }

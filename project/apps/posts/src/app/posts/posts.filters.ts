@@ -1,9 +1,11 @@
 import { Prisma } from '@prisma/client';
-import { isMongoId } from 'class-validator';
+import { isMongoId, isNotEmptyObject } from 'class-validator';
 import { PostStatus, PostType, PostsOrder, isPostStatus, isPostType, isPostsOrder } from '@project/libs/shared/types';
 
 export interface IPostsFilters {
-  /** Начиная с какого элемента возвращать публикации */
+  /** Начиная с какой страницы возвращать публикации */
+  page?: number;
+  /** Начиная с какого элемента возвращать публикации (если не задан `page`) */
   offset?: number;
   /** Количество возвращаемых публикаций */
   limit?: number;
@@ -31,9 +33,9 @@ export function getPostsFilters(filters?: IPostsFilters) {
   let where: Prisma.PostWhereInput = { postStatus: PostStatus.Published };
   let orderBy: Prisma.PostOrderByWithRelationInput = { publishAt: 'desc' };
 
-  if (typeof filters === 'object') {
+  if (isNotEmptyObject(filters)) {
     if (filters.limit > 0) {
-      take = filters.limit;
+      take = Math.min(filters.limit, MAX_POSTS_LIMIT);
     }
     if (filters.offset > 0) {
       skip = filters.offset;

@@ -1,8 +1,10 @@
-import { isUUID, isMongoId } from 'class-validator';
+import { isNotEmptyObject, isUUID, isMongoId } from 'class-validator';
 import { Prisma } from '@prisma/client';
 
 export interface ICommentsFilters {
-  /** Начиная с какого элемента возвращать комментарий */
+  /** Начиная с какой страницы возвращать комментарий */
+  page?: number;
+  /** Начиная с какого элемента возвращать комментарий (если не задан `page`) */
   offset?: number;
   /** Количество возвращаемых комментариев */
   limit?: number;
@@ -20,12 +22,15 @@ export function getCommentsFilters(filters?: ICommentsFilters) {
   let where: Prisma.CommentWhereInput = {};
   let orderBy: Prisma.CommentOrderByWithRelationInput = { createdAt: 'desc' };
 
-  if (typeof filters === 'object') {
+  if (isNotEmptyObject(filters)) {
     if (filters.limit > 0) {
-      take = filters.limit;
+      take = Math.min(filters.limit, MAX_COMMENTS_LIMIT);
     }
     if (filters.offset > 0) {
       skip = filters.offset;
+    }
+    if (filters.page > 0) {
+      skip = (filters.page - 1) * take;
     }
     if (isUUID(filters.postId)) {
       where.postId = filters.postId;

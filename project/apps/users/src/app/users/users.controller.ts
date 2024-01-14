@@ -32,8 +32,8 @@ export class UsersController {
   @Get()
   public async findAll() {
     const users = await this.usersService.findAll();
-    const count = users.length;
-    return { count, items: transform(UserRdo, users) };
+    const count = users.count;
+    return { count, items: transform(UserRdo, users.items) };
   }
 
   @ApiResponse({
