@@ -1,7 +1,9 @@
 ###
+# Получить список всех пользователей
 GET http://localhost:3333/api/users HTTP/1.1
 
 ###
+# Создать пользователя
 POST http://localhost:3333/api/users HTTP/1.1
 Content-Type: application/json
 
@@ -16,19 +18,23 @@ Content-Type: application/json
 }
 
 ###
+# Вернуть данные пользователя
 GET http://localhost:3333/api/users/6586f5d2178712d97016e877 HTTP/1.1
 
 ###
+# Обновить данные пользователя
 PATCH http://localhost:3333/api/users/6586f5d2178712d97016e877 HTTP/1.1
 Content-Type: application/json
 
 {
-  "firstname": "Kot Mr Keks",
-  "avatar": "avatar.jpg"
+  "firstname": "Kot",
+  "lastname": "Leopold"
 }
 
 ###
+# Удалить пользователя
 DELETE http://localhost:3333/api/users/6586f5d2178712d97016e877 HTTP/1.1
 
 ###
+# Удалить всех пользователей
 DELETE http://localhost:3333/api/users HTTP/1.1

@@ -1,65 +1,79 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Query, UseInterceptors } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { transform } from '@project/libs/shared/helpers';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './comments.dto/create-comment.dto';
 import { UpdateCommentDto } from './comments.dto/update-comment.dto';
-import { CommentRdo } from './comments.rdo/comment.rdo';
+import { CommentTransformInterceptor, CommentNotFoundInterceptor, CommentsTransformInterceptor } from './comments.interceptors';
+import { CommentsApiDesc } from './comments.const';
+import { LimitValidationPipe, MongoIdValidationPipe, OffsetValidationPipe, UUIDValidationPipe } from '@project/libs/shared/helpers';
 
 @ApiTags('Comments')
 @Controller('comments')
 export class CommentsController {
-  constructor(private readonly commentsService: CommentsService) {}
+  constructor(
+    private readonly commentsService: CommentsService
+  ) {}
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: CommentsApiDesc.GetAll,
+  })
+  @Get()
+  @UseInterceptors(CommentsTransformInterceptor)
+  public async findAll(
+    @Query('page', OffsetValidationPipe) page?: number,
+    @Query('offset', OffsetValidationPipe) offset?: number,
+    @Query('limit', LimitValidationPipe) limit?: number,
+    @Query('postId', UUIDValidationPipe) postId?: string,
+    @Query('authorId', MongoIdValidationPipe) authorId?: string,
+  ) {
+    return this.commentsService.findAll({
+      page, offset, limit, postId, authorId,
+    });
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: CommentsApiDesc.GetOne,
+  })
+  @Get(':id')
+  @UseInterceptors(CommentTransformInterceptor, CommentNotFoundInterceptor)
+  public async findOne(@Param('id', UUIDValidationPipe) id: string) {
+    return this.commentsService.findOne(id);
+  }
 
   @ApiResponse({
     type: CreateCommentDto,
     status: HttpStatus.OK,
-    description: 'Создать комментарий',
+    description: CommentsApiDesc.Create,
   })
   @Post()
+  @UseInterceptors(CommentTransformInterceptor)
   public async create(@Body() dto: CreateCommentDto) {
-    const comment = await this.commentsService.create(dto);
-    return transform(CommentRdo, comment);
-  }
-
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Вернуть список комментариев',
-  })
-  @Get()
-  public async findAll() {
-    const comments = await this.commentsService.findAll();
-    return { comments: transform(CommentRdo, comments) };
-  }
-
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Вернуть комментарий',
-  })
-  @Get(':id')
-  public async findOne(@Param('id') id: string) {
-    const comment = await this.commentsService.findOne(id);
-    return transform(CommentRdo, comment);
+    return this.commentsService.create(dto);
   }
 
   @ApiResponse({
     type: UpdateCommentDto,
     status: HttpStatus.OK,
-    description: 'Обновить данные комментария',
+    description: CommentsApiDesc.Update,
   })
   @Patch(':id')
-  public async update(@Param('id') id: string, @Body() dto: UpdateCommentDto) {
-    const comment = await this.commentsService.update(id, dto);
-    return transform(CommentRdo, comment);
+  @UseInterceptors(CommentTransformInterceptor, CommentNotFoundInterceptor)
+  public async update(
+    @Param('id', UUIDValidationPipe) id: string,
+    @Body() dto: UpdateCommentDto,
+  ) {
+    return this.commentsService.update(id, dto);
   }
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Удалить комментарий',
+    description: CommentsApiDesc.Remove,
   })
   @Delete(':id')
-  public async remove(@Param('id') id: string) {
-    const comment = await this.commentsService.remove(id);
-    return transform(CommentRdo, comment);
+  @UseInterceptors(CommentTransformInterceptor, CommentNotFoundInterceptor)
+  public async remove(@Param('id', UUIDValidationPipe) id: string) {
+    return this.commentsService.remove(id);
   }
 }

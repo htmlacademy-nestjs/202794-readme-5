@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { transform } from '@project/libs/shared/helpers';
+import { MongoIdValidationPipe, transform } from '@project/libs/shared/helpers';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './users.dto/create-user.dto';
 import { UpdateUserDto } from './users.dto/update-user.dto';
@@ -32,7 +32,8 @@ export class UsersController {
   @Get()
   public async findAll() {
     const users = await this.usersService.findAll();
-    return { items: transform(UserRdo, users) };
+    const count = users.count;
+    return { count, items: transform(UserRdo, users.items) };
   }
 
   @ApiResponse({
@@ -40,7 +41,9 @@ export class UsersController {
     description: UsersApiDesc.GetOne,
   })
   @Get(':id')
-  public async findOne(@Param('id') id: string) {
+  public async findOne(
+    @Param('id', MongoIdValidationPipe) id: string,
+  ) {
     const user = await this.usersService.findOne(id);
     return transform(UserRdo, user);
   }
@@ -51,7 +54,10 @@ export class UsersController {
     description: UsersApiDesc.Update,
   })
   @Patch(':id')
-  public async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+  public async update(
+    @Param('id', MongoIdValidationPipe) id: string,
+    @Body() dto: UpdateUserDto,
+  ) {
     const user = await this.usersService.update(id, dto);
     return transform(UserRdo, user);
   }
@@ -61,7 +67,9 @@ export class UsersController {
     description: UsersApiDesc.Remove,
   })
   @Delete(':id')
-  public async remove(@Param('id') id: string) {
+  public async remove(
+    @Param('id', MongoIdValidationPipe) id: string,
+  ) {
     const user = await this.usersService.remove(id);
     return transform(UserRdo, user);
   }

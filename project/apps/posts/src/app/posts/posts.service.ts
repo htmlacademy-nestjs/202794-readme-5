@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { IPost, PostStatus } from '@project/libs/shared/types';
-import { CreatePostDto } from './posts.dto/create-post.dto';
+import { Injectable } from '@nestjs/common';
 import { UpdatePostDto } from './posts.dto/update-post.dto';
+import { CreatePostDto } from './posts.dto/create-post.dto';
+import { RepostPostDto } from './posts.dto/repost-post.dto';
 import { PostsRepository } from './posts.repository';
-import { PostsErrorMessage } from './posts.const';
+import { IPostsFilters } from './posts.filters';
 
 @Injectable()
 export class PostsService {
@@ -11,37 +11,27 @@ export class PostsService {
     private readonly postsRepository: PostsRepository
   ) {}
 
-  protected async findOneOrThrow(id: string) {
-    const post = await this.postsRepository.findOne(id);
-    if (!post) throw new NotFoundException(PostsErrorMessage.PostIdNotFound);
-    return post;
-  }
-
-  public async create(dto: CreatePostDto) {
-    const post: Partial<IPost> = {
-      postType: dto.postType,
-      postStatus: PostStatus.Draft,
-      authorId: dto.authorId,
-      title: dto.title,
-    };
-    return this.postsRepository.create(post);
-  }
-
-  public async findAll() {
-    return this.postsRepository.findAll();
+  public async findAll(filter: IPostsFilters) {
+    return this.postsRepository.findAll(filter);
   }
 
   public async findOne(id: string) {
-    return this.findOneOrThrow(id);
+    return this.postsRepository.findOne(id);
+  }
+
+  public async create(dto: CreatePostDto) {
+    return this.postsRepository.create(dto);
+  }
+
+  public async repost(dto: RepostPostDto) {
+    return this.postsRepository.repost(dto);
   }
 
   public async update(id: string, dto: UpdatePostDto) {
-    await this.findOneOrThrow(id);
     return this.postsRepository.update(id, dto);
   }
 
   public async remove(id: string) {
-    await this.findOneOrThrow(id);
     return this.postsRepository.remove(id);
   }
 }

@@ -1,8 +1,10 @@
-import { PostStatus } from './post-status.enum';
-import { PostType } from './post-type.enum';
+import { Prisma } from '@prisma/client';
+import { PostStatuses } from './post-status.enum';
+import { PostTypes } from './post-type.enum';
 import { IPostComment } from './post-comment.interface';
 import { IPostTag } from './post-tag.interface';
 import { IPostLike } from './post-like.interface';
+import { JsonObject, JsonValue } from './json-object';
 
 export interface IPost {
   id?: string;
@@ -18,56 +20,55 @@ export interface IPost {
   ownerId?: string;
   /** id публикации с которого сделали репост */
   ownerPostId?: string;
+  /** Публикация является репостом */
+  reposted?: boolean;
   /** Комментарии к посту */
   comments?: IPostComment[];
   /** Теги к посту */
   tags?: IPostTag[];
   /** Лайки к посту */
   likes?: IPostLike[];
-  /** Заголовок публикации */
-  title?: string;
   /** Тип публикации */
-  postType: `${PostType}`;
+  postType: PostTypes;
   /** Состояние публикации */
-  postStatus: `${PostStatus}`;
+  postStatus: PostStatuses;
+  /** Контент публикации */
+  payload?: PostPayload;
 }
 
-export interface IVideoPost extends IPost {
-  postType: PostType.Video;
+export interface IVideoPayload {
   /** Название публикации */
-  video_title: string;
+  title: string;
   /** Ссылка на видео */
-  video_url: string;
+  url: string;
 }
 
-export interface ITextPost extends IPost {
-  postType: PostType.Text;
+export interface ITextPayload {
   /** Название публикации */
-  text_title: string;
+  title: string;
   /** Анонс публикации */
-  text_preview: string;
+  preview: string;
   /** Текст публикации */
-  text_content: string;
+  content: string;
 }
 
-export interface IQuotePost extends IPost {
-  postType: PostType.Quote;
+export interface IQuotePayload {
   /** Текст цитаты */
-  quote_content: string;
+  content: string;
   /** Автор цитаты */
-  quote_author: string;
+  author: string;
 }
 
-export interface IPhotoPost extends IPost {
-  postType: PostType.Photo;
+export interface IPhotoPayload {
   /** Фотография */
-  photo_url: string;
+  url: string;
 }
 
-export interface ILinkPost extends IPost {
-  postType: PostType.Link;
+export interface ILinkPayload {
   /** Ссылка */
-  link_url: string;
+  url: string;
   /** Описание */
-  link_desc: string;
+  desc?: string;
 }
+
+export type PostPayload = unknown;

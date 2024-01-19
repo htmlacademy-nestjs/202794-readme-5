@@ -1,29 +1,30 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 import { IPostComment } from '@project/libs/shared/types';
+import { CommentsPropDesc } from '../comments.const';
 
-export class CommentRdo implements IPostComment {
-  @ApiProperty({ description: 'Индентификатор комментария' })
+export class CommentRdo implements Partial<IPostComment> {
+  @ApiProperty({ description: CommentsPropDesc.CommentId })
   @Expose()
   public id: string;
 
-  @ApiProperty({ description: 'Дата создания' })
+  @ApiProperty({ description: CommentsPropDesc.CreatedAt })
   @Expose()
   public createdAt: Date;
 
-  @ApiProperty({ description: 'Дата изменения' })
+  @ApiProperty({ description: CommentsPropDesc.UpdatedAt })
   @Expose()
   public updatedAt: Date;
 
-  @ApiProperty({ description: 'Индентификатор автора' })
+  @ApiProperty({ description: CommentsPropDesc.AuthorId })
   @Expose()
-  public ownerId: string;
+  public authorId: string;
 
-  @ApiProperty({ description: 'Индентификатор поста' })
+  @ApiProperty({ description: CommentsPropDesc.PostId })
   @Expose()
   public postId: string;
 
-  @ApiProperty({ description: 'Текст комментария' })
+  @ApiProperty({ description: CommentsPropDesc.Message })
   @Expose()
   public message: string;
 }

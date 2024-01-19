@@ -1,14 +1,13 @@
 /**
- * Like к посту
+ * Лайк к посту
  */
 export interface IPostLike {
-  id?: string;
+  /** id автора лайка */
+  authorId: string;
+  /** id поста */
+  postId: string;
   /** Дата создания */
   createdAt: Date;
   /** Дата изменения */
   updatedAt: Date;
-  /** Автор лайка */
-  ownerId: string;
-  /** id поста */
-  postId: string;
 }

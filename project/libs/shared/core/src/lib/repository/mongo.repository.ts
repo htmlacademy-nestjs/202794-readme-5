@@ -1,12 +1,14 @@
 import { Model } from 'mongoose';
+import { IPagination } from '@project/libs/shared/types';
 import { IEntity } from './entity.interface';
 import { IRepository } from './repository.interface';
 
 export abstract class MongoRepository<T extends IEntity> implements IRepository<T> {
   protected readonly model: Model<T>;
 
-  public async findAll(): Promise<T[]> {
-    return this.model.find().exec();
+  public async findAll(): Promise<IPagination<T>> {
+    const items = await this.model.find().exec();
+    return { count: items.length, items };
   }
 
   public async findOne(id: T['id']): Promise<T> {
