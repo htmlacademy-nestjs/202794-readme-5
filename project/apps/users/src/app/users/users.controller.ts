@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, UseInterceptors } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { MongoIdValidationPipe, transform } from '@project/libs/shared/helpers';
+import { MongoIdValidationPipe } from '@project/libs/shared/helpers';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './users.dto/create-user.dto';
 import { UpdateUserDto } from './users.dto/update-user.dto';
-import { UserRdo } from './users.rdo/user.rdo';
+import { UserNotFound, UserTransform, UsersTransform } from './users.interceptors';
 import { UsersApiDesc } from './users.const';
 
 @ApiTags('Users')
@@ -15,25 +15,13 @@ export class UsersController {
   ) {}
 
   @ApiResponse({
-    type: CreateUserDto,
-    status: HttpStatus.OK,
-    description: UsersApiDesc.Create,
-  })
-  @Post()
-  public async create(@Body() dto: CreateUserDto) {
-    const user = await this.usersService.create(dto);
-    return transform(UserRdo, user);
-  }
-
-  @ApiResponse({
     status: HttpStatus.OK,
     description: UsersApiDesc.GetAll,
   })
   @Get()
+  @UseInterceptors(UsersTransform)
   public async findAll() {
-    const users = await this.usersService.findAll();
-    const count = users.count;
-    return { count, items: transform(UserRdo, users.items) };
+    return this.usersService.findAll();
   }
 
   @ApiResponse({
@@ -41,11 +29,20 @@ export class UsersController {
     description: UsersApiDesc.GetOne,
   })
   @Get(':id')
-  public async findOne(
-    @Param('id', MongoIdValidationPipe) id: string,
-  ) {
-    const user = await this.usersService.findOne(id);
-    return transform(UserRdo, user);
+  @UseInterceptors(UserTransform, UserNotFound)
+  public async findOne(@Param('id', MongoIdValidationPipe) id: string) {
+    return this.usersService.findOne(id);
+  }
+
+  @ApiResponse({
+    type: CreateUserDto,
+    status: HttpStatus.OK,
+    description: UsersApiDesc.Create,
+  })
+  @Post()
+  @UseInterceptors(UserTransform)
+  public async create(@Body() dto: CreateUserDto) {
+    return this.usersService.create(dto);
   }
 
   @ApiResponse({
@@ -54,12 +51,12 @@ export class UsersController {
     description: UsersApiDesc.Update,
   })
   @Patch(':id')
+  @UseInterceptors(UserTransform, UserNotFound)
   public async update(
     @Param('id', MongoIdValidationPipe) id: string,
     @Body() dto: UpdateUserDto,
   ) {
-    const user = await this.usersService.update(id, dto);
-    return transform(UserRdo, user);
+    return this.usersService.update(id, dto);
   }
 
   @ApiResponse({
@@ -67,11 +64,9 @@ export class UsersController {
     description: UsersApiDesc.Remove,
   })
   @Delete(':id')
-  public async remove(
-    @Param('id', MongoIdValidationPipe) id: string,
-  ) {
-    const user = await this.usersService.remove(id);
-    return transform(UserRdo, user);
+  @UseInterceptors(UserTransform, UserNotFound)
+  public async remove(@Param('id', MongoIdValidationPipe) id: string) {
+    return this.usersService.remove(id);
   }
 
   @ApiResponse({
@@ -80,7 +75,6 @@ export class UsersController {
   })
   @Delete()
   public async removeAll() {
-    const count = await this.usersService.removeAll();
-    return { count };
+    return this.usersService.removeAll();
   }
 }

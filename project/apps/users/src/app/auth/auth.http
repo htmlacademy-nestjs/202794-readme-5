@@ -1,5 +1,5 @@
 ###
-# Зарегистрировать пользователя
+# Зарегистрировать нового пользователя
 POST http://localhost:3333/api/auth/singup HTTP/1.1
 Content-Type: application/json
 
@@ -9,6 +9,16 @@ Content-Type: application/json
   "lastname": "keksikovich",
   "password": "password",
   "avatar": "avatar.jpg"
+}
+
+###
+# Авторизовать пользователя
+POST http://localhost:3333/api/auth/singin HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "keks@domain.com",
+  "password": "password"
 }
 
 ###
@@ -22,27 +32,22 @@ Content-Type: application/json
 }
 
 ###
-# Авторизовать пользователя
-POST http://localhost:3333/api/auth/singin HTTP/1.1
-Content-Type: application/json
-
-{
-  "email": "bob@domain.com",
-  "password": "password"
-}
+# Вернуть текущего авторизованного пользователя (в заголовке передаем accessToken)
+GET http://localhost:3333/api/auth/user HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWQ2OTM2MDQwMWEwMTg4YmM0NDJhMiIsImVtYWlsIjoia2Vrc0Bkb21haW4uY29tIiwiaWF0IjoxNzA1ODYzNzU4LCJleHAiOjE3MDU4NjQwNTh9.XwzP1br8E-JP0EnhF0KRsWlH_uk10eFj6RqEngdGV5k
 
 ###
-# Вернуть текущего авторизованного пользователя
-GET http://localhost:3333/api/auth HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTJmMDg5N2FmZjdhM2UzYmM0ZDE3MyIsImVtYWlsIjoiYm9iQGRvbWFpbi5jb20iLCJpYXQiOjE3MDQ0NTM1ODYsImV4cCI6MzQwODgzOTE5OX0.nACfVYt6Chl_hWokkEbkMyY9MKmLxMGDjxbAavfAaGc
+# Вернуть новый токен (в заголовке передаем refreshToken)
+POST http://localhost:3333/api/auth/refresh HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWQ2OTM2MDQwMWEwMTg4YmM0NDJhMiIsImVtYWlsIjoia2Vrc0Bkb21haW4uY29tIiwidG9rZW5JZCI6ImY2MGZlZmE0LWQwY2EtNGExZi05OTExLTc4MzI4YzBlY2UxNSIsImlhdCI6MTcwNTg2MzUwOCwiZXhwIjoxNzA4NDU1NTA4fQ.MWvz4nAcoRuX5Z0RSGlxAbzzCvd7QbTpfNes2UrIQu8
 
 ###
 # Изменить пароль авторизованного пользователя
-PATCH http://localhost:3333/api/auth HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTJmMDg5N2FmZjdhM2UzYmM0ZDE3MyIsImVtYWlsIjoiYm9iQGRvbWFpbi5jb20iLCJpYXQiOjE3MDQ0NTM1ODYsImV4cCI6MzQwODgzOTE5OX0.nACfVYt6Chl_hWokkEbkMyY9MKmLxMGDjxbAavfAaGc
+PATCH http://localhost:3333/api/auth/user HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWQ2OTM2MDQwMWEwMTg4YmM0NDJhMiIsImVtYWlsIjoia2Vrc0Bkb21haW4uY29tIiwiaWF0IjoxNzA1ODY0NDA5LCJleHAiOjE3MDU4NjQ3MDl9.KQ42R4UXmawelbC6vdKKgYa8PfFjwrpWpnXruAlfm6A
 Content-Type: application/json
 
 {
   "password": "password",
-  "passwordNew": "password1"
+  "passwordNew": "password"
 }

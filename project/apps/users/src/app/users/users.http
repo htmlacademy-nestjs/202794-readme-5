@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ###
 # Вернуть данные пользователя
-GET http://localhost:3333/api/users/6586f5d2178712d97016e877 HTTP/1.1
+GET http://localhost:3333/api/users/65a589ee18f4c77f59abd5ee HTTP/1.1
 
 ###
 # Обновить данные пользователя

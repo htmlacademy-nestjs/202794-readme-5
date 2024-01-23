@@ -1,5 +1,6 @@
 export * from './lib/auth-user.interface';
 export * from './lib/author.interface';
+export * from './lib/class-constructor.type';
 export * from './lib/json-object';
 export * from './lib/pagination.interface';
 export * from './lib/post-comment.interface';
@@ -9,5 +10,9 @@ export * from './lib/post-tag.interface';
 export * from './lib/post-type.enum';
 export * from './lib/post.interface';
 export * from './lib/posts-order.enum';
+export * from './lib/rabbit-exchange.enum';
+export * from './lib/rabbit-queue.enum';
+export * from './lib/rabbit-routing.enum';
+export * from './lib/subscriber.interface';
 export * from './lib/token.interface';
 export * from './lib/user.interface';

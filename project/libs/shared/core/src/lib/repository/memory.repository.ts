@@ -33,8 +33,4 @@ export abstract class MemoryRepository<T extends IEntity> implements IRepository
     if (entity) this.entities.delete(id);
     return entity;
   }
-
-  public async contains(id: T['id']): Promise<boolean> {
-    return this.entities.has(id);
-  }
 }

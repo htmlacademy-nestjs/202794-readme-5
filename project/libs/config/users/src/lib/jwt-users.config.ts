@@ -1,11 +1,12 @@
 import * as Joi from 'joi';
 import { registerAs } from '@nestjs/config';
+import { ITokenParams } from '@project/libs/shared/types';
 
 export const JWT_TOKEN = 'jwt' as const;
 
 export interface JwtUsersConfig {
-  secret: string;
-  expires: string;
+  accessToken: ITokenParams;
+  refreshToken: ITokenParams;
 }
 
 export interface JwtUsersConfigPart {
@@ -14,11 +15,23 @@ export interface JwtUsersConfigPart {
 
 export const jwtUsersConfig = registerAs<JwtUsersConfig>(JWT_TOKEN, () => {
   const result = Joi.object<JwtUsersConfig>({
-    secret: Joi.string().required(),
-    expires: Joi.string().required(),
+    accessToken: Joi.object<ITokenParams>({
+      secret: Joi.string().required(),
+      expiresIn: Joi.string().required(),
+    }),
+    refreshToken: Joi.object<ITokenParams>({
+      secret: Joi.string().required(),
+      expiresIn: Joi.string().required(),
+    }),
   }).validate({
-    secret: process.env.JWT_AT_SECRET,
-    expires: process.env.JWT_AT_EXPIRES_IN,
+    accessToken: {
+      secret: process.env.JWT_ACCESS_TOKEN_SECRET,
+      expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
+    },
+    refreshToken: {
+      secret: process.env.JWT_REFRESH_TOKEN_SECRET,
+      expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
+    },
   }, { abortEarly: true });
 
   if (result.error) {

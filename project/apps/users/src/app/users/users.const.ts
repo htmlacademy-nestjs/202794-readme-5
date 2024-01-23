@@ -1,6 +1,6 @@
 export enum UsersErrorMessage {
   UserEmailAlreadyExists = 'User with email address already exists',
-  UserIdNotFound = 'User with id not found',
+  UserNotFound = 'User with id not found',
   UserEmailNotFound = 'User with email not found',
 }
 
@@ -15,9 +15,10 @@ export enum UsersPropDesc {
 }
 
 export enum UsersApiDesc {
-  Create = 'Create user',
   GetAll = 'Return list of users',
   GetOne = 'Return user by id',
-  Remove = 'Delete user by id',
+  Create = 'Create user',
   Update = 'Update user data by id',
+  Remove = 'Delete user by id',
+  RemoveAll = 'Delete all users',
 }
