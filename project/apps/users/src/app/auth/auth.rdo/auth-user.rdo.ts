@@ -12,7 +12,11 @@ export class AuthUserRdo implements Partial<IUser> {
   @Expose()
   public email: string;
 
-  @ApiProperty({ description: AuthPropDesc.Token })
+  @ApiProperty({ description: AuthPropDesc.AccessToken })
   @Expose()
   public accessToken: string;
+
+  @ApiProperty({ description: AuthPropDesc.RefreshToken })
+  @Expose()
+  public refreshToken: string;
 }

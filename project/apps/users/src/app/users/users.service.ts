@@ -30,24 +30,11 @@ export class UsersService {
     return this.usersRepository.findOne(id);
   }
 
-  public async findOneOrThrow(id: string) {
-    const user = await this.findOne(id);
-    if (!user) throw new NotFoundException(UsersErrorMessage.UserIdNotFound);
-    return user;
-  }
-
   public async findByEmail(email: string) {
     return this.usersRepository.findByEmail(email);
   }
 
-  public async findByEmailOrThrow(email: string) {
-    const user = await this.findByEmail(email);
-    if (!user) throw new NotFoundException(UsersErrorMessage.UserEmailNotFound);
-    return user;
-  }
-
   public async update(id: string, dto: UpdateUserDto) {
-    await this.findOneOrThrow(id);
     const { password, ...dtoProps } = dto;
     const data: Partial<User> = dtoProps;
 
@@ -62,7 +49,6 @@ export class UsersService {
   }
 
   public async remove(id: string) {
-    await this.findOneOrThrow(id);
     return this.usersRepository.remove(id);
   }
 }

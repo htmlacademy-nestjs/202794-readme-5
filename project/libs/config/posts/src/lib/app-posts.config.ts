@@ -9,7 +9,12 @@ export const APP_TOKEN = 'app' as const;
 
 export interface AppPostsConfig {
   environment: typeof ENVIRONMENTS;
+  name: string;
   port: number;
+  api: {
+    version: string;
+    prefix: string;
+  };
 }
 
 export interface AppPostsConfigPart {
@@ -19,10 +24,20 @@ export interface AppPostsConfigPart {
 export const appPostsConfig = registerAs<AppPostsConfig>(APP_TOKEN, () => {
   const result = Joi.object<AppPostsConfig>({
     environment: Joi.string().valid(...ENVIRONMENTS).required(),
+    name: Joi.string().required(),
     port: Joi.number().port().default(DEFAULT_PORT),
+    api: Joi.object({
+      version: Joi.string().required(),
+      prefix: Joi.string().required(),
+    }),
   }).validate({
     environment: process.env.NODE_ENV,
-    port: parseInt(process.env.PORT || `${DEFAULT_PORT}`, 10),
+    name: process.env.APP_NAME,
+    port: parseInt(process.env.APP_PORT || `${DEFAULT_PORT}`, 10),
+    api: {
+      version: process.env.APP_API_VERSION,
+      prefix: process.env.APP_API_PREFIX,
+    },
   }, { abortEarly: true });
 
   if (result.error) {

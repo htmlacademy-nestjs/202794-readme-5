@@ -1,34 +1,36 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigUsers } from '@project/libs/config/users';
+import { setupSwaggerSpec } from '@project/libs/shared/helpers';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
-  const API_VERSION = '1.0';
-  const GLOBAL_PREFIX = 'api';
   const app = await NestFactory.create(AppModule);
-  const config = app.get(ConfigService);
-  const port = config.get('app.port');
+  const config = app.get(ConfigService<ConfigUsers>);
+  const name = config.get('app.name', { infer: true });
+  const port = config.get('app.port', { infer: true });
+  const version = config.get('app.api.version', { infer: true });
+  const prefix = config.get('app.api.prefix', { infer: true });
+  const SPEC_PATH = `${prefix}/spec`;
 
-  app.setGlobalPrefix(GLOBAL_PREFIX);
+  app.setGlobalPrefix(prefix);
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
+    validateCustomDecorators: true,
   }));
 
-  const document = SwaggerModule.createDocument(
-    app, new DocumentBuilder()
-      .setTitle('The «Users» service')
-      .setDescription('Users service API')
-      .setVersion(API_VERSION)
-      .build()
-  );
-
-  SwaggerModule.setup(`${GLOBAL_PREFIX}/spec`, app, document);
+  setupSwaggerSpec({
+    app: app,
+    path: SPEC_PATH,
+    version: version,
+    name: name,
+  });
 
   await app.listen(port);
 
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${GLOBAL_PREFIX}`);
+  Logger.log(`🚀 Application [${name}] is running on: http://localhost:${port}/${prefix}`);
+  Logger.log(`📗 Specification [${name}] is running on: http://localhost:${port}/${SPEC_PATH}`);
 }
 
 bootstrap();

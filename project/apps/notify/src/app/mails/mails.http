@@ -1,0 +1,11 @@
+###
+# Отправить тестовое письмо
+POST http://localhost:3002/api/mails/send HTTP/1.1
+Content-Type: application/json
+
+{
+  "to": "keks@domain.local",
+  "from": "AlbertEinstein@domail.local",
+  "subject": "Albert Einstein Quote",
+  "text": "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe."
+}

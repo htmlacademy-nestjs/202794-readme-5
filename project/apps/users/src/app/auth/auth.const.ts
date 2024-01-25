@@ -1,6 +1,7 @@
 export enum AuthErrorMessage {
   UserIsUnauthorized = 'The email address or password is incorrect',
   PasswordIsNotMatch = 'The password is not incorrect',
+  AuthUserNotFound = 'The authorized user is not found',
 }
 
 export enum AuthPropDesc {
@@ -8,7 +9,8 @@ export enum AuthPropDesc {
   Email = 'Unique user email',
   Password = 'User password',
   PasswordNew = 'User new password',
-  Token = 'User auth token',
+  AccessToken = 'User access token',
+  RefreshToken = 'User refresh token',
 }
 
 export enum AuthApiDesc {
@@ -16,4 +18,7 @@ export enum AuthApiDesc {
   Login = 'Login user',
   Unauthorized = 'User is unauthorized',
   ById = 'Return auth user by id',
+  RefreshToken = 'Return a new access/refresh tokens',
 }
+
+export const USERNAME_FIELD_NAME = 'email';

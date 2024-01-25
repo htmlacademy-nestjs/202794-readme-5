@@ -5,9 +5,9 @@ import { JwtUsersConfigPart } from './jwt-users.config';
 export const JwtUsersModule = JwtModule.registerAsync({
   useFactory: async (config: ConfigService<JwtUsersConfigPart>) => {
     return {
-      secret: config.get('jwt.secret', { infer: true }),
+      secret: config.get('jwt.accessToken.secret', { infer: true }),
       signOptions: {
-        expiresIn: config.get('jwt.expires', { infer: true }),
+        expiresIn: config.get('jwt.accessToken.expiresIn', { infer: true }),
         algorithm: 'HS256'
       },
     };
