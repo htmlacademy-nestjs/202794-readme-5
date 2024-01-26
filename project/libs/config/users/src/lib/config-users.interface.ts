@@ -1,10 +1,10 @@
 import { RabbitConfigPart } from '@project/libs/config/rabbit';
+import { MongoConfigPart } from '@project/libs/config/mongo';
 import { AppUsersConfigPart } from './app-users.config';
-import { DBUsersConfigPart } from './db-users.config';
 import { JwtUsersConfigPart } from './jwt-users.config';
 
 export interface ConfigUsers extends
   AppUsersConfigPart,
-  DBUsersConfigPart,
+  MongoConfigPart,
   JwtUsersConfigPart,
   RabbitConfigPart {}

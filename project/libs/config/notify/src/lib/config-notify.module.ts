@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { mongoConfig } from '@project/libs/config/mongo';
 import { rabbitConfig } from '@project/libs/config/rabbit';
 import { appNotifyConfig } from './app-notify.config';
-import { dbNotifyConfig } from './db-notify.config';
 import { mailNotifyConfig } from './mail-notify.config';
 
 @Module({
@@ -12,8 +12,8 @@ import { mailNotifyConfig } from './mail-notify.config';
       cache: true,
       load: [
         appNotifyConfig,
-        dbNotifyConfig,
         mailNotifyConfig,
+        mongoConfig,
         rabbitConfig,
       ],
       envFilePath: 'apps/notify/notify.env',

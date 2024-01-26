@@ -39,7 +39,7 @@ services:
     volumes:
       - readme.notify.mongo:/data/db
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/readme-users --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/readme-notify --quiet
       interval: 10s
       timeout: 10s
       retries: 5

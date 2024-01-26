@@ -1,0 +1,39 @@
+###
+# Получить список всех сохраненных файлов
+GET http://localhost:3008/api/files HTTP/1.1
+
+###
+# Вернуть мета данные файла
+GET http://localhost:3008/api/files/65b3b0499cb4204137c233e5 HTTP/1.1
+
+###
+# Загрузить файл
+# Получить загруженый файл можно по ссылке возвращаемой в поле `src`,
+# например: http://localhost:3008/statics/2024/01/c21e0afa-5ae3-4f4a-853f-fc716c0f6df2.png
+#
+POST http://localhost:3008/api/files/upload HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="files.http"
+Content-Type: text/plain
+
+< ./files.http
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+# Загрузить файл
+POST http://localhost:3008/api/files/upload HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="barbershop.png"
+Content-Type: image/png
+
+< ../../../../../../markup/img/barbershop.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+# Удалить файл
+DELETE http://localhost:3008/api/files/65b3cf5166b6763f83707439 HTTP/1.1

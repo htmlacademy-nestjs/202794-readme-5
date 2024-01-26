@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ConfigNotifyModule, MongoNotifyModule } from '@project/libs/config/notify';
+import { ConfigNotifyModule } from '@project/libs/config/notify';
+import { MongoModule } from '@project/libs/config/mongo';
 import { SubscribersModule } from './subscribers/subscribers.module';
 import { MailsModule } from './mails/mails.module';
 import { SubscribeModule } from './subscribe/subscribe.module';
@@ -8,7 +9,7 @@ import { SubscribeModule } from './subscribe/subscribe.module';
   imports: [
     ConfigNotifyModule,
     MailsModule,
-    MongoNotifyModule,
+    MongoModule,
     SubscribeModule,
     SubscribersModule,
   ],

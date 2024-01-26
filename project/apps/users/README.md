@@ -11,7 +11,7 @@
 2. Запустить docker контейнер:
 
 ```bash
-docker compose --file ./apps/users/docker-compose.dev.yml --project-name "readme-users" up -d
+docker compose --file ./apps/users/docker-compose.dev.yml --env-file ./apps/users/users.env --project-name "readme-users" up -d
 ```
 
 3. Из директории `project` установить зависимости и запустить приложение:
