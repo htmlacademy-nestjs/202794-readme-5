@@ -44,6 +44,7 @@ export class AuthController {
   })
   @Post('singin')
   @UseGuards(LocalAuthGuard)
+  @UseGuards(NotAuthGuard)
   @UseInterceptors(AuthUserTransform)
   public async singin(@ReqUser() user: User) {
     return this.authService.singin(user);
@@ -71,7 +72,7 @@ export class AuthController {
   })
   @Patch('user')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(AuthUserTransform, AuthUserNotFound)
+  @UseInterceptors(UserTransform, AuthUserNotFound)
   public async updateUser(
     @ReqUser('id') userId: string,
     @Body() dto: UpdateUserDto

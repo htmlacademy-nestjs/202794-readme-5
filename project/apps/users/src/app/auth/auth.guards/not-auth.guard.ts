@@ -1,12 +1,18 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Injectable, ExecutionContext, ForbiddenException } from '@nestjs/common';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { AuthErrorMessage } from '../auth.const';
 
 @Injectable()
-export class NotAuthGuard implements CanActivate {
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+export class NotAuthGuard extends JwtAuthGuard {
+  public override async canActivate(context: ExecutionContext) {
+    try {
+      await super.canActivate(context);
+    } catch { /** Just ignore */}
     const request = context.switchToHttp().getRequest();
-    return !request.user;
+
+    if (request.user) {
+      throw new ForbiddenException(AuthErrorMessage.ForUnAuthUsers);
+    }
+    return true;
   }
 }

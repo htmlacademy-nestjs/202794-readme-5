@@ -1,7 +1,8 @@
 export enum AuthErrorMessage {
   UserIsUnauthorized = 'The email address or password is incorrect',
-  PasswordIsNotMatch = 'The password is not incorrect',
+  PasswordIsNotMatch = 'The password is not correct',
   AuthUserNotFound = 'The authorized user is not found',
+  ForUnAuthUsers = 'Available only to unauthorized users',
 }
 
 export enum AuthPropDesc {
