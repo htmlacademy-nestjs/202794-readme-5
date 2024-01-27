@@ -11,6 +11,10 @@ GET http://localhost:3001/api/posts?offset=1&limit=2 HTTP/1.1
 GET http://localhost:3001/api/posts?page=1&limit=2 HTTP/1.1
 
 ###
+# Вернуть список публикаций заголовок которых содержит переданую подстроку
+GET http://localhost:3001/api/posts?title=Tools HTTP/1.1
+
+###
 # Вернуть последнюю публикацию указанного пользователя
 GET http://localhost:3001/api/posts?authorId=6593d28de421b6051f1dd9c2&limit=1 HTTP/1.1
 
@@ -47,7 +51,7 @@ GET http://localhost:3001/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be HTTP/1.
 GET http://localhost:3001/api/posts/1bf6fceb-3a1a-464e-a320-1feb2cbd7f29/details HTTP/1.1
 
 ###
-# Создать публикацию типа "Ссылка"
+# Поиск публикации по заголовку публикации
 POST http://localhost:3001/api/posts HTTP/1.1
 Content-Type: application/json
 
@@ -83,7 +87,7 @@ Content-Type: application/json
 {
   "postType": "QUOTE",
   "authorId": "6593d28de421b6051f1dd9c2",
-  "taggedBy": ["coding", "lifestyle"],
+  "taggedBy": ["cOdIng", "lifestyle", "codIng"],
   "payload": {
     "content": "Coding like poetry should be short and concise.",
     "author": "Santosh Kalwar"
@@ -127,7 +131,7 @@ POST http://localhost:3001/api/posts/repost HTTP/1.1
 Content-Type: application/json
 
 {
-  "postId": "c72f8b80-a954-11ee-817e-0242ac130002",
+  "postId": "fd1ac4ce-ce8e-4bb3-b09f-4fea14e4ca96",
   "authorId": "6593d612e421b6051f1dd9c5"
 }
 

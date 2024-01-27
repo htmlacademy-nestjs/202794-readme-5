@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './tags.dto/create-tag.dto';
 import { RemoveTagDto } from './tags.dto/remove-tag.dto';
-import { TagNotFoundInterceptor, TagTransformInterceptor, TagsTransformInterceptor } from './tags.interceptors';
+import { TagNotFound, TagTransform, TagsTransform } from './tags.interceptors';
 import { TagsApiDesc } from './tags.const';
 import { UUIDValidationPipe } from '@project/libs/shared/helpers';
 
@@ -19,7 +19,7 @@ export class TagsController {
     description: TagsApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(TagsTransformInterceptor)
+  @UseInterceptors(TagsTransform)
   public async findAll(@Query('text') text?: string) {
     return this.tagsService.findAll({ text });
   }
@@ -29,7 +29,7 @@ export class TagsController {
     description: TagsApiDesc.GetOne,
   })
   @Get(':id')
-  @UseInterceptors(TagTransformInterceptor, TagNotFoundInterceptor)
+  @UseInterceptors(TagTransform, TagNotFound)
   public async findOne(@Param('id', UUIDValidationPipe) id: string) {
     return this.tagsService.findOne(id);
   }
@@ -40,7 +40,7 @@ export class TagsController {
     description: TagsApiDesc.Create,
   })
   @Post()
-  @UseInterceptors(TagTransformInterceptor)
+  @UseInterceptors(TagTransform)
   public async create(@Body() dto: CreateTagDto) {
     return this.tagsService.create(dto);
   }
@@ -50,7 +50,7 @@ export class TagsController {
     description: TagsApiDesc.Remove,
   })
   @Delete(':id')
-  @UseInterceptors(TagTransformInterceptor, TagNotFoundInterceptor)
+  @UseInterceptors(TagTransform, TagNotFound)
   public async remove(@Param('id', UUIDValidationPipe) id: string) {
     return this.tagsService.remove(id);
   }
@@ -61,7 +61,7 @@ export class TagsController {
     description: TagsApiDesc.Remove,
   })
   @Delete()
-  @UseInterceptors(TagTransformInterceptor, TagNotFoundInterceptor)
+  @UseInterceptors(TagTransform, TagNotFound)
   public async removeByText(@Body() dto: RemoveTagDto) {
     return this.tagsService.removeByText(dto);
   }

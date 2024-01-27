@@ -17,6 +17,8 @@ export interface IPostsFilters {
   tags?: string[];
   /** Фильтр по статусу публикаций */
   status?: PostStatus;
+  /** Фильтр по заголовку публикаций */
+  title?: string;
   /** Порядок в котором возвращаются публикации */
   order?: PostsOrder;
 }
@@ -26,6 +28,7 @@ export enum PostsGroups {
 }
 
 export const MAX_POSTS_LIMIT = 25;
+export const MAX_POSTS_SEARCH_LIMIT = 20;
 
 export function getPostsFilters(filters?: IPostsFilters) {
   let take = MAX_POSTS_LIMIT;
@@ -37,8 +40,18 @@ export function getPostsFilters(filters?: IPostsFilters) {
     if (filters.limit > 0) {
       take = Math.min(filters.limit, MAX_POSTS_LIMIT);
     }
+    if (filters.title) {
+      where.payload = {
+        path: ['title'],
+        string_contains: filters.title,
+      };
+      take = Math.min(take, MAX_POSTS_SEARCH_LIMIT);
+    }
     if (filters.offset > 0) {
       skip = filters.offset;
+    }
+    if (filters.page > 0) {
+      skip = (filters.page - 1) * take;
     }
     if (isMongoId(filters.authorId)) {
       where.authorId = filters.authorId;

@@ -2,11 +2,11 @@ import { NotFoundInterceptor, TransformInterceptor, TransformPaginationIntercept
 import { CommentRdo } from './comments.rdo/comment.rdo';
 import { CommentsErrorMessage } from './comments.const';
 
-export const CommentNotFoundInterceptor =
+export const CommentNotFound =
   new NotFoundInterceptor(CommentsErrorMessage.CommentNotFound);
 
-export const CommentTransformInterceptor =
+export const CommentTransform =
   new TransformInterceptor(CommentRdo);
 
-export const CommentsTransformInterceptor =
+export const CommentsTransform =
   new TransformPaginationInterceptor(CommentRdo);

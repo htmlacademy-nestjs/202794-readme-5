@@ -1,13 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Query, UseInterceptors } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LimitValidationPipe, MongoIdValidationPipe, OffsetValidationPipe, PostStatusValidationPipe, PostTagsValidationPipe, PostTypeValidationPipe, PostsOrderValidationPipe, UUIDValidationPipe } from '@project/libs/shared/helpers';
-import { PostStatus, PostType, PostsOrder } from '@project/libs/shared/types';
+import { UUIDValidationPipe } from '@project/libs/shared/helpers';
+import { PostTransform, PostNotFound, DetailedPostTransform, PostsTransform } from './posts.interceptors';
 import { CreatePostDto } from './posts.dto/create-post.dto';
 import { UpdatePostDto } from './posts.dto/update-post.dto';
 import { RepostPostDto } from './posts.dto/repost-post.dto';
-import { PostTransformInterceptor, PostNotFoundInterceptor, DetailedPostTransformInterceptor, PostsTransformInterceptor } from './posts.interceptors';
 import { PostsService } from './posts.service';
 import { PostsApiDesc } from './posts.const';
+import { PostsQuery } from './posts.query';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -21,20 +21,9 @@ export class PostsController {
     description: PostsApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(PostsTransformInterceptor)
-  public async findAll(
-    @Query('page', OffsetValidationPipe) page?: number,
-    @Query('offset', OffsetValidationPipe) offset?: number,
-    @Query('limit', LimitValidationPipe) limit?: number,
-    @Query('authorId', MongoIdValidationPipe) authorId?: string,
-    @Query('type', PostTypeValidationPipe) type?: PostType,
-    @Query('status', PostStatusValidationPipe) status?: PostStatus,
-    @Query('tags', PostTagsValidationPipe) tags?: string[],
-    @Query('order', PostsOrderValidationPipe) order?: PostsOrder,
-  ) {
-    return this.postsService.findAll({
-      page, offset, limit, authorId, type, tags, status, order,
-    });
+  @UseInterceptors(PostsTransform)
+  public async findAll(@Query() query: PostsQuery) {
+    return this.postsService.findAll(query);
   }
 
   @ApiResponse({
@@ -42,7 +31,7 @@ export class PostsController {
     description: PostsApiDesc.GetOne,
   })
   @Get(':id')
-  @UseInterceptors(PostTransformInterceptor, PostNotFoundInterceptor)
+  @UseInterceptors(PostTransform, PostNotFound)
   public async findOne(@Param('id', UUIDValidationPipe) id: string) {
     return this.postsService.findOne(id);
   }
@@ -52,7 +41,7 @@ export class PostsController {
     description: PostsApiDesc.GetOne,
   })
   @Get(':id/details')
-  @UseInterceptors(DetailedPostTransformInterceptor, PostNotFoundInterceptor)
+  @UseInterceptors(DetailedPostTransform, PostNotFound)
   public async findDetailedOne(@Param('id', UUIDValidationPipe) id: string) {
     return this.postsService.findOne(id);
   }
@@ -63,7 +52,7 @@ export class PostsController {
     description: PostsApiDesc.Repost,
   })
   @Post('repost')
-  @UseInterceptors(PostTransformInterceptor, PostNotFoundInterceptor)
+  @UseInterceptors(DetailedPostTransform, PostNotFound)
   public async repost(@Body() dto: RepostPostDto) {
     return this.postsService.repost(dto);
   }
@@ -74,7 +63,7 @@ export class PostsController {
     description: PostsApiDesc.CreatePost,
   })
   @Post()
-  @UseInterceptors(PostTransformInterceptor)
+  @UseInterceptors(PostTransform)
   public async create(@Body() dto: CreatePostDto) {
     return this.postsService.create(dto);
   }
@@ -85,7 +74,7 @@ export class PostsController {
     description: PostsApiDesc.Update,
   })
   @Patch(':id')
-  @UseInterceptors(PostTransformInterceptor, PostNotFoundInterceptor)
+  @UseInterceptors(PostTransform, PostNotFound)
   public async update(
     @Param('id', UUIDValidationPipe) id: string,
     @Body() dto: UpdatePostDto,
@@ -98,7 +87,7 @@ export class PostsController {
     description: PostsApiDesc.Remove,
   })
   @Delete(':id')
-  @UseInterceptors(PostTransformInterceptor, PostNotFoundInterceptor)
+  @UseInterceptors(PostTransform, PostNotFound)
   public async remove(@Param('id', UUIDValidationPipe) id: string) {
     return this.postsService.remove(id);
   }

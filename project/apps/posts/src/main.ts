@@ -16,6 +16,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix(prefix);
   app.useGlobalPipes(new ValidationPipe({
+    transform: true,
     whitelist: true,
   }));
 

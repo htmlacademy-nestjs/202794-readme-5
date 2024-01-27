@@ -2,11 +2,11 @@ import { NotFoundInterceptor, TransformInterceptor, TransformPaginationIntercept
 import { TagRdo } from './tags.rdo/tags.rdo';
 import { TagsErrorMessage } from './tags.const';
 
-export const TagNotFoundInterceptor =
+export const TagNotFound =
   new NotFoundInterceptor(TagsErrorMessage.TagNotFound);
 
-export const TagTransformInterceptor =
+export const TagTransform =
   new TransformInterceptor(TagRdo);
 
-export const TagsTransformInterceptor =
+export const TagsTransform =
   new TransformPaginationInterceptor(TagRdo);

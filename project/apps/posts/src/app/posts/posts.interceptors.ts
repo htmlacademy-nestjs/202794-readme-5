@@ -3,14 +3,14 @@ import { PostRdo } from './posts.rdo/post.rdo';
 import { PostsErrorMessage } from './posts.const';
 import { PostsGroups } from './posts.filters';
 
-export const PostNotFoundInterceptor =
+export const PostNotFound =
   new NotFoundInterceptor(PostsErrorMessage.PostNotFound);
 
-export const PostTransformInterceptor =
+export const PostTransform =
   new TransformInterceptor(PostRdo);
 
-export const PostsTransformInterceptor =
+export const PostsTransform =
   new TransformPaginationInterceptor(PostRdo);
 
-export const DetailedPostTransformInterceptor =
+export const DetailedPostTransform =
   new TransformInterceptor(PostRdo, { groups: [PostsGroups.Detailed] });

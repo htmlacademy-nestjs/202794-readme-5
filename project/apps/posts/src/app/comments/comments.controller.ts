@@ -1,11 +1,12 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Query, UseInterceptors } from '@nestjs/common';
+import { UUIDValidationPipe } from '@project/libs/shared/helpers';
+import { CommentTransform, CommentNotFound, CommentsTransform } from './comments.interceptors';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './comments.dto/create-comment.dto';
 import { UpdateCommentDto } from './comments.dto/update-comment.dto';
-import { CommentTransformInterceptor, CommentNotFoundInterceptor, CommentsTransformInterceptor } from './comments.interceptors';
 import { CommentsApiDesc } from './comments.const';
-import { LimitValidationPipe, MongoIdValidationPipe, OffsetValidationPipe, UUIDValidationPipe } from '@project/libs/shared/helpers';
+import { CommentsQuery } from './comments.query';
 
 @ApiTags('Comments')
 @Controller('comments')
@@ -19,17 +20,9 @@ export class CommentsController {
     description: CommentsApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(CommentsTransformInterceptor)
-  public async findAll(
-    @Query('page', OffsetValidationPipe) page?: number,
-    @Query('offset', OffsetValidationPipe) offset?: number,
-    @Query('limit', LimitValidationPipe) limit?: number,
-    @Query('postId', UUIDValidationPipe) postId?: string,
-    @Query('authorId', MongoIdValidationPipe) authorId?: string,
-  ) {
-    return this.commentsService.findAll({
-      page, offset, limit, postId, authorId,
-    });
+  @UseInterceptors(CommentsTransform)
+  public async findAll(@Query() query?: CommentsQuery) {
+    return this.commentsService.findAll(query);
   }
 
   @ApiResponse({
@@ -37,7 +30,7 @@ export class CommentsController {
     description: CommentsApiDesc.GetOne,
   })
   @Get(':id')
-  @UseInterceptors(CommentTransformInterceptor, CommentNotFoundInterceptor)
+  @UseInterceptors(CommentTransform, CommentNotFound)
   public async findOne(@Param('id', UUIDValidationPipe) id: string) {
     return this.commentsService.findOne(id);
   }
@@ -48,7 +41,7 @@ export class CommentsController {
     description: CommentsApiDesc.Create,
   })
   @Post()
-  @UseInterceptors(CommentTransformInterceptor)
+  @UseInterceptors(CommentTransform)
   public async create(@Body() dto: CreateCommentDto) {
     return this.commentsService.create(dto);
   }
@@ -59,7 +52,7 @@ export class CommentsController {
     description: CommentsApiDesc.Update,
   })
   @Patch(':id')
-  @UseInterceptors(CommentTransformInterceptor, CommentNotFoundInterceptor)
+  @UseInterceptors(CommentTransform, CommentNotFound)
   public async update(
     @Param('id', UUIDValidationPipe) id: string,
     @Body() dto: UpdateCommentDto,
@@ -72,7 +65,7 @@ export class CommentsController {
     description: CommentsApiDesc.Remove,
   })
   @Delete(':id')
-  @UseInterceptors(CommentTransformInterceptor, CommentNotFoundInterceptor)
+  @UseInterceptors(CommentTransform, CommentNotFound)
   public async remove(@Param('id', UUIDValidationPipe) id: string) {
     return this.commentsService.remove(id);
   }

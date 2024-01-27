@@ -1,12 +1,20 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostgresRepository } from '@project/libs/shared/core';
 import { IPagination, PostStatus } from '@project/libs/shared/types';
+import { PrismaClientService } from '@project/libs/shared/prisma';
 import { CreateLikeDto } from './likes.dto/create-like.dto';
 import { ILikesFilters, getLikesFilters } from './likes.filters';
 import { Like, LikeId } from './like.entity';
-import { NotFoundException } from '@nestjs/common';
 import { LikesErrorMessage } from './likes.const';
 
+@Injectable()
 export class LikesRepository extends PostgresRepository<Like, LikeId> {
+  public constructor(
+    protected readonly client: PrismaClientService
+  ) {
+    super(client, Like)
+  }
+
   public async findAll(filters?: ILikesFilters): Promise<IPagination<Like>> {
     const { where } = getLikesFilters(filters);
     const [items, count] = await this.client.$transaction([
@@ -24,10 +32,10 @@ export class LikesRepository extends PostgresRepository<Like, LikeId> {
   }
 
   public async create(data: CreateLikeDto): Promise<Like> {
-    const existedLike = await this.findOne(data);
+    const like = await this.findOne(data);
 
-    if (existedLike) {
-      return existedLike;
+    if (like) { // К данной публикации уже поставлен лайк
+      return like;
     }
     const post = await this.client.post.findFirst({
       where: { id: data.postId, postStatus: PostStatus.Published },
