@@ -1,3 +1,3 @@
 ###
 # Получить список всех подписавшихся на рассылку
-GET http://localhost:3002/api/subscribers HTTP/1.1
+GET http://localhost:3001/api/subscribers HTTP/1.1

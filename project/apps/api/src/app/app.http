@@ -1,0 +1,309 @@
+### Общий список сценариев
+
+###
+### Регистрация и авторизация пользователей
+###
+
+###
+# Регистрация новых пользователей (доступна только анонимным клиентам)
+POST http://localhost:3000/api/users/singup HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="email"
+
+ivan@domain.com
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="firstname"
+
+ivan
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="lastname"
+
+susanin
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="password"
+
+passw0rd
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="cat.jpg"
+Content-Type: image/jpg
+
+< ../../../../../markup/img/cat.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+# Авторизация пользователей на основе JWT: авторизовать анонимного пользователя
+# После успешной проверки логина и пароля, приложение возвращает JWT токен.
+POST http://localhost:3000/api/users/singin HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "ivan@domain.com",
+  "password": "passw0rd"
+}
+
+###
+# Авторизация пользователей на основе JWT: вернуть данные автризованного пользователя
+GET http://localhost:3000/api/users/user HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsImlhdCI6MTcwNjM4Mjc0NSwiZXhwIjoxNzA2MzgzMDQ1fQ.Z5huqmLdJSUxij7ocfBX55aSdQvNDgRC8TDGHURytxc
+
+###
+# Авторизация пользователей на основе JWT: вернуть новую новую пару accessToken:refreshToken
+GET http://localhost:3000/api/users/refresh HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsImlhdCI6MTcwNjM4Mjc0NSwiZXhwIjoxNzA2MzgzMDQ1fQ.Z5huqmLdJSUxij7ocfBX55aSdQvNDgRC8TDGHURytxc
+
+###
+# Авторизация пользователей на основе JWT: изменить пароль авторизованного пользователя
+PATCH http://localhost:3000/api/users/user HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsImlhdCI6MTcwNjM1Mzk4MiwiZXhwIjoxNzA2MzU0MjgyfQ.Yduh5djmLFKQKoQjyg1MpAZmHKG0IOB3BlLEkWRAlwI
+Content-Type: application/json
+
+{
+  "password": "passw0rd",
+  "passwordNew": "password"
+}
+
+###
+# Запросить детальную информацию по идентификатору пользователя: дата регистрации пользователя; количество публикаций пользователя; количество подписчиков; уникальный идентификатор пользователя.
+GET http://localhost:3000/api/users/user/:userId HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsImlhdCI6MTcwNjM4Mjc0NSwiZXhwIjoxNzA2MzgzMDQ1fQ.Z5huqmLdJSUxij7ocfBX55aSdQvNDgRC8TDGHURytxc
+
+
+###
+### Публикация постов в блоге:
+### - cоздавать, редактировать (только собсвенные), удалять публикации могут только авторизованные пользователи;
+### - пользователи могут редактировать и удалять только свои публикации;
+### - удаление и редактирование публикаций происходит на основании уникального идентификатора публикации;
+###
+
+###
+# Cоздание новой публикации типа «Видео»
+POST http://localhost:3000/api/posts HTTP/1.1
+Content-Type: application/json
+
+{
+  "postType": "VIDEO",
+  "tags": ["coding", "code"],
+  "payload": {
+    "title": "How to ACTUALLY learn to code...",
+    "url": "https://www.youtube.com/watch?v=66tfvFeALBQ"
+  }
+}
+
+###
+# Cоздание новой публикации типа «Текст»
+POST http://localhost:3000/api/posts HTTP/1.1
+Content-Type: application/json
+
+{
+  "postType": "TEXT",
+  "tags": ["coding", "tools"],
+  "payload": {
+    "title": "Top Front-End Tools Of 2023",
+    "preview": "Useful front-end tools for CSS and JavaScript developers that were most popular last year and will help you speed up your development workflow. Let’s dive in!",
+    "content": "Useful front-end tools for CSS and JavaScript developers that were most popular last year and will help you speed up your development workflow. Let’s dive in!"
+  }
+}
+
+###
+# Cоздание новой публикации типа «Цитата»
+POST http://localhost:3000/api/posts HTTP/1.1
+Content-Type: application/json
+
+{
+  "postType": "QUOTE",
+  "tags": ["cOdIng", "lifestyle", "codIng"],
+  "payload": {
+    "content": "Coding like poetry should be short and concise.",
+    "author": "Santosh Kalwar"
+  }
+}
+
+###
+# Cоздание новой публикации типа «Фото»
+POST http://localhost:3000/api/posts HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="meta"
+Content-Type: application/json
+
+{
+  "postType": "PHOTO",
+  "tags": ["coding"]
+}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="photo"; filename="cat.jpg"
+Content-Type: image/jpg
+
+< ../../../../../markup/img/cat.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+# Создать публикацию типа "Ссылка"
+POST http://localhost:3000/api/posts HTTP/1.1
+Content-Type: application/json
+
+{
+  "postType": "LINK",
+  "tags": ["nestjs", "coding"],
+  "payload": {
+    "desc": "Validation",
+    "url": "https://docs.nestjs.com/techniques/validation"
+  }
+}
+
+###
+# Создать репост публикации другого пользователя
+POST http://localhost:3000/api/posts/fd1ac4ce-ce8e-4bb3-b09f-4fea14e4ca96/repost HTTP/1.1
+
+###
+# Отредактировать публикацию по уникальному идентификатору
+PATCH http://localhost:3000/api/posts/15466414-78ff-4227-9249-1818636470be HTTP/1.1
+Content-Type: application/json
+
+{
+  "postType": "TEXT",
+  "payload": {
+    "title": "Front-End Tools Of 2023",
+    "preview": "Useful front-end tools for CSS and JavaScript developers that were most popular last year and will help you speed up your development workflow. Let’s dive in!",
+    "content": "Useful front-end tools for CSS and JavaScript developers that were most popular last year and will help you speed up your development workflow. Let’s dive in!"
+  }
+}
+
+###
+# Удалить публикацию по уникальному идентификатору
+DELETE http://localhost:3000/api/posts/aab919f1-a2c3-4686-9aa9-2fb153e5e100 HTTP/1.1
+
+###
+# Вернуть детальную информацию о публикации по уникальному идентификатору
+GET http://localhost:3000/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be HTTP/1.1
+
+
+###
+### Список публикаций
+### Каждая публикация в списке помимо информации о самой публикации содержит: тип публикации, количество лайков, количество комментариев, дата публикации, информация об авторе (имя, фамилия, идентификатор, email)
+###
+
+###
+# Вернуть список из последних 25 публикаций
+GET http://localhost:3000/api/posts HTTP/1.1
+
+###
+# Вернуть список следующие 25 публикаций
+GET http://localhost:3000/api/posts?page=2 HTTP/1.1
+
+###
+# Вернуть публикации определённого пользователя
+GET http://localhost:3000/api/posts?authorId=6593d28de421b6051f1dd9c2 HTTP/1.1
+
+###
+# Вернуть публикации: по дате публикации (по убыванию)
+GET http://localhost:3000/api/posts?order=publish_at HTTP/1.1
+
+###
+# Вернуть публикации: по количеству лайков (по убыванию)
+GET http://localhost:3000/api/posts?order=likes HTTP/1.1
+
+###
+# Вернуть публикации: по колличеству комментариев (по убыванию)
+GET http://localhost:3000/api/posts?order=comments HTTP/1.1
+
+###
+# Вернуть публикации определенного типа
+GET http://localhost:3000/api/posts?type=VideO HTTP/1.1
+
+###
+# Вернуть список публикаций публикаций по определённому тегу
+GET http://localhost:3000/api/posts?tags=css,vue HTTP/1.1
+
+###
+# Получить список черновиков авторизованного пользователя
+GET http://localhost:3000/api/posts/drafts HTTP/1.1
+
+
+###
+### Лайки
+### Лайки к публикациям могут оставлять только авторизованные пользователи
+###
+
+###
+# Оставить лайк к публикаций
+POST http://localhost:3000/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be/like HTTP/1.1
+Content-Type: application/json
+
+###
+# Забрать лайк к публикаций
+POST http://localhost:3000/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be/unlike HTTP/1.1
+Content-Type: application/json
+
+
+###
+### Комментарии
+### Комментировать публикации могут только авторизованные пользователи
+###
+
+###
+# Вернуть список комментариев для любой опубликованной публикации
+GET http://localhost:3000/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be/comments?page=1 HTTP/1.1
+
+###
+# Создать новый комментарий к публикации
+POST http://localhost:3000/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be/comments HTTP/1.1
+Content-Type: application/json
+
+{
+    "message": "Comment 1: You must be the change you wish to see in the world."
+}
+
+###
+# Изменить комментарий к публикации
+PATCH http://localhost:3000/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be/comments HTTP/1.1
+Content-Type: application/json
+
+{
+    "message": "Comment 1: You must be the change you wish to see in the world."
+}
+
+###
+# Удалить комментарий к публикации
+DELETE http://localhost:3000/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be/comments/df23f6d6-8ed6-42ec-993a-f6994bc859c7 HTTP/1.1
+
+
+###
+### Уведомления на email
+###
+
+###
+# Сделать рассылку уведомления о новых публикациях на email всем зарегистрированным пользователям
+POST http://localhost:3000/api/posts/notify?since=2024-01-28 HTTP/1.1
+
+
+###
+### Поиск публикаций по заголовку публикации для авторизованных и анонимных пользователей
+###
+
+###
+# Вернуть список публикаций по заголовку публикации (в поиске участвуют все опубликованные публикации, у которых есть заголовки (название публикации))
+GET http://localhost:3000/api/posts/search?title=tools HTTP/1.1
+
+
+###
+### Моя лента
+###
+
+###
+# Авторизованные пользователи могут подписываться на других пользователей
+POST http://localhost:3000/api/users/:userId/subscribe HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsImlhdCI6MTcwNjM4Mjc0NSwiZXhwIjoxNzA2MzgzMDQ1fQ.Z5huqmLdJSUxij7ocfBX55aSdQvNDgRC8TDGHURytxc
+
+###
+# Вернуть контентную ленту пользователя на основе публикаций пользователей, на которых оформлена подписка (справедливы правила сортировки, пагинации, количества, как для обычного списка публикаций)
+GET http://localhost:3000/api/posts/feed?tags=css,vue HTTP/1.1
+
+###
+# Авторизованные пользователи могут отписаться от ранее оформленной подписки
+POST http://localhost:3000/api/users/:userId/unsubscribe HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsImlhdCI6MTcwNjM4Mjc0NSwiZXhwIjoxNzA2MzgzMDQ1fQ.Z5huqmLdJSUxij7ocfBX55aSdQvNDgRC8TDGHURytxc

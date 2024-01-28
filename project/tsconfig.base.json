@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@project/libs/config/api": ["libs/config/api/src/index.ts"],
       "@project/libs/config/mongo": ["libs/config/mongo/src/index.ts"],
       "@project/libs/config/notify": ["libs/config/notify/src/index.ts"],
       "@project/libs/config/posts": ["libs/config/posts/src/index.ts"],

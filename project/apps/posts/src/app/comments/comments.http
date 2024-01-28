@@ -1,41 +1,41 @@
 ###
 # Вернуть список комментариев
-GET http://localhost:3001/api/comments HTTP/1.1
+GET http://localhost:3002/api/comments HTTP/1.1
 
 ###
 # Вернуть список последних 5 комментариев начиная с 1
-GET http://localhost:3001/api/comments?offset=1&limit=5 HTTP/1.1
+GET http://localhost:3002/api/comments?offset=1&limit=5 HTTP/1.1
 
 ###
 # Вернуть 1 странцу комментариев по 3 комментария на страницу
-GET http://localhost:3001/api/comments?page=4&limit=3 HTTP/1.1
+GET http://localhost:3002/api/comments?page=4&limit=3 HTTP/1.1
 
 ###
 # Вернуть список комментариев для публикации
-GET http://localhost:3001/api/comments?postId=cecab48e-a952-11ee-817e-0242ac130002 HTTP/1.1
+GET http://localhost:3002/api/comments?postId=1ab0489f-adb4-4b99-a4ea-411ced51d074 HTTP/1.1
 
 ###
 # Вернуть список комментариев по автору
-GET http://localhost:3001/api/comments?authorId=6593d28de421b6051f1dd9c2 HTTP/1.1
+GET http://localhost:3002/api/comments?authorId=6593d28de421b6051f1dd9c2 HTTP/1.1
 
 ###
 # Вернуть комментарий по id
-GET http://localhost:3001/api/comments/df23f6d6-8ed6-42ec-993a-f6994bc859c7 HTTP/1.1
+GET http://localhost:3002/api/comments/df23f6d6-8ed6-42ec-993a-f6994bc859c7 HTTP/1.1
 
 ###
 # Создать комментарий
-POST http://localhost:3001/api/comments HTTP/1.1
+POST http://localhost:3002/api/comments HTTP/1.1
 Content-Type: application/json
 
 {
     "authorId": "6592f0937aff7a3e3bc4d176",
-    "postId": "c72f8b80-a954-11ee-817e-0242ac130002",
-    "message": "You must be the change you wish to see in the world."
+    "postId": "1ab0489f-adb4-4b99-a4ea-411ced51d074",
+    "message": "Comment 1: You must be the change you wish to see in the world."
 }
 
 ###
 # Создать комментарий, для не существующей публикации
-POST http://localhost:3001/api/comments HTTP/1.1
+POST http://localhost:3002/api/comments HTTP/1.1
 Content-Type: application/json
 
 {
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 ###
 # Изменить комментарий
-PATCH http://localhost:3001/api/comments/df23f6d6-8ed6-42ec-993a-f6994bc859c7 HTTP/1.1
+PATCH http://localhost:3002/api/comments/df23f6d6-8ed6-42ec-993a-f6994bc859c7 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -55,4 +55,4 @@ Content-Type: application/json
 
 ###
 # Удалить комментарий
-DELETE http://localhost:3001/api/comments/df23f6d6-8ed6-42ec-993a-f6994bc859c7 HTTP/1.1
+DELETE http://localhost:3002/api/comments/df23f6d6-8ed6-42ec-993a-f6994bc859c7 HTTP/1.1
