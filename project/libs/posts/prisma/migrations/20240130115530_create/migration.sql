@@ -62,6 +62,15 @@ CREATE TABLE "likes" (
 );
 
 -- CreateTable
+CREATE TABLE "subscriptions" (
+    "author_id" CHAR(24) NOT NULL,
+    "subscriber_id" CHAR(24) NOT NULL,
+    "subscribedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "subscriptions_pkey" PRIMARY KEY ("author_id","subscriber_id")
+);
+
+-- CreateTable
 CREATE TABLE "_PostTags" (
     "A" UUID NOT NULL,
     "B" UUID NOT NULL
@@ -105,6 +114,12 @@ ALTER TABLE "likes" ADD CONSTRAINT "likes_author_id_fkey" FOREIGN KEY ("author_i
 
 -- AddForeignKey
 ALTER TABLE "likes" ADD CONSTRAINT "likes_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "authors"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_subscriber_id_fkey" FOREIGN KEY ("subscriber_id") REFERENCES "authors"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_PostTags" ADD CONSTRAINT "_PostTags_A_fkey" FOREIGN KEY ("A") REFERENCES "posts"("id") ON DELETE CASCADE ON UPDATE CASCADE;
