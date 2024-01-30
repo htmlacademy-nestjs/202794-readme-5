@@ -8,7 +8,9 @@ export class CreatePhotoPayloadDto implements IPhotoPayload {
     description: PostsPropDesc.PostPhotoUrl,
     required: true,
   })
-  @IsUrl()
+  @IsUrl({
+    require_host: false,
+  })
   @IsNotEmpty()
   public url: string;
 }

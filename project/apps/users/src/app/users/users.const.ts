@@ -12,6 +12,11 @@ export enum UsersPropDesc {
   LastName = 'User lastname',
   Id = 'User ID',
   Password = 'User password',
+  Offset = 'Skit the number of items',
+  Limit = 'Limit the number of items',
+  Count = 'Total items count',
+  Page = 'Page number',
+  Pages = 'Total number of pages',
 }
 
 export enum UsersApiDesc {

@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { isMongoId, isNotEmptyObject } from 'class-validator';
+import { isMongoId, isNotEmptyObject, isDateString, isDate } from 'class-validator';
 import { PostStatus, PostType, PostsOrder, isPostStatus, isPostType, isPostsOrder } from '@project/libs/shared/types';
 
 export interface IPostsFilters {
@@ -21,10 +21,8 @@ export interface IPostsFilters {
   title?: string;
   /** Порядок в котором возвращаются публикации */
   order?: PostsOrder;
-}
-
-export enum PostsGroups {
-  Detailed = 'DETAILED',
+  /** Фильтр по дате публикаций */
+  since?: Date;
 }
 
 export const MAX_POSTS_LIMIT = 25;
@@ -64,6 +62,9 @@ export function getPostsFilters(filters?: IPostsFilters) {
     }
     if (Array.isArray(filters.tags)) {
       where.tags = { some: { text: { in: filters.tags } } };
+    }
+    if (filters.since instanceof Date) {
+      where.publishAt = { gte: filters.since };
     }
     if (isPostsOrder(filters.order)) {
       switch (filters.order) {

@@ -1,0 +1,71 @@
+### Общий список сценариев
+
+###
+### Регистрация и авторизация пользователей
+###
+
+###
+# ✅ Регистрация новых пользователей (доступна только анонимным клиентам)
+# Аватар пользователя раздается с http://localhost:3003/
+POST http://localhost:3000/api/users/singup HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="email"
+
+ivan2@domain.com
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="firstname"
+
+ivan
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="lastname"
+
+susanin
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="password"
+
+passw0rd
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="cat.jpg"
+Content-Type: image/jpg
+
+< ../../../../../markup/img/cat.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+# ✅ Авторизация пользователей на основе JWT: авторизовать анонимного пользователя
+# После успешной проверки логина и пароля, приложение возвращает JWT токен.
+POST http://localhost:3000/api/users/singin HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "ivan@domain.com",
+  "password": "passw0rd"
+}
+
+###
+# ✅ Авторизация пользователей на основе JWT: вернуть данные автризованного пользователя
+GET http://localhost:3000/api/users/user HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTk1ODI0LCJleHAiOjE3MDY1OTYxMjR9.26RyGt23coKyesGsQy09jhkS4MFXqAJmW9EXHKO7VGo
+
+###
+# ✅ Авторизация пользователей на основе JWT: вернуть новую новую пару accessToken:refreshToken (передаем в заголовке Authorization ранее полученный refreshToken)
+GET http://localhost:3000/api/users/refresh HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsInRva2VuSWQiOiIwZjQ5M2EwNi03NzNjLTRmN2ItOGZjZC1kZmZkZTg2MTJlODkiLCJpYXQiOjE3MDY0NjkzMzksImV4cCI6MTcwOTA2MTMzOX0.MDFBJMpdxeD6td58S9_iev0VNXoUm0287lf_8cGGGXI
+
+###
+# ✅ Авторизация пользователей на основе JWT: изменить пароль авторизованного пользователя
+PATCH http://localhost:3000/api/users/password HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTQ4OTI4LCJleHAiOjE3MDY1NDkyMjh9.l1cdkCtMufmn8XyEcFUN-BAmJy25GcWVcYTbp2-RlMw
+Content-Type: application/json
+
+{
+  "password": "password",
+  "passwordNew": "passw0rd"
+}
+
+###
+# ✅ Запросить детальную информацию по идентификатору пользователя: дата регистрации пользователя; количество публикаций пользователя; количество подписчиков; уникальный идентификатор пользователя.
+GET http://localhost:3000/api/users/user/65b4e2e085030f386a56195c HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTk1ODI0LCJleHAiOjE3MDY1OTYxMjR9.26RyGt23coKyesGsQy09jhkS4MFXqAJmW9EXHKO7VGo

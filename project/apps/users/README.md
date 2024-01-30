@@ -21,9 +21,13 @@ npm i
 npx nx run users:serve
 ```
 
+Запуск приложения с генерацией REST API клиета:
+
+```bash
+npx nx run users:serve:generate_client
+```
+
 4. Сервисы:
 
-- `http://localhost:3004/api/user` - `user` api
-- `http://localhost:3004/api/auth` - `auth` api
-- `http://localhost:3333/api/spec` - swagger ui
-- `http://localhost:8081` - mongo express ui
+- `http://localhost:3004/api/spec` - users api spec
+- `http://localhost:8081` - ui mongo express (username: `admin`, password: `test`)

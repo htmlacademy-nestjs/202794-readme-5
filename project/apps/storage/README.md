@@ -19,8 +19,13 @@ npm i
 npx nx run storage:serve
 ```
 
+Запуск приложения с генерацией REST API клиета:
+
+```bash
+npx nx run storage:serve:generate_client
+```
+
 4. Сервисы:
 
-- `http://localhost:3008/api/files` - `files` api
-- `http://localhost:3008/api/spec` - swagger ui
-- `http://localhost:8084` - mongo express ui
+- `http://localhost:3003/api/spec` - storage api spec
+- `http://localhost:8084` - ui mongo express (username: `admin`, password: `test`)

@@ -1,0 +1,253 @@
+###
+### Публикация постов в блоге:
+### - cоздавать, редактировать (только собсвенные), удалять публикации могут только авторизованные пользователи;
+### - пользователи могут редактировать и удалять только свои публикации;
+### - удаление и редактирование публикаций происходит на основании уникального идентификатора публикации;
+###
+
+###
+# ✅ Cоздание новой публикации типа «Видео»
+POST http://localhost:3000/api/posts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTk5MDYxLCJleHAiOjE3MDY1OTkzNjF9.5Wpv_BxenfvMjoUTDCWVpsVPQW0cMdK78f2NUamyc18
+Content-Type: application/json
+
+{
+  "postType": "VIDEO",
+  "taggedBy": ["coding", "code"],
+  "payload": {
+    "title": "How to ACTUALLY learn to code...",
+    "url": "https://www.youtube.com/watch?v=66tfvFeALBQ"
+  }
+}
+
+###
+# ✅ Cоздание новой публикации типа «Текст»
+POST http://localhost:3000/api/posts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTk5NDA1LCJleHAiOjE3MDY1OTk3MDV9.q1m0X8a68NttL_4OZIH3YC6iAiadFwUgdhyIOVVnZjI
+Content-Type: application/json
+
+{
+  "postType": "TEXT",
+  "taggedBy": ["coding", "tools"],
+  "payload": {
+    "title": "Top Front-End Tools Of 2023",
+    "preview": "Useful front-end tools for CSS and JavaScript developers that were most popular last year and will help you speed up your development workflow. Let’s dive in!",
+    "content": "Useful front-end tools for CSS and JavaScript developers that were most popular last year and will help you speed up your development workflow. Let’s dive in!"
+  }
+}
+
+###
+# ✅ Cоздание новой публикации типа «Цитата»
+POST http://localhost:3000/api/posts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTk5MDYxLCJleHAiOjE3MDY1OTkzNjF9.5Wpv_BxenfvMjoUTDCWVpsVPQW0cMdK78f2NUamyc18
+Content-Type: application/json
+
+{
+  "postType": "QUOTE",
+  "taggedBy": ["cOdIng", "lifestyle", "codIng"],
+  "payload": {
+    "content": "Coding like poetry should be short and concise.",
+    "author": "Santosh Kalwar"
+  }
+}
+
+###
+# ✅ Cоздание новой публикации типа «Фото»
+POST http://localhost:3000/api/posts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NjAwOTExLCJleHAiOjE3MDY2MDEyMTF9.kBSOyM2At3ysySIYGcK3xAogA0NbXJwHmZuGoTPsLJI
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="postType"
+
+PHOTO
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="taggedBy"
+
+coding
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="taggedBy"
+
+lifestyle
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="photo"; filename="cat.jpg"
+Content-Type: image/jpg
+
+< ../../../../../markup/img/cat.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+# ✅ Создать публикацию типа "Ссылка"
+POST http://localhost:3000/api/posts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTk5MDYxLCJleHAiOjE3MDY1OTkzNjF9.5Wpv_BxenfvMjoUTDCWVpsVPQW0cMdK78f2NUamyc18
+Content-Type: application/json
+
+{
+  "postType": "LINK",
+  "taggedBy": ["nestjs", "coding"],
+  "payload": {
+    "desc": "Validation",
+    "url": "https://docs.nestjs.com/techniques/validation"
+  }
+}
+
+###
+# ✅ Создать репост публикации другого пользователя
+POST http://localhost:3000/api/posts/fd1ac4ce-ce8e-4bb3-b09f-4fea14e4ca96/repost HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTUxODM4LCJleHAiOjE3MDY1NTIxMzh9.Pfqv7eQ2wAmqnx4MAYDHthNMX6X7ayTdPD8HVeXIKc4
+
+###
+# ✅ Отредактировать публикацию по уникальному идентификатору
+PATCH http://localhost:3000/api/posts/eb15bad6-e1f5-44ef-b675-3ecc6ed57696 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTk5NDA1LCJleHAiOjE3MDY1OTk3MDV9.q1m0X8a68NttL_4OZIH3YC6iAiadFwUgdhyIOVVnZjI
+Content-Type: application/json
+
+{
+  "postType": "TEXT",
+  "payload": {
+    "title": "The Front-End Tools Of 2023",
+    "preview": "Useful front-end tools for CSS and JavaScript developers that were most popular last year and will help you speed up your development workflow. Let’s dive in!",
+    "content": "Useful front-end tools for CSS and JavaScript developers that were most popular last year and will help you speed up your development workflow. Let’s dive in!"
+  }
+}
+
+###
+# ✅ Удалить публикацию по уникальному идентификатору
+DELETE http://localhost:3000/api/posts/eb15bad6-e1f5-44ef-b675-3ecc6ed57696 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTk5NDA1LCJleHAiOjE3MDY1OTk3MDV9.q1m0X8a68NttL_4OZIH3YC6iAiadFwUgdhyIOVVnZjI
+
+###
+# ✅ Вернуть детальную информацию о публикации по уникальному идентификатору
+GET http://localhost:3000/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be HTTP/1.1
+
+
+###
+### Список публикаций
+### Каждая публикация в списке помимо информации о самой публикации содержит: тип публикации, количество лайков, количество комментариев, дата публикации, информация об авторе (имя, фамилия, идентификатор, email)
+###
+
+###
+# ✅ Вернуть список из последних 25 публикаций
+GET http://localhost:3000/api/posts HTTP/1.1
+
+###
+# ✅ Вернуть список следующие 25 публикаций
+GET http://localhost:3000/api/posts?page=2 HTTP/1.1
+
+###
+# ✅ Вернуть публикации определённого пользователя
+GET http://localhost:3000/api/posts?authorId=6593d28de421b6051f1dd9c2 HTTP/1.1
+
+###
+# ✅ Вернуть публикации: по дате публикации (по убыванию)
+GET http://localhost:3000/api/posts?order=publish_at HTTP/1.1
+
+###
+# ✅ Вернуть публикации: по количеству лайков (по убыванию)
+GET http://localhost:3000/api/posts?order=likes HTTP/1.1
+
+###
+# ✅ Вернуть публикации: по колличеству комментариев (по убыванию)
+GET http://localhost:3000/api/posts?order=comments HTTP/1.1
+
+###
+# ✅ Вернуть публикации определенного типа
+GET http://localhost:3000/api/posts?type=link HTTP/1.1
+
+###
+# ✅ Вернуть список публикаций публикаций по определённому тегу
+GET http://localhost:3000/api/posts?tags=css,vue HTTP/1.1
+
+###
+# ✅ Получить список черновиков авторизованного пользователя
+GET http://localhost:3000/api/posts/drafts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTNkMjhkZTQyMWI2MDUxZjFkZDljMiIsImVtYWlsIjoia2Vrc2lkZWRAZG9tYWluLmNvbSIsImlhdCI6MTcwNjUyNDM5OSwiZXhwIjoxNzA2NTI0Njk5fQ.xbyAF9MeyzAtPji64aFkJxDeEhSDNwthaz6yoLYQydk
+
+
+###
+### Лайки
+### Лайки к публикациям могут оставлять только авторизованные пользователи
+###
+
+###
+# ✅ Оставить лайк к публикаций
+POST http://localhost:3000/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be/like HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTNkMjhkZTQyMWI2MDUxZjFkZDljMiIsImVtYWlsIjoia2Vrc2lkZWRAZG9tYWluLmNvbSIsImlhdCI6MTcwNjUyNDM5OSwiZXhwIjoxNzA2NTI0Njk5fQ.xbyAF9MeyzAtPji64aFkJxDeEhSDNwthaz6yoLYQydk
+Content-Type: application/json
+
+###
+# ✅ Забрать лайк к публикаций
+POST http://localhost:3000/api/posts/918e6f63-a56e-4556-a31c-81feb49f59be/unlike HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTNkMjhkZTQyMWI2MDUxZjFkZDljMiIsImVtYWlsIjoia2Vrc2lkZWRAZG9tYWluLmNvbSIsImlhdCI6MTcwNjUyNDM5OSwiZXhwIjoxNzA2NTI0Njk5fQ.xbyAF9MeyzAtPji64aFkJxDeEhSDNwthaz6yoLYQydk
+Content-Type: application/json
+
+
+###
+### Комментарии
+### Комментировать публикации могут только авторизованные пользователи
+###
+
+###
+# ✅ Вернуть список комментариев для любой опубликованной публикации
+GET http://localhost:3000/api/posts/1ab0489f-adb4-4b99-a4ea-411ced51d074/comments?limit=3&page=1 HTTP/1.1
+
+###
+# ✅ Создать новый комментарий к публикации
+POST http://localhost:3000/api/posts/1ab0489f-adb4-4b99-a4ea-411ced51d074/comments HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTUwODQwLCJleHAiOjE3MDY1NTExNDB9.enDMLctcsPh_g7dbVWEu3oQKf6X6pcm27sTk9umMh04
+Content-Type: application/json
+
+{
+    "message": "Some very important comment"
+}
+
+###
+# ✅ Изменить комментарий к публикации (изменить можно только собственный комментарий)
+PATCH http://localhost:3000/api/posts/1ab0489f-adb4-4b99-a4ea-411ced51d074/comments/35ffa111-e835-4be8-b0d9-eb8439623b0d HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTUwODQwLCJleHAiOjE3MDY1NTExNDB9.enDMLctcsPh_g7dbVWEu3oQKf6X6pcm27sTk9umMh04
+Content-Type: application/json
+
+{
+    "message": "Finally it works!"
+}
+
+###
+# ✅ Удалить комментарий к публикации (удалить можно только собственный комментарий)
+DELETE http://localhost:3000/api/posts/1ab0489f-adb4-4b99-a4ea-411ced51d074/comments/35ffa111-e835-4be8-b0d9-eb8439623b0d HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NTUwODQwLCJleHAiOjE3MDY1NTExNDB9.enDMLctcsPh_g7dbVWEu3oQKf6X6pcm27sTk9umMh04
+
+###
+### Уведомления на email
+###
+
+###
+# ✅ Сделать рассылку уведомления о новых публикациях на email всем зарегистрированным пользователям
+POST http://localhost:3000/api/posts/publish?since=2024-01-29 HTTP/1.1
+
+
+###
+### Поиск публикаций по заголовку публикации для авторизованных и анонимных пользователей
+###
+
+###
+# ✅ Вернуть список публикаций по заголовку публикации (в поиске участвуют все опубликованные публикации, у которых есть заголовки (название публикации))
+GET http://localhost:3000/api/posts/search?title=JavaScript HTTP/1.1
+
+
+###
+### Моя лента (не обязательная часть)
+###
+
+###
+# 🚫 Авторизованные пользователи могут подписываться на других пользователей
+POST http://localhost:3000/api/users/:userId/subscribe HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsImlhdCI6MTcwNjM4Mjc0NSwiZXhwIjoxNzA2MzgzMDQ1fQ.Z5huqmLdJSUxij7ocfBX55aSdQvNDgRC8TDGHURytxc
+
+###
+# 🚫 Вернуть контентную ленту пользователя на основе публикаций пользователей, на которых оформлена подписка (справедливы правила сортировки, пагинации, количества, как для обычного списка публикаций)
+GET http://localhost:3000/api/posts/feed?tags=css,vue HTTP/1.1
+
+###
+# 🚫 Авторизованные пользователи могут отписаться от ранее оформленной подписки
+POST http://localhost:3000/api/users/:userId/unsubscribe HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsImlhdCI6MTcwNjM4Mjc0NSwiZXhwIjoxNzA2MzgzMDQ1fQ.Z5huqmLdJSUxij7ocfBX55aSdQvNDgRC8TDGHURytxc

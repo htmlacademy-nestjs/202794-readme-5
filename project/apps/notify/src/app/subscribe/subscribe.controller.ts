@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { RabbitExchange, RabbitQueue, RabbitRouting } from '@project/libs/shared/types';
-import { SubscribeUserDto, SingupUserDto, PublishPostDto } from '@project/libs/notify/publish';
+import { SubscribeUserDto, SingupUserDto, PublishPostsDto } from '@project/libs/notify/publish';
 import { MailsService } from '../mails/mails.service';
 import { SubscribersService } from '../subscribers/subscribers.service';
 
@@ -15,7 +15,7 @@ export class SubscribeController {
   @RabbitSubscribe({
     exchange: RabbitExchange.Notify,
     routingKey: RabbitRouting.UserSubscribe,
-    queue: RabbitQueue.NotifyIcome,
+    queue: RabbitQueue.UserSubscribe,
   })
   public async onSubscribeUser(dto: SubscribeUserDto) {
     await this.subscribersService.subscribe(dto);
@@ -25,7 +25,7 @@ export class SubscribeController {
   @RabbitSubscribe({
     exchange: RabbitExchange.Notify,
     routingKey: RabbitRouting.UserSingup,
-    queue: RabbitQueue.NotifyIcome,
+    queue: RabbitQueue.UserSingup,
   })
   public async onSingupUser(dto: SingupUserDto) {
     await this.mailsService.sendUserSingupMail(dto);
@@ -35,7 +35,9 @@ export class SubscribeController {
   @RabbitSubscribe({
     exchange: RabbitExchange.Notify,
     routingKey: RabbitRouting.PostsPublished,
-    queue: RabbitQueue.NotifyIcome,
+    queue: RabbitQueue.PostsPublished,
   })
-  public async onPublishPost(dto: PublishPostDto) {}
+  public async onPublishPosts(dto: PublishPostsDto) {
+    await this.mailsService.sendPostsUpdatesMail(dto);
+  }
 }

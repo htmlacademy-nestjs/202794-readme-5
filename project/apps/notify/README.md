@@ -25,7 +25,6 @@ curl smtp://admin:test@localhost:8025 --mail-from m@mail.me --mail-rcpt m@mail.l
 
 4. Сервисы:
 
-- `http://localhost:1083/` - фейковый smtp сервер
-- `http://localhost:1083/swagger-ui/index.html` - swagger ui фейкового smtp сервера
-- `http://localhost:1088/` - админ панель rabbitmq
-- `http://localhost:8083/` - mongo express ui
+  - `http://localhost:1083/` - ui smtp сервера
+  - `http://localhost:1088/` - ui rabbitmq сервера (username: `admin`, password: `test`)
+  - `http://localhost:8083/` - ui mongo express (username: `admin`, password: `test`)

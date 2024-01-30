@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
+import { PublishService } from '@project/libs/notify/publish';
 import { UpdatePostDto } from './posts.dto/update-post.dto';
 import { CreatePostDto } from './posts.dto/create-post.dto';
 import { RepostPostDto } from './posts.dto/repost-post.dto';
+import { RemovePostDto } from './posts.dto/remove-post.dto';
 import { PostsRepository } from './posts.repository';
 import { IPostsFilters } from './posts.filters';
 
 @Injectable()
 export class PostsService {
   constructor(
-    private readonly postsRepository: PostsRepository
+    private readonly postsRepository: PostsRepository,
+    private readonly publishService: PublishService,
   ) {}
 
   public async findAll(filter: IPostsFilters) {
@@ -31,7 +34,16 @@ export class PostsService {
     return this.postsRepository.update(id, dto);
   }
 
-  public async remove(id: string) {
-    return this.postsRepository.remove(id);
+  public async remove(id: string, dto: RemovePostDto) {
+    return this.postsRepository.remove(id, dto);
+  }
+
+  public async publish(filter: IPostsFilters) {
+    const posts = await this.postsRepository.findAll(filter);
+
+    if (posts.items?.length) {
+      await this.publishService.notifyPostsPublish({ posts: posts.items });
+    }
+    return posts;
   }
 }

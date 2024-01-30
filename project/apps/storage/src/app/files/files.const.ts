@@ -12,6 +12,11 @@ export enum FilesPropDesc {
   FilePath = 'Path of file\'s dir',
   FileSrc = 'Path of the file',
   FileSize = 'Size of the file in bytes',
+  Offset = 'Skit the number of items',
+  Limit = 'Limit the number of items',
+  Count = 'Total items count',
+  Page = 'Page number',
+  Pages = 'Total number of pages',
 }
 
 export enum FilesApiDesc {

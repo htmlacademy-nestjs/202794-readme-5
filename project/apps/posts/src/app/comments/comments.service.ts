@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCommentDto } from './comments.dto/create-comment.dto';
 import { UpdateCommentDto } from './comments.dto/update-comment.dto';
+import { RemoveCommentDto } from './comments.dto/remove-comment.dto';
 import { CommentsRepository } from './comments.repository';
 import { ICommentsFilters } from './comments.filters';
 
@@ -26,7 +27,7 @@ export class CommentsService {
     return this.commentsRepository.update(id, dto);
   }
 
-  public async remove(id: string) {
-    return this.commentsRepository.remove(id);
+  public async remove(id: string, dto: RemoveCommentDto) {
+    return this.commentsRepository.remove(id, dto);
   }
 }

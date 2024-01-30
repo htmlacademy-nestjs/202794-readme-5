@@ -10,6 +10,11 @@ export enum CommentsPropDesc {
   AuthorId = 'The ID of the author of the comment',
   PostId = 'The ID of the post of the comment',
   Message = 'The message of the comment',
+  Offset = 'Skit the number of items',
+  Limit = 'Limit the number of items',
+  Count = 'Total items count',
+  Page = 'Page number',
+  Pages = 'Total number of pages',
 }
 
 export enum CommentsApiDesc {

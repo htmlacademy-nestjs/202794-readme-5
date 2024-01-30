@@ -10,7 +10,7 @@ import { TokensService } from '../tokens/tokens.service';
 import { UsersService } from '../users/users.service';
 import { SinginUserDto } from './auth.dto/singin-user.dto';
 import { SingupUserDto } from './auth.dto/singup-user.dto';
-import { UpdateUserDto } from './auth.dto/update-user.dto';
+import { UpdatePasswordDto } from './auth.dto/update-password.dto';
 import { AuthErrorMessage } from './auth.const';
 
 @Injectable()
@@ -76,7 +76,7 @@ export class AuthService {
   /**
    * Изменить пароль авторизованного пользователя
    */
-  public async updateUser(id: string, dto: UpdateUserDto) {
+  public async updateUserPassword(id: string, dto: UpdatePasswordDto) {
     const user = await this.usersService.findOne(id);
 
     if (! await user?.matchPassword(dto.password)) {

@@ -7,6 +7,11 @@ export enum TagsPropDesc {
   CreatedAt = 'Date of creation',
   UpdatedAt = 'Date of updating',
   Text = 'Text of the tag',
+  Offset = 'Skit the number of items',
+  Limit = 'Limit the number of items',
+  Count = 'Total items count',
+  Page = 'Page number',
+  Pages = 'Total number of pages',
 }
 
 export enum TagsApiDesc {

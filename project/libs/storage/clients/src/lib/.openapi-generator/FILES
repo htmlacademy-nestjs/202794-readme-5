@@ -1,0 +1,13 @@
+.gitignore
+.npmignore
+.openapi-generator-ignore
+api.ts
+base.ts
+clients/files-api.ts
+common.ts
+configuration.ts
+git_push.sh
+index.ts
+models/file-rdo.ts
+models/files-rdo.ts
+models/index.ts

@@ -1,20 +1,23 @@
-import { Controller, Get, Post, Param, Delete, UseInterceptors, UploadedFile, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { MulterFile } from '@project/libs/shared/types';
 import { MongoIdValidationPipe } from '@project/libs/shared/helpers';
 import { FileNotFound, FileTransform, FilesTransform } from './files.interceptors';
+import { FilesRdo } from './files.rdo/files.rdo';
+import { FileRdo } from './files.rdo/file.rdo';
 import { FilesService } from './files.service';
 import { FilesApiDesc } from './files.const';
 
+@ApiTags('Files')
 @Controller('files')
 export class FilesController {
   constructor(
     private readonly filesService: FilesService,
   ) {}
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: FileRdo,
     description: FilesApiDesc.Upload,
   })
   @Post('upload')
@@ -23,8 +26,8 @@ export class FilesController {
     return this.filesService.upload(file);
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: FilesRdo,
     description: FilesApiDesc.GetAll,
   })
   @Get()
@@ -33,8 +36,8 @@ export class FilesController {
     return this.filesService.findAll();
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: FileRdo,
     description: FilesApiDesc.GetOne,
   })
   @Get(':id')
@@ -45,8 +48,8 @@ export class FilesController {
     return this.filesService.findOne(id);
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: FileRdo,
     description: FilesApiDesc.Remove,
   })
   @Delete(':id')

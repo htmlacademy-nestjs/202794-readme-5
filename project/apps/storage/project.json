@@ -38,6 +38,12 @@
         }
       }
     },
+    "serve:generate_client": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "APP_GENERATE_CLIENT=1 npx nx run storage:serve"
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],

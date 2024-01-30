@@ -126,6 +126,11 @@ Content-Type: application/json
 }
 
 ###
+# Опубликовать сообщение о новых публикациях
+POST http://localhost:3002/api/posts/publish?since=2024-01-30 HTTP/1.1
+Content-Type: application/json
+
+###
 # Создать репост публикации
 POST http://localhost:3002/api/posts/repost HTTP/1.1
 Content-Type: application/json

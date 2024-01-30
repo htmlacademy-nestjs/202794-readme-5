@@ -7,6 +7,7 @@ import { IPostsFilters, getPostsFilters } from './posts.filters';
 import { CreatePostDto } from './posts.dto/create-post.dto';
 import { UpdatePostDto } from './posts.dto/update-post.dto';
 import { RepostPostDto } from './posts.dto/repost-post.dto';
+import { RemovePostDto } from './posts.dto/remove-post.dto';
 import { Post } from './post.entity';
 
 @Injectable()
@@ -112,16 +113,16 @@ export class PostsRepository extends PostgresRepository<Post> {
         payload: dto.payload as Prisma.JsonObject,
       },
       include: { _count, tags: true },
-      where: { id },
+      where: { id, authorId: dto.authorId },
     });
   }
 
-  public async remove(id: string): Promise<Post> {
+  public async remove(id: string, dto?: RemovePostDto): Promise<Post> {
     const _count = { select: { comments: true, likes: true } };
 
     return this.client.post.delete({
       include: { _count, tags: true },
-      where: { id },
+      where: { id, authorId: dto.authorId },
     });
   }
 }

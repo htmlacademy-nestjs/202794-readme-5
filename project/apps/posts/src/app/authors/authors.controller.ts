@@ -1,40 +1,44 @@
-import { Controller, Get, Param, Delete, HttpStatus, UseInterceptors } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, Delete, UseInterceptors } from '@nestjs/common';
+import { MongoIdValidationPipe } from '@project/libs/shared/helpers';
+import { AuthorTransform, AuthorNotFound, AuthorsTransform } from './authors.interceptors';
+import { AuthorRdo } from './authors.rdo/author.rdo';
+import { AuthorsRdo } from './authors.rdo/authors.rdo';
 import { AuthorsService } from './authors.service';
 import { AuthorsApiDesc } from './authors.const';
-import { AuthorTransformInterceptor, AuthorNotFoundInterceptor, AuthorsTransformInterceptor } from './authors.interceptors';
 
+@ApiTags('Authors')
 @Controller('authors')
 export class AuthorsController {
   constructor(private readonly authorsService: AuthorsService) {}
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: AuthorsRdo,
     description: AuthorsApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(AuthorsTransformInterceptor)
+  @UseInterceptors(AuthorsTransform)
   public async findAll() {
     return this.authorsService.findAll();
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: AuthorRdo,
     description: AuthorsApiDesc.GetOne,
   })
   @Get(':id')
-  @UseInterceptors(AuthorTransformInterceptor, AuthorNotFoundInterceptor)
-  public async findOne(@Param('id') id: string) {
+  @UseInterceptors(AuthorTransform, AuthorNotFound)
+  public async findOne(@Param('id', MongoIdValidationPipe) id: string) {
     return this.authorsService.findOne(id);
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: AuthorRdo,
     description: AuthorsApiDesc.Remove,
   })
   @Delete(':id')
-  @UseInterceptors(AuthorTransformInterceptor, AuthorNotFoundInterceptor)
-  public async remove(@Param('id') id: string) {
+  @UseInterceptors(AuthorTransform, AuthorNotFound)
+  public async remove(@Param('id', MongoIdValidationPipe) id: string) {
     return this.authorsService.remove(id);
   }
 }

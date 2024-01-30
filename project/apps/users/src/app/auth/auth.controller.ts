@@ -1,11 +1,12 @@
 import { Controller, Get, Post, Patch, Body, HttpStatus, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ReqUser } from '@project/libs/shared/helpers';
+import { UserRdo } from '../users/users.rdo/user.rdo';
+import { AuthUserRdo } from './auth.rdo/auth-user.rdo';
 import { User } from '../users/user.entity';
 import { UserTransform } from '../users/users.interceptors';
-import { SinginUserDto } from './auth.dto/singin-user.dto';
 import { SingupUserDto } from './auth.dto/singup-user.dto';
-import { UpdateUserDto } from './auth.dto/update-user.dto';
+import { UpdatePasswordDto } from './auth.dto/update-password.dto';
 import { JwtAuthGuard } from './auth.guards/jwt-auth.guard';
 import { JwtRefreshGuard } from './auth.guards/jwt-refresh.guard';
 import { LocalAuthGuard } from './auth.guards/local-auth.guard';
@@ -22,6 +23,7 @@ export class AuthController {
   ) {}
 
   @ApiResponse({
+    type: UserRdo,
     status: HttpStatus.CREATED,
     description: AuthApiDesc.Create,
   })
@@ -32,13 +34,12 @@ export class AuthController {
     return this.authService.singup(dto);
   }
 
-  @ApiResponse({
-    type: SinginUserDto,
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: AuthUserRdo,
     description: AuthApiDesc.Login,
   })
   @ApiResponse({
-    type: SinginUserDto,
+    type: AuthUserRdo,
     status: HttpStatus.UNAUTHORIZED,
     description: AuthApiDesc.Unauthorized,
   })
@@ -50,8 +51,8 @@ export class AuthController {
     return this.authService.singin(user);
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: UserRdo,
     description: AuthApiDesc.ById,
   })
   @ApiResponse({
@@ -65,27 +66,27 @@ export class AuthController {
     return this.authService.getUser(userId);
   }
 
-  @ApiResponse({
-    type: UpdateUserDto,
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: UserRdo,
     description: AuthApiDesc.ById,
   })
-  @Patch('user')
+  @Patch('password')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(UserTransform, AuthUserNotFound)
-  public async updateUser(
+  public async updatePassword(
     @ReqUser('id') userId: string,
-    @Body() dto: UpdateUserDto
+    @Body() dto: UpdatePasswordDto,
   ) {
-    return this.authService.updateUser(userId, dto);
+    return this.authService.updateUserPassword(userId, dto);
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: AuthUserRdo,
     description: AuthApiDesc.RefreshToken,
   })
   @Post('refresh')
   @UseGuards(JwtRefreshGuard)
+  @UseInterceptors(AuthUserTransform)
   public async refresh(@ReqUser() user: User) {
     return this.authService.singin(user);
   }
