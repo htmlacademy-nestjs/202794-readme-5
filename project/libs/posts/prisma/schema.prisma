@@ -12,12 +12,14 @@ datasource db {
 }
 
 model Author {
-  id              String    @id @unique @db.Char(24)
-  createdAt       DateTime  @default(now()) @map("created_at")
-  ownersPosts     Post[]    @relation("PostOwner")
-  authorsPosts    Post[]    @relation("PostAuthor")
-  authorsComments Comment[] @relation("CommentAuthor")
-  authorsLikes    Like[]    @relation("LikeAuthor")
+  id                   String         @id @unique @db.Char(24)
+  createdAt            DateTime       @default(now()) @map("created_at")
+  ownersPosts          Post[]         @relation("PostOwner")
+  authorsPosts         Post[]         @relation("PostAuthor")
+  authorsComments      Comment[]      @relation("CommentAuthor")
+  authorsLikes         Like[]         @relation("LikeAuthor")
+  authorsSubscribers   Subscription[] @relation("SubscriptionAuthor")
+  authorsSubscriptions Subscription[] @relation("SubscriptionSubscriber")
 
   @@map("authors")
 }
@@ -93,4 +95,15 @@ model Like {
 
   @@id([authorId, postId])
   @@map("likes")
+}
+
+model Subscription {
+  authorId     String   @map("author_id") @db.Char(24)
+  author       Author   @relation("SubscriptionAuthor", fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subscriberId String   @map("subscriber_id") @db.Char(24)
+  subscriber   Author   @relation("SubscriptionSubscriber", fields: [subscriberId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subscribedAt DateTime @default(now())
+
+  @@id([authorId, subscriberId])
+  @@map("subscriptions")
 }

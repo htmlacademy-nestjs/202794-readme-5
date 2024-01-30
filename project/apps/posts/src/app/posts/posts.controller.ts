@@ -1,91 +1,90 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Query, UseInterceptors } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LimitValidationPipe, MongoIdValidationPipe, OffsetValidationPipe, PostStatusValidationPipe, PostTagsValidationPipe, PostTypeValidationPipe, PostsOrderValidationPipe, UUIDValidationPipe } from '@project/libs/shared/helpers';
-import { PostStatus, PostType, PostsOrder } from '@project/libs/shared/types';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors } from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { UUIDValidationPipe } from '@project/libs/shared/helpers';
+import { PostTransform, PostNotFound, DetailedPostTransform, PostsTransform } from './posts.interceptors';
 import { CreatePostDto } from './posts.dto/create-post.dto';
 import { UpdatePostDto } from './posts.dto/update-post.dto';
 import { RepostPostDto } from './posts.dto/repost-post.dto';
-import { PostTransformInterceptor, PostNotFoundInterceptor, DetailedPostTransformInterceptor, PostsTransformInterceptor } from './posts.interceptors';
+import { RemovePostDto } from './posts.dto/remove-post.dto';
+import { PostRdo, PostDetailedRdo } from './posts.rdo/post.rdo';
+import { PostsRdo } from './posts.rdo/posts.rdo';
 import { PostsService } from './posts.service';
 import { PostsApiDesc } from './posts.const';
+import { PostsQuery } from './posts.query';
 
 @ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
   constructor(
-    private readonly postsService: PostsService
+    private readonly postsService: PostsService,
   ) {}
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: PostsRdo,
     description: PostsApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(PostsTransformInterceptor)
-  public async findAll(
-    @Query('page', OffsetValidationPipe) page?: number,
-    @Query('offset', OffsetValidationPipe) offset?: number,
-    @Query('limit', LimitValidationPipe) limit?: number,
-    @Query('authorId', MongoIdValidationPipe) authorId?: string,
-    @Query('type', PostTypeValidationPipe) type?: PostType,
-    @Query('status', PostStatusValidationPipe) status?: PostStatus,
-    @Query('tags', PostTagsValidationPipe) tags?: string[],
-    @Query('order', PostsOrderValidationPipe) order?: PostsOrder,
-  ) {
-    return this.postsService.findAll({
-      page, offset, limit, authorId, type, tags, status, order,
-    });
+  @UseInterceptors(PostsTransform)
+  public async findAll(@Query() query: PostsQuery) {
+    return this.postsService.findAll(query);
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: PostRdo,
     description: PostsApiDesc.GetOne,
   })
   @Get(':id')
-  @UseInterceptors(PostTransformInterceptor, PostNotFoundInterceptor)
+  @UseInterceptors(PostTransform, PostNotFound)
   public async findOne(@Param('id', UUIDValidationPipe) id: string) {
     return this.postsService.findOne(id);
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: PostDetailedRdo,
     description: PostsApiDesc.GetOne,
   })
   @Get(':id/details')
-  @UseInterceptors(DetailedPostTransformInterceptor, PostNotFoundInterceptor)
+  @UseInterceptors(DetailedPostTransform, PostNotFound)
   public async findDetailedOne(@Param('id', UUIDValidationPipe) id: string) {
     return this.postsService.findOne(id);
   }
 
-  @ApiResponse({
-    type: RepostPostDto,
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: PostsRdo,
+    description: PostsApiDesc.Publish,
+  })
+  @Post('publish')
+  @UseInterceptors(PostsTransform)
+  public async publish(@Query() query: PostsQuery) {
+    return this.postsService.publish(query);
+  }
+
+  @ApiOkResponse({
+    type: PostDetailedRdo,
     description: PostsApiDesc.Repost,
   })
   @Post('repost')
-  @UseInterceptors(PostTransformInterceptor, PostNotFoundInterceptor)
+  @UseInterceptors(DetailedPostTransform, PostNotFound)
   public async repost(@Body() dto: RepostPostDto) {
     return this.postsService.repost(dto);
   }
 
-  @ApiResponse({
-    type: CreatePostDto,
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: PostRdo,
     description: PostsApiDesc.CreatePost,
   })
   @Post()
-  @UseInterceptors(PostTransformInterceptor)
+  @UseInterceptors(PostTransform)
   public async create(@Body() dto: CreatePostDto) {
     return this.postsService.create(dto);
   }
 
-  @ApiResponse({
-    type: UpdatePostDto,
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: PostRdo,
     description: PostsApiDesc.Update,
   })
   @Patch(':id')
-  @UseInterceptors(PostTransformInterceptor, PostNotFoundInterceptor)
+  @UseInterceptors(PostTransform, PostNotFound)
   public async update(
     @Param('id', UUIDValidationPipe) id: string,
     @Body() dto: UpdatePostDto,
@@ -93,13 +92,16 @@ export class PostsController {
     return this.postsService.update(id, dto);
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: PostRdo,
     description: PostsApiDesc.Remove,
   })
   @Delete(':id')
-  @UseInterceptors(PostTransformInterceptor, PostNotFoundInterceptor)
-  public async remove(@Param('id', UUIDValidationPipe) id: string) {
-    return this.postsService.remove(id);
+  @UseInterceptors(PostTransform, PostNotFound)
+  public async remove(
+    @Param('id', UUIDValidationPipe) id: string,
+    @Body() dto: RemovePostDto,
+  ) {
+    return this.postsService.remove(id, dto);
   }
 }

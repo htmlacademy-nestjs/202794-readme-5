@@ -1,10 +1,25 @@
 ###
-# Зарегистрировать нового пользователя
-POST http://localhost:3333/api/auth/singup HTTP/1.1
+# Регистрация нового пользователя
+POST http://localhost:3004/api/auth/singup HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "keks@domain.com",
+  "email": "keksidar@domain.com",
+  "firstname": "keksik",
+  "lastname": "keksikovich",
+  "password": "password",
+  "avatar": "avatar.jpg"
+}
+
+###
+# Регистрация доступна только анонимным клиентам
+# данный запрос должен вернуть 403 Forbidden
+POST http://localhost:3004/api/auth/singup HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWQ3NWU0NDY5MWVkOGRlN2FkMmQ5ZCIsImVtYWlsIjoia2Vrc0Bkb21haW4uY29tIiwiaWF0IjoxNzA2MzUxODkwLCJleHAiOjE3MDYzNTIxOTB9.3XnOYUVP2VumO4m7yhAtXM2T6MUuuwuR4wpZooJfM1k
+Content-Type: application/json
+
+{
+  "email": "keksos@domain.com",
   "firstname": "keksik",
   "lastname": "keksikovich",
   "password": "password",
@@ -13,41 +28,41 @@ Content-Type: application/json
 
 ###
 # Авторизовать пользователя
-POST http://localhost:3333/api/auth/singin HTTP/1.1
+POST http://localhost:3004/api/auth/singin HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "keks@domain.com",
+  "email": "keksidar@domain.com",
   "password": "password"
 }
 
 ###
 # Ошибка авторизации пользователя
-POST http://localhost:3333/api/auth/singin HTTP/1.1
+POST http://localhost:3004/api/auth/singin HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "keks@domain.com",
+  "email": "keksidar@domain.com",
   "password": "1234567"
 }
 
 ###
 # Вернуть текущего авторизованного пользователя (в заголовке передаем accessToken)
-GET http://localhost:3333/api/auth/user HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWQ2OTM2MDQwMWEwMTg4YmM0NDJhMiIsImVtYWlsIjoia2Vrc0Bkb21haW4uY29tIiwiaWF0IjoxNzA1ODYzNzU4LCJleHAiOjE3MDU4NjQwNTh9.XwzP1br8E-JP0EnhF0KRsWlH_uk10eFj6RqEngdGV5k
+GET http://localhost:3004/api/auth/user HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsImlhdCI6MTcwNjQ2ODQ4MywiZXhwIjoxNzA2NDY4NzgzfQ.YkzeFVWS4tHHJHbQHgrRbqWt6AQabZO-zQ5RzRGbVbk
 
 ###
 # Вернуть новый токен (в заголовке передаем refreshToken)
-POST http://localhost:3333/api/auth/refresh HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWQ2OTM2MDQwMWEwMTg4YmM0NDJhMiIsImVtYWlsIjoia2Vrc0Bkb21haW4uY29tIiwidG9rZW5JZCI6ImY2MGZlZmE0LWQwY2EtNGExZi05OTExLTc4MzI4YzBlY2UxNSIsImlhdCI6MTcwNTg2MzUwOCwiZXhwIjoxNzA4NDU1NTA4fQ.MWvz4nAcoRuX5Z0RSGlxAbzzCvd7QbTpfNes2UrIQu8
+POST http://localhost:3004/api/auth/refresh HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsInRva2VuSWQiOiJiMGJjMjI5MC0zM2E3LTRhOGMtOTM4MS1jOGRjZGJlYmY1ZTciLCJpYXQiOjE3MDY0NjkxODcsImV4cCI6MTcwOTA2MTE4N30.LsehpYCvePGwNDKN9HxhJWPueBFSGQKLA36DgbaNEHA
 
 ###
 # Изменить пароль авторизованного пользователя
-PATCH http://localhost:3333/api/auth/user HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YWQ2OTM2MDQwMWEwMTg4YmM0NDJhMiIsImVtYWlsIjoia2Vrc0Bkb21haW4uY29tIiwiaWF0IjoxNzA1ODY0NDA5LCJleHAiOjE3MDU4NjQ3MDl9.KQ42R4UXmawelbC6vdKKgYa8PfFjwrpWpnXruAlfm6A
+PATCH http://localhost:3004/api/auth/password HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjRlMmUwODUwMzBmMzg2YTU2MTk1YyIsImVtYWlsIjoia2Vrc2lkYXJAZG9tYWluLmNvbSIsImlhdCI6MTcwNjU0ODMwNiwiZXhwIjoxNzA2NTQ4NjA2fQ.KdbFgypjXPjX3x18LBhG0hXj-yQXs9Z_lSB901f65iE
 Content-Type: application/json
 
 {
-  "password": "password",
+  "password": "password2",
   "passwordNew": "password"
 }

@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, UseInterceptors } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
 import { MongoIdValidationPipe } from '@project/libs/shared/helpers';
+import { UserNotFound, UserTransform, UsersTransform } from './users.interceptors';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './users.dto/create-user.dto';
 import { UpdateUserDto } from './users.dto/update-user.dto';
-import { UserNotFound, UserTransform, UsersTransform } from './users.interceptors';
+import { UsersRdo } from './users.rdo/users.rdo';
+import { UserRdo } from './users.rdo/user.rdo';
 import { UsersApiDesc } from './users.const';
 
 @ApiTags('Users')
@@ -14,8 +16,8 @@ export class UsersController {
     private readonly usersService: UsersService
   ) {}
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: UsersRdo,
     description: UsersApiDesc.GetAll,
   })
   @Get()
@@ -24,8 +26,8 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: UserRdo,
     description: UsersApiDesc.GetOne,
   })
   @Get(':id')
@@ -34,9 +36,8 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @ApiResponse({
-    type: CreateUserDto,
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: UserRdo,
     description: UsersApiDesc.Create,
   })
   @Post()
@@ -45,9 +46,8 @@ export class UsersController {
     return this.usersService.create(dto);
   }
 
-  @ApiResponse({
-    type: UpdateUserDto,
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: UserRdo,
     description: UsersApiDesc.Update,
   })
   @Patch(':id')
@@ -59,8 +59,8 @@ export class UsersController {
     return this.usersService.update(id, dto);
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: UserRdo,
     description: UsersApiDesc.Remove,
   })
   @Delete(':id')
@@ -69,8 +69,8 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: Number,
     description: UsersApiDesc.Remove,
   })
   @Delete()

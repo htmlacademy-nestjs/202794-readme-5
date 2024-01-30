@@ -1,22 +1,36 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IPostLike } from '@project/libs/shared/types';
+import { IPagination, IPostLike } from '@project/libs/shared/types';
 import { LikesPropDesc } from '../likes.const';
+import { LikeRdo } from './like.rdo';
 
-export class LikeRdo implements Partial<IPostLike> {
-  @ApiProperty({ description: LikesPropDesc.AuthorId })
-  @Expose()
-  public authorId: string;
 
-  @ApiProperty({ description: LikesPropDesc.PostId })
+export class LikesRdo implements IPagination<IPostLike> {
+  @ApiProperty({ description: LikesPropDesc.Count })
   @Expose()
-  public postId: string;
+  public count: number;
 
-  @ApiProperty({ description: LikesPropDesc.CreatedAt })
+  @ApiProperty({
+    type: [LikeRdo],
+    description: LikesPropDesc.Count,
+  })
   @Expose()
-  public createdAt: Date;
+  @Type(() => LikeRdo)
+  public items: IPostLike[];
 
-  @ApiProperty({ description: LikesPropDesc.UpdatedAt })
+  @ApiProperty({ description: LikesPropDesc.Limit })
   @Expose()
-  public updatedAt: Date;
+  public limit?: number;
+
+  @ApiProperty({ description: LikesPropDesc.Offset })
+  @Expose()
+  public offset?: number;
+
+  @ApiProperty({ description: LikesPropDesc.Page })
+  @Expose()
+  public page?: number;
+
+  @ApiProperty({ description: LikesPropDesc.Pages })
+  @Expose()
+  public pages?: number;
 }

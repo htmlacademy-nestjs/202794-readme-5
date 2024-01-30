@@ -1,3 +1,8 @@
 export enum RabbitQueue {
-  NotifyIcome = 'readme.notify.income',
+  /** Зарегистрирован новый пользователь */
+  UserSingup = 'readme.notify.singup',
+  /** Пользователь подписался на рассылку */
+  UserSubscribe = 'readme.notify.subscribe',
+  /** Появились новые публикации */
+  PostsPublished = 'readme.notify.published',
 }

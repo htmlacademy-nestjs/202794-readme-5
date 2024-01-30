@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Body, Delete, HttpStatus, UseInterceptors, Query } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Delete, UseInterceptors, Query } from '@nestjs/common';
 import { MongoIdValidationPipe, UUIDValidationPipe } from '@project/libs/shared/helpers';
+import { LikeNotFound, LikeTransform, LikesTransform } from './likes.interceptors';
 import { LikesService } from './likes.service';
 import { CreateLikeDto } from './likes.dto/create-like.dto';
 import { RemoveLikeDto } from './likes.dto/remove-like.dto';
+import { LikeRdo } from './likes.rdo/like.rdo';
+import { LikesRdo } from './likes.rdo/likes.rdo';
 import { LikesApiDesc } from './likes.const';
-import { LikeNotFoundInterceptor, LikeTransformInterceptor, LikesTransformInterceptor } from './likes.interceptors';
 
 @ApiTags('Likes')
 @Controller('likes')
@@ -14,12 +16,12 @@ export class LikesController {
     private readonly likesService: LikesService
   ) {}
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: LikesRdo,
     description: LikesApiDesc.GetAll,
   })
   @Get()
-  @UseInterceptors(LikesTransformInterceptor)
+  @UseInterceptors(LikesTransform)
   public async findAll(
     @Query('postId', UUIDValidationPipe) postId: string,
     @Query('authorId', MongoIdValidationPipe) authorId: string,
@@ -27,24 +29,22 @@ export class LikesController {
     return this.likesService.findAll({ postId, authorId });
   }
 
-  @ApiResponse({
-    type: CreateLikeDto,
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: LikeRdo,
     description: LikesApiDesc.Create,
   })
   @Post()
-  @UseInterceptors(LikeTransformInterceptor)
+  @UseInterceptors(LikeTransform)
   public async create(@Body() dto: CreateLikeDto) {
     return this.likesService.create(dto);
   }
 
-  @ApiResponse({
-    type: RemoveLikeDto,
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    type: LikeRdo,
     description: LikesApiDesc.Remove,
   })
   @Delete()
-  @UseInterceptors(LikeTransformInterceptor, LikeNotFoundInterceptor)
+  @UseInterceptors(LikeTransform, LikeNotFound)
   public async remove(@Body() dto: RemoveLikeDto) {
     return this.likesService.remove(dto);
   }

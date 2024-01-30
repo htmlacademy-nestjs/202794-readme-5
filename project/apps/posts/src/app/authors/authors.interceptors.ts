@@ -1,12 +1,13 @@
-import { NotFoundInterceptor, TransformInterceptor, TransformPaginationInterceptor } from '@project/libs/shared/helpers';
+import { NotFoundInterceptor, TransformInterceptor } from '@project/libs/shared/helpers';
 import { AuthorRdo } from './authors.rdo/author.rdo';
-import { AuthorsErrorMessage, AuthorsGroups } from './authors.const';
+import { AuthorsErrorMessage } from './authors.const';
+import { AuthorsRdo } from './authors.rdo/authors.rdo';
 
-export const AuthorNotFoundInterceptor =
+export const AuthorNotFound =
   new NotFoundInterceptor(AuthorsErrorMessage.AuthorNotFound);
 
-export const AuthorTransformInterceptor =
-  new TransformInterceptor(AuthorRdo, { groups: [AuthorsGroups.Detailed] });
+export const AuthorTransform =
+  new TransformInterceptor(AuthorRdo);
 
-export const AuthorsTransformInterceptor =
-  new TransformPaginationInterceptor(AuthorRdo, { groups: [AuthorsGroups.Detailed] });
+export const AuthorsTransform =
+  new TransformInterceptor(AuthorsRdo);

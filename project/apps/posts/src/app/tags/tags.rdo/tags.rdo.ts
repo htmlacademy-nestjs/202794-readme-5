@@ -1,22 +1,36 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IPostTag } from '@project/libs/shared/types';
+import { IPagination, IPostTag } from '@project/libs/shared/types';
 import { TagsPropDesc } from '../tags.const';
+import { TagRdo } from './tag.rdo';
+;
 
-export class TagRdo implements Partial<IPostTag> {
-  @ApiProperty({ description: TagsPropDesc.TagId })
+export class TagsRdo implements IPagination<IPostTag> {
+  @ApiProperty({ description: TagsPropDesc.Count })
   @Expose()
-  public id: string;
+  public count: number;
 
-  @ApiProperty({ description: TagsPropDesc.CreatedAt })
+  @ApiProperty({
+    type: [TagRdo],
+    description: TagsPropDesc.Count,
+  })
   @Expose()
-  public createdAt: Date;
+  @Type(() => TagRdo)
+  public items: IPostTag[];
 
-  @ApiProperty({ description: TagsPropDesc.UpdatedAt })
+  @ApiProperty({ description: TagsPropDesc.Limit })
   @Expose()
-  public updatedAt: Date;
+  public limit?: number;
 
-  @ApiProperty({ description: TagsPropDesc.Text })
+  @ApiProperty({ description: TagsPropDesc.Offset })
   @Expose()
-  public text: string;
+  public offset?: number;
+
+  @ApiProperty({ description: TagsPropDesc.Page })
+  @Expose()
+  public page?: number;
+
+  @ApiProperty({ description: TagsPropDesc.Pages })
+  @Expose()
+  public pages?: number;
 }

@@ -8,6 +8,11 @@ export enum LikesPropDesc {
   UpdatedAt = 'Date of updating',
   AuthorId = 'The ID of the author of the like',
   PostId = 'The ID of the post of the like',
+  Offset = 'Skit the number of items',
+  Limit = 'Limit the number of items',
+  Count = 'Total items count',
+  Page = 'Page number',
+  Pages = 'Total number of pages',
 }
 
 export enum LikesApiDesc {

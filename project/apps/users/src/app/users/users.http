@@ -1,29 +1,39 @@
 ###
 # Получить список всех пользователей
-GET http://localhost:3333/api/users HTTP/1.1
+GET http://localhost:3004/api/users HTTP/1.1
 
 ###
 # Создать пользователя
-POST http://localhost:3333/api/users HTTP/1.1
+POST http://localhost:3004/api/users HTTP/1.1
 Content-Type: application/json
 
 {
-  "_id": "6586f5d2178712d97016e877",
-  "email": "keks@domain.com",
-  "login": "keksik",
-  "firstname": "Kot Keks",
-  "lastname": "Keksovish",
+  "email": "keksid@domain.com",
+  "firstname": "keksik",
+  "lastname": "keksikovich",
   "password": "password",
   "avatar": "avatar.jpg"
 }
 
 ###
+# Создать пользователя (ошибки валидации)
+POST http://localhost:3004/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstname": "a",
+  "lastname": "b",
+  "password": "c",
+  "avatar": "avatar.jpg"
+}
+
+###
 # Вернуть данные пользователя
-GET http://localhost:3333/api/users/65a589ee18f4c77f59abd5ee HTTP/1.1
+GET http://localhost:3004/api/users/65a589ee18f4c77f59abd5ee HTTP/1.1
 
 ###
 # Обновить данные пользователя
-PATCH http://localhost:3333/api/users/6586f5d2178712d97016e877 HTTP/1.1
+PATCH http://localhost:3004/api/users/65a589ee18f4c77f59abd5ee HTTP/1.1
 Content-Type: application/json
 
 {
@@ -33,8 +43,8 @@ Content-Type: application/json
 
 ###
 # Удалить пользователя
-DELETE http://localhost:3333/api/users/6586f5d2178712d97016e877 HTTP/1.1
+DELETE http://localhost:3004/api/users/6586f5d2178712d97016e877 HTTP/1.1
 
 ###
 # Удалить всех пользователей
-DELETE http://localhost:3333/api/users HTTP/1.1
+DELETE http://localhost:3004/api/users HTTP/1.1

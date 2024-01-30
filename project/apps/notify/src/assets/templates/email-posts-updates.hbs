@@ -1,0 +1,20 @@
+<h3>Новые публикации</b></h3>
+<br>
+  <ul>
+    {{#each posts}}
+      <li>
+        <p>{{publishAt}} <b>{{postType}}</b></p>
+        {{#if payload.title}}
+          <h3>{{payload.title}}</h3>
+        {{/if}}
+        {{#if taggedBy}}
+          <p>
+            {{#each taggedBy}}
+              <b>{{this}}</b>
+            {{/each}}
+          </p>
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+<br>

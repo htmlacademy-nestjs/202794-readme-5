@@ -7,7 +7,11 @@ import { PostsPropDesc } from '../posts.const';
 import { PAYLOAD_DTO_BY_POST_TYPE } from './create-payload';
 
 export class CreatePostDto implements Partial<IPost> {
-  @ApiProperty({ description: PostsPropDesc.PostType })
+  @ApiProperty({
+    enum: PostType,
+    enumName: 'PostType',
+    description: PostsPropDesc.PostType
+  })
   @IsEnum(PostType)
   public postType: PostTypes;
 

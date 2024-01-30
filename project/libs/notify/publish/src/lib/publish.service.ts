@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { RabbitRouting } from '@project/libs/shared/types';
 import { rabbitConfig } from '@project/libs/config/rabbit';
-import { PublishPostDto } from './publish.dto/publish-post.dto';
+import { PublishPostsDto } from './publish.dto/publish-posts.dto';
 import { SingupUserDto } from './publish.dto/singup-user.dto';
 import { SubscribeUserDto } from './publish.dto/subscribe-user.dto';
 
@@ -27,7 +27,7 @@ export class PublishService {
     return this.publish(RabbitRouting.UserSubscribe, dto);
   }
 
-  public async notifyPostPublish(dto: PublishPostDto) {
+  public async notifyPostsPublish(dto: PublishPostsDto) {
     return this.publish(RabbitRouting.PostsPublished, dto);
   }
 }

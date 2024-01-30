@@ -8,7 +8,7 @@ export abstract class MongoRepository<T extends IEntity> implements IRepository<
   protected readonly model: Model<T>;
 
   constructor(
-    public EntityClass: ClassConstructor<T>
+    protected readonly EntityClass: ClassConstructor<T>,
   ) {}
 
   @ToEntity()

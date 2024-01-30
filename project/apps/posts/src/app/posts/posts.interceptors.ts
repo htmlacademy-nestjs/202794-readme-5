@@ -1,16 +1,16 @@
-import { NotFoundInterceptor, TransformInterceptor, TransformPaginationInterceptor } from '@project/libs/shared/helpers';
-import { PostRdo } from './posts.rdo/post.rdo';
+import { NotFoundInterceptor, TransformInterceptor } from '@project/libs/shared/helpers';
+import { PostRdo, PostDetailedRdo } from './posts.rdo/post.rdo';
 import { PostsErrorMessage } from './posts.const';
-import { PostsGroups } from './posts.filters';
+import { PostsRdo } from './posts.rdo/posts.rdo';
 
-export const PostNotFoundInterceptor =
+export const PostNotFound =
   new NotFoundInterceptor(PostsErrorMessage.PostNotFound);
 
-export const PostTransformInterceptor =
+export const PostTransform =
   new TransformInterceptor(PostRdo);
 
-export const PostsTransformInterceptor =
-  new TransformPaginationInterceptor(PostRdo);
+export const PostsTransform =
+  new TransformInterceptor(PostsRdo);
 
-export const DetailedPostTransformInterceptor =
-  new TransformInterceptor(PostRdo, { groups: [PostsGroups.Detailed] });
+export const DetailedPostTransform =
+  new TransformInterceptor(PostDetailedRdo);

@@ -28,6 +28,13 @@ export enum PostsPropDesc {
   PostLinkDesc = 'Post\'s link description',
   CommentsCount = 'Post\'s comments count',
   LikesCount = 'Post\'s likes count',
+  Order = 'Posts order',
+  Offset = 'Skit the number of posts',
+  Limit = 'Limit the number of posts',
+  Count = 'Total items count',
+  Page = 'Page number',
+  Pages = 'Total number of pages',
+  Since = 'Posts publish date filter',
 }
 
 export enum PostsApiDesc {
@@ -42,4 +49,5 @@ export enum PostsApiDesc {
   Remove = 'Delete post by id',
   Update = 'Update post data by id',
   Repost = 'Repost post',
+  Publish = 'Publish last update',
 }

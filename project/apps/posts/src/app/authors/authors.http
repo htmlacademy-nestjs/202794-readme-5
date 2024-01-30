@@ -1,11 +1,11 @@
 ###
 # Вернуть список всех авторов публикаций
-GET http://localhost:3001/api/authors HTTP/1.1
+GET http://localhost:3002/api/authors HTTP/1.1
 
 ###
 # Вернуть автора по id
-GET http://localhost:3001/api/authors/6592f0897aff7a3e3bc4d173 HTTP/1.1
+GET http://localhost:3002/api/authors/6592f0897aff7a3e3bc4d173 HTTP/1.1
 
 ###
 # Удалить автора и связанные с ним публикации и комментарий по id
-DELETE http://localhost:3001/api/authors/6592f0897aff7a3e3bc4d173 HTTP/1.1
+DELETE http://localhost:3002/api/authors/6592f0897aff7a3e3bc4d173 HTTP/1.1

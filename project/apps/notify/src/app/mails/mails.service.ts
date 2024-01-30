@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { ISubscriber } from '@project/libs/shared/types';
+import { IPost, ISubscriber } from '@project/libs/shared/types';
 import { SendMailDto } from './mails.dto/send-mail.dto';
 import { MailBlank } from './mails.templates/mail-blank';
 import { MailSingup } from './mails.templates/mail-singup';
 import { MailSubscription } from './mails.templates/mail-subscription';
+import { MailPostsUpdates } from './mails.templates/mail-posts-updates';
 
 @Injectable()
 export class MailsService {
@@ -33,6 +34,12 @@ export class MailsService {
 
     return this.mailerService.sendMail(
       new MailSingup({ to, context }),
+    );
+  }
+
+  public async sendPostsUpdatesMail(context: { posts: IPost[] }) {
+    return this.mailerService.sendMail(
+      new MailPostsUpdates({ to: 'readme@mail.local', context }),
     );
   }
 }

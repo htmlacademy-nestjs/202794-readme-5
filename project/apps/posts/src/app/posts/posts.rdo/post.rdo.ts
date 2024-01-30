@@ -1,22 +1,13 @@
 import { Expose, Type, Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IPost, PostPayload, PostTypes, PostStatuses } from '@project/libs/shared/types';
+import { IPost, PostPayload, PostType, PostTypes, PostStatuses, PostStatus } from '@project/libs/shared/types';
 import { PostsPropDesc } from '../posts.const';
-import { PostsGroups } from '../posts.filters';
 import { PAYLOAD_RDO_BY_POST_TYPE } from './post-payload';
 
-export class PostRdo implements IPost {
+export class PostRdo implements Partial<IPost> {
   @ApiProperty({ description: PostsPropDesc.PostId })
   @Expose()
   public id: string;
-
-  @ApiProperty({ description: PostsPropDesc.CreatedAt })
-  @Expose({ groups: [PostsGroups.Detailed] })
-  public createdAt: Date;
-
-  @ApiProperty({ description: PostsPropDesc.UpdatedAt })
-  @Expose({ groups: [PostsGroups.Detailed] })
-  public updatedAt: Date;
 
   @ApiProperty({ description: PostsPropDesc.PublishAt })
   @Expose()
@@ -26,23 +17,19 @@ export class PostRdo implements IPost {
   @Expose()
   public authorId: string;
 
-  @ApiProperty({ description: PostsPropDesc.OwnerId })
-  @Expose({ groups: [PostsGroups.Detailed] })
-  public ownerId?: string;
-
-  @ApiProperty({ description: PostsPropDesc.OwnerPostId })
-  @Expose({ groups: [PostsGroups.Detailed] })
-  public ownerPostId?: string;
-
-  @ApiProperty({ description: PostsPropDesc.Reposted })
-  @Expose({ groups: [PostsGroups.Detailed] })
-  public reposted: boolean;
-
-  @ApiProperty({ description: PostsPropDesc.PostType })
+  @ApiProperty({
+    enum: PostType,
+    enumName: 'PostType',
+    description: PostsPropDesc.PostType,
+  })
   @Expose()
   public postType: PostTypes;
 
-  @ApiProperty({ description: PostsPropDesc.PostStatus })
+  @ApiProperty({
+    enum: PostStatus,
+    enumName: 'PostStatus',
+    description: PostsPropDesc.PostStatus,
+  })
   @Expose()
   public postStatus: PostStatuses;
 
@@ -61,8 +48,33 @@ export class PostRdo implements IPost {
   @Transform(({ obj }) => obj.tags?.map(tag => tag.text))
   public taggedBy?: string[];
 
-  @ApiProperty({ description: PostsPropDesc.PostPayload })
+  @ApiProperty({
+    type: Object,
+    description: PostsPropDesc.PostPayload,
+  })
   @Expose()
   @Type(({ object }) => PAYLOAD_RDO_BY_POST_TYPE[object.postType] || null)
   public payload?: PostPayload;
+}
+
+export class PostDetailedRdo extends PostRdo {
+  @ApiProperty({ description: PostsPropDesc.CreatedAt })
+  @Expose()
+  public createdAt: Date;
+
+  @ApiProperty({ description: PostsPropDesc.UpdatedAt })
+  @Expose()
+  public updatedAt: Date;
+
+  @ApiProperty({ description: PostsPropDesc.OwnerId })
+  @Expose()
+  public ownerId?: string;
+
+  @ApiProperty({ description: PostsPropDesc.OwnerPostId })
+  @Expose()
+  public ownerPostId?: string;
+
+  @ApiProperty({ description: PostsPropDesc.Reposted })
+  @Expose()
+  public reposted: boolean;
 }

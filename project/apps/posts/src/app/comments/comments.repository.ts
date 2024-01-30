@@ -1,13 +1,22 @@
-import { NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { IPagination } from '@project/libs/shared/types';
 import { PostgresRepository } from '@project/libs/shared/core';
+import { PrismaClientService } from '@project/libs/shared/prisma';
 import { ICommentsFilters, getCommentsFilters } from './comments.filters';
 import { CreateCommentDto } from './comments.dto/create-comment.dto';
 import { UpdateCommentDto } from './comments.dto/update-comment.dto';
+import { RemoveCommentDto } from './comments.dto/remove-comment.dto';
 import { CommentsErrorMessage } from './comments.const';
 import { Comment } from './comment.entity';
 
+@Injectable()
 export class CommentsRepository extends PostgresRepository<Comment> {
+  public constructor(
+    protected readonly client: PrismaClientService
+  ) {
+    super(client, Comment)
+  }
+
   public async findAll(filters?: ICommentsFilters): Promise<IPagination<Comment>> {
     const { take, skip, where, orderBy } = getCommentsFilters(filters);
 
@@ -54,12 +63,15 @@ export class CommentsRepository extends PostgresRepository<Comment> {
   }
 
   public async update(id: string, data: UpdateCommentDto): Promise<Comment> {
-    return this.client.comment.update({ where: { id },
+    return this.client.comment.update({
+      where: { id, authorId: data.authorId, postId: data.postId },
       data: { message: data.message },
     });
   }
 
-  public async remove(id: string): Promise<Comment> {
-    return this.client.comment.delete({ where: { id } });
+  public async remove(id: string, data?: RemoveCommentDto): Promise<Comment> {
+    return this.client.comment.delete({
+      where: { id, authorId: data.authorId, postId: data.postId },
+    });
   }
 }

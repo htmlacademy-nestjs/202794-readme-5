@@ -15,16 +15,22 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@project/libs/config/api": ["libs/config/api/src/index.ts"],
+      "@project/libs/config/mongo": ["libs/config/mongo/src/index.ts"],
       "@project/libs/config/notify": ["libs/config/notify/src/index.ts"],
       "@project/libs/config/posts": ["libs/config/posts/src/index.ts"],
       "@project/libs/config/rabbit": ["libs/config/rabbit/src/index.ts"],
+      "@project/libs/config/storage": ["libs/config/storage/src/index.ts"],
       "@project/libs/config/users": ["libs/config/users/src/index.ts"],
       "@project/libs/notify/publish": ["libs/notify/publish/src/index.ts"],
+      "@project/libs/posts/clients": ["libs/posts/clients/src/index.ts"],
       "@project/libs/posts/prisma": ["libs/posts/prisma/src/index.ts"],
       "@project/libs/shared/core": ["libs/shared/core/src/index.ts"],
       "@project/libs/shared/helpers": ["libs/shared/helpers/src/index.ts"],
       "@project/libs/shared/prisma": ["libs/shared/prisma/src/index.ts"],
-      "@project/libs/shared/types": ["libs/shared/types/src/index.ts"]
+      "@project/libs/shared/types": ["libs/shared/types/src/index.ts"],
+      "@project/libs/storage/clients": ["libs/storage/clients/src/index.ts"],
+      "@project/libs/users/clients": ["libs/users/clients/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

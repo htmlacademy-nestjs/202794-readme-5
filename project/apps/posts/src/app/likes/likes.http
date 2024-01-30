@@ -1,18 +1,18 @@
 ###
 # Вернуть список лайков к публикациям
-GET http://localhost:3001/api/likes HTTP/1.1
+GET http://localhost:3002/api/likes HTTP/1.1
 
 ###
 # Вернуть список лайков к публикациям по автору лайка
-GET http://localhost:3001/api/likes?authorId=6593d612e421b6051f1dd9c5 HTTP/1.1
+GET http://localhost:3002/api/likes?authorId=6593d612e421b6051f1dd9c5 HTTP/1.1
 
 ###
 # Вернуть список лайков к публикации
-GET http://localhost:3001/api/likes?postId=cecab48e-a952-11ee-817e-0242ac130002 HTTP/1.1
+GET http://localhost:3002/api/likes?postId=cecab48e-a952-11ee-817e-0242ac130002 HTTP/1.1
 
 ###
 # Создать лайк к публикации
-POST http://localhost:3001/api/likes HTTP/1.1
+POST http://localhost:3002/api/likes HTTP/1.1
 Content-Type: application/json
 
 {
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 # Создать лайк к публикации которая находится в черновике
-POST http://localhost:3001/api/likes HTTP/1.1
+POST http://localhost:3002/api/likes HTTP/1.1
 Content-Type: application/json
 
 {
@@ -32,7 +32,7 @@ Content-Type: application/json
 
 ###
 # Удалить лайк к публикации
-DELETE http://localhost:3001/api/likes HTTP/1.1
+DELETE http://localhost:3002/api/likes HTTP/1.1
 Content-Type: application/json
 
 {

@@ -26,8 +26,13 @@ npm i
 npx nx run posts:serve
 ```
 
+Запуск приложения с генерацией REST API клиета:
+
+```bash
+npx nx run posts:serve:generate_client
+```
+
 5. Сервисы:
 
-- `http://localhost:3003/api/post` - `post` api
-- `http://localhost:3003/api/spec` - swagger ui
-- `http://localhost:8082/` - pgAdmin ui
+- `http://localhost:3002/api/spec` - posts api spec
+- `http://localhost:8082/` - ui pgAdmin (username: `admin`, password: `test`)
