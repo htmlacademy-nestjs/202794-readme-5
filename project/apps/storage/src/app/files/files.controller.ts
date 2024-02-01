@@ -1,11 +1,12 @@
 import { Controller, Get, Post, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { MulterFile } from '@project/libs/shared/types';
+import { IFile } from '@project/libs/shared/types';
 import { MongoIdValidationPipe } from '@project/libs/shared/helpers';
 import { FileNotFound, FileTransform, FilesTransform } from './files.interceptors';
 import { FilesRdo } from './files.rdo/files.rdo';
 import { FileRdo } from './files.rdo/file.rdo';
+import { SaveFilePipe } from './files.pipes/save-file.pipe';
 import { FilesService } from './files.service';
 import { FilesApiDesc } from './files.const';
 
@@ -22,8 +23,8 @@ export class FilesController {
   })
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  public async upload(@UploadedFile() file: MulterFile) {
-    return this.filesService.upload(file);
+  public async upload(@UploadedFile(SaveFilePipe) file: IFile) {
+    return this.filesService.create(file);
   }
 
   @ApiOkResponse({

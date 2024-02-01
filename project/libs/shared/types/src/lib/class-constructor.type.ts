@@ -1,3 +1,3 @@
 export type ClassConstructor<T> = {
-  new (...args: any[]): T;
+  new (...args: unknown[]): T;
 };

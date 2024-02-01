@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { isMongoId, isNotEmptyObject, isDateString, isDate } from 'class-validator';
+import { isMongoId, isNotEmptyObject } from 'class-validator';
 import { PostStatus, PostType, PostsOrder, isPostStatus, isPostType, isPostsOrder } from '@project/libs/shared/types';
 
 export interface IPostsFilters {
@@ -31,7 +31,7 @@ export const MAX_POSTS_SEARCH_LIMIT = 20;
 export function getPostsFilters(filters?: IPostsFilters) {
   let take = MAX_POSTS_LIMIT;
   let skip = 0;
-  let where: Prisma.PostWhereInput = { postStatus: PostStatus.Published };
+  const where: Prisma.PostWhereInput = { postStatus: PostStatus.Published };
   let orderBy: Prisma.PostOrderByWithRelationInput = { publishAt: 'desc' };
 
   if (isNotEmptyObject(filters)) {

@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsOptional, IsUrl, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { ILinkPayload } from '@project/libs/shared/types';
-import { PostsPropDesc } from '../../posts.const';
+import { LINK_DESC_MAX_LENGTH, PostsPropDesc } from '../../posts.const';
 
 export class CreateLinkPayloadDto implements ILinkPayload {
   @ApiProperty({
@@ -13,7 +13,7 @@ export class CreateLinkPayloadDto implements ILinkPayload {
   public url: string;
 
   @ApiProperty({ description: PostsPropDesc.PostLinkDesc })
-  @MaxLength(300)
+  @MaxLength(LINK_DESC_MAX_LENGTH)
   @IsNotEmpty()
   @IsOptional()
   public desc: string;

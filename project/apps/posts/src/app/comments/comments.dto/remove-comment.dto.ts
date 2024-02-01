@@ -1,7 +1,6 @@
 import { IsMongoId, IsOptional, IsUUID } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IPostComment } from '@project/libs/shared/types';
-import { IsPostComment } from '@project/libs/shared/helpers';
 import { CommentsPropDesc } from '../comments.const';
 
 export class RemoveCommentDto implements Partial<IPostComment> {

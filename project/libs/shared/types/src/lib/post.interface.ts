@@ -1,10 +1,8 @@
-import { Prisma } from '@prisma/client';
 import { PostStatuses } from './post-status.enum';
 import { PostTypes } from './post-type.enum';
 import { IPostComment } from './post-comment.interface';
 import { IPostTag } from './post-tag.interface';
 import { IPostLike } from './post-like.interface';
-import { JsonObject, JsonValue } from './json-object';
 
 export interface IPost {
   id?: string;

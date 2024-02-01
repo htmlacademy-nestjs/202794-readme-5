@@ -19,8 +19,8 @@ export const MAX_COMMENTS_LIMIT = 50;
 export function getCommentsFilters(filters?: ICommentsFilters) {
   let take = MAX_COMMENTS_LIMIT;
   let skip = 0;
-  let where: Prisma.CommentWhereInput = {};
-  let orderBy: Prisma.CommentOrderByWithRelationInput = { createdAt: 'desc' };
+  const where: Prisma.CommentWhereInput = {};
+  const orderBy: Prisma.CommentOrderByWithRelationInput = { createdAt: 'desc' };
 
   if (isNotEmptyObject(filters)) {
     if (filters.limit > 0) {
