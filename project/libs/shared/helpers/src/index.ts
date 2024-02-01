@@ -10,6 +10,7 @@ export * from './lib/pipes/avatar-file-validation.pipe';
 export * from './lib/pipes/mongo-id-validation.pipe';
 export * from './lib/pipes/photo-file-validation.pipe';
 export * from './lib/pipes/uuid-validation.pipe';
+export * from './lib/pipes/write-file.pipe';
 export * from './lib/validators/is-post-comment';
 export * from './lib/validators/is-post-tag';
 export * from './lib/validators/is-post-tags';
