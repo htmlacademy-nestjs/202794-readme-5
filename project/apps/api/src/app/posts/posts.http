@@ -54,7 +54,7 @@ Content-Type: application/json
 ###
 # ✅ Cоздание новой публикации типа «Фото»
 POST http://localhost:3000/api/posts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjdkN2FjOGU2ZWQ2ZjVkNDA0N2QxZiIsImVtYWlsIjoiaXZhbkBkb21haW4uY29tIiwiaWF0IjoxNzA2NjAwOTExLCJleHAiOjE3MDY2MDEyMTF9.kBSOyM2At3ysySIYGcK3xAogA0NbXJwHmZuGoTPsLJI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmJiNjZhOGNjMzQ5NTU0YmFlMzQwYyIsImVtYWlsIjoiaXZhbm92MzNAZG9tYWluLmNvbSIsImlhdCI6MTcwNjgwMDc2NCwiZXhwIjoxNzA2ODAxMDY0fQ.U_SiTxlemLNV-UqjjPoD-CmYdq5lsgaoHUNwZak44xg
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -70,10 +70,10 @@ Content-Disposition: form-data; name="taggedBy"
 
 lifestyle
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="photo"; filename="cat.jpg"
+Content-Disposition: form-data; name="photo"; filename="rock.jpg"
 Content-Type: image/jpg
 
-< ../../../../../markup/img/cat.jpg
+< ../../../../../../markup/img/rock.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
