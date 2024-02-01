@@ -1,6 +1,6 @@
 import type { Request } from 'express';
 import { Body, Controller, Get, Param, Patch, Post, Req, UseFilters, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
-import { AvatarFileValidationPipe, AxiosExceptionFilter, MongoIdValidationPipe, ReqUser } from '@project/libs/shared/helpers';
+import { AvatarFileValidationPipe, AxiosExceptionFilter, MongoIdValidationPipe } from '@project/libs/shared/helpers';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { SingupUserDto, UpdatePasswordDto } from '@project/libs/users/clients';
 import { MulterFile } from '@project/libs/shared/types';

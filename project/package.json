@@ -13,6 +13,7 @@
     "d:c:users": "docker compose --file ./apps/users/docker-compose.dev.yml --project-name \"readme-users\" up -d",
     "g:r:posts": "nx generate @nx/nest:resource --project=posts",
     "g:r:notify": "nx generate @nx/nest:resource --project=notify",
+    "lint": "nx run-many --parallel --target=lint",
     "build": "nx run-many --parallel --target=build --projects=api,notify,posts,storage,users",
     "serve": "nx run-many --parallel --target=serve --projects=api,notify,posts,storage,users",
     "serve:api": "nx run api:serve",

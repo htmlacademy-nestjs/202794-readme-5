@@ -38,9 +38,9 @@ export async function generateSwaggerClient(options: SwaggerSpecOptions) {
     const command = [
       `npx openapi-generator-cli generate`,
       `-g typescript-axios`,
-      `-i \"${inputPath}\"`,
-      `-o \"${outputPath}\"`,
-      `--additional-properties=\"${[
+      `-i "${inputPath}"`,
+      `-o "${outputPath}"`,
+      `--additional-properties="${[
         'apiModulePrefix=api',
         'apiPackage=clients',
         'enumNameSuffix=""',
@@ -50,7 +50,7 @@ export async function generateSwaggerClient(options: SwaggerSpecOptions) {
         'useSingleRequestParameter=true',
         'withoutPrefixEnums=true',
         'withSeparateModelsAndApi=true',
-      ].join(',')}\"`,
+      ].join(',')}"`,
       `--skip-validate-spec`,
     ].join(' ');
 

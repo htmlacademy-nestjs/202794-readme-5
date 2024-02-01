@@ -2,8 +2,8 @@ import { randomUUID } from 'node:crypto';
 import { CallHandler, ExecutionContext, Logger, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
-export class RequestIdInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+export class RequestIdInterceptor<T = unknown> implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler<T>): Observable<T> {
     const requestId = randomUUID();
     const request = context.switchToHttp().getRequest<Request>();
     const { method, url } = request;

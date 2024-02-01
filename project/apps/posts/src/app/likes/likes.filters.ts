@@ -9,7 +9,7 @@ export interface ILikesFilters {
 }
 
 export function getLikesFilters(filters?: ILikesFilters) {
-  let where: Prisma.LikeWhereInput = {};
+  const where: Prisma.LikeWhereInput = {};
 
   if (isNotEmptyObject(filters)) {
     if (isMongoId(filters.authorId)) {

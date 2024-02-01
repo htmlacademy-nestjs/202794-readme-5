@@ -35,7 +35,7 @@ npx nx run posts:db:seed
 
 echo "Запускаем приложения"
 npm run build
-npm run start
+npm run serve
 ```
 
 Отдельные комманды запуска сервисов в dev-режиме:

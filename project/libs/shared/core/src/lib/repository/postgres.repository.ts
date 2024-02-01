@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PrismaClientService } from '@project/libs/shared/prisma';
 import { ClassConstructor, IPagination } from '@project/libs/shared/types';
 import { IEntity, EntityId } from './entity.interface';
