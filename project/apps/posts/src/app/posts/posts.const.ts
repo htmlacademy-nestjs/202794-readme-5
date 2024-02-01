@@ -51,3 +51,20 @@ export enum PostsApiDesc {
   Repost = 'Repost post',
   Publish = 'Publish last update',
 }
+
+export const VIDEO_TITLE_MAX_LENGTH = 50;
+export const VIDEO_TITLE_MIN_LENGTH = 20;
+
+export const TEXT_TITLE_MAX_LENGTH = 50;
+export const TEXT_TITLE_MIN_LENGTH = 20;
+export const TEXT_PREVIEW_MAX_LENGTH = 255;
+export const TEXT_PREVIEW_MIN_LENGTH = 50;
+export const TEXT_CONTENT_MAX_LENGTH = 1024;
+export const TEXT_CONTENT_MIN_LENGTH = 100;
+
+export const QUOTE_CONTENT_MAX_LENGTH = 300;
+export const QUOTE_CONTENT_MIN_LENGTH = 20;
+export const QUOTE_AUTHOR_MAX_LENGTH = 50;
+export const QUOTE_AUTHOR_MIN_LENGTH = 3;
+
+export const LINK_DESC_MAX_LENGTH = 300;

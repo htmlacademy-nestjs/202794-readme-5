@@ -1,15 +1,15 @@
 import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { ITextPayload } from '@project/libs/shared/types';
-import { PostsPropDesc } from '../../posts.const';
+import { PostsPropDesc, TEXT_CONTENT_MAX_LENGTH, TEXT_CONTENT_MIN_LENGTH, TEXT_PREVIEW_MAX_LENGTH, TEXT_PREVIEW_MIN_LENGTH, TEXT_TITLE_MAX_LENGTH, TEXT_TITLE_MIN_LENGTH } from '../../posts.const';
 
 export class CreateTextPayloadDto implements ITextPayload  {
   @ApiProperty({
     description: PostsPropDesc.PostTitle,
     required: true,
   })
-  @MaxLength(50)
-  @MinLength(20)
+  @MaxLength(TEXT_TITLE_MAX_LENGTH)
+  @MinLength(TEXT_TITLE_MIN_LENGTH)
   @IsNotEmpty()
   public title: string;
 
@@ -17,8 +17,8 @@ export class CreateTextPayloadDto implements ITextPayload  {
     description: PostsPropDesc.PostTextPreview,
     required: true,
   })
-  @MaxLength(255)
-  @MinLength(50)
+  @MaxLength(TEXT_PREVIEW_MAX_LENGTH)
+  @MinLength(TEXT_PREVIEW_MIN_LENGTH)
   @IsNotEmpty()
   public preview: string;
 
@@ -26,8 +26,8 @@ export class CreateTextPayloadDto implements ITextPayload  {
     description: PostsPropDesc.PostTextContent,
     required: true,
   })
-  @MaxLength(1024)
-  @MinLength(100)
+  @MaxLength(TEXT_CONTENT_MAX_LENGTH)
+  @MinLength(TEXT_CONTENT_MIN_LENGTH)
   @IsNotEmpty()
   public content: string;
 }

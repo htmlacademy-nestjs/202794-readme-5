@@ -1,15 +1,15 @@
 import { IsNotEmpty, IsUrl, MaxLength, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { IVideoPayload } from '@project/libs/shared/types';
-import { PostsPropDesc } from '../../posts.const';
+import { PostsPropDesc, VIDEO_TITLE_MAX_LENGTH, VIDEO_TITLE_MIN_LENGTH } from '../../posts.const';
 
 export class CreateVideoPayloadDto implements IVideoPayload {
   @ApiProperty({
     description: PostsPropDesc.PostTitle,
     required: true,
   })
-  @MaxLength(50)
-  @MinLength(20)
+  @MaxLength(VIDEO_TITLE_MAX_LENGTH)
+  @MinLength(VIDEO_TITLE_MIN_LENGTH)
   @IsNotEmpty()
   public title: string;
 
